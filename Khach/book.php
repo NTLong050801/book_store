@@ -34,7 +34,7 @@ include('../Parital/header.php')
             </li>
             <li class="nav-item "> <a href="#"><i class="fa fa-home"></i> Home</a> </li>
 
-            <li class="nav-item "> <a href="#">Sách văn học</a> </li>
+            <li class="nav-item "> <a href="#"></a> </li>
 
         </ul>
     </div>
@@ -63,19 +63,7 @@ include('../Parital/header.php')
                     </nav>
                     <div class="container main-content">
                         <div style="margin-top: 10px;" class="nav">
-                            <button class="btn btn_nav btn-Info">Phổ biến</button>
-                            <button class="btn btn_nav">Mới nhất</button>
-                            <button class="btn btn_nav">Bán chạy</button>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Giá
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">Thấp đến cao</a></li>
-                                    <li><a class="dropdown-item" href="#">Cao đến thấp</a></li>
-
-                                </ul>
-                            </div>
+                            
                         </div>
 
                         <div class="content">
@@ -94,48 +82,11 @@ include('../Parital/header.php')
     include('../Parital/foot.php')
     ?>
     <script>
-        $(document).ready(function() {
-
-
-            $("#menu-toggle").click(function(e) {
-                e.preventDefault();
-                $("#wrapper").toggleClass("toggled");
-            });
-            $('.nav .btn').click('.btn', function() {
-                $('.nav .btn').removeClass('btn-Info')
-                $(this).addClass('btn-Info')
-                // alert('ok')
-            })
-            $('.dropdown-menu .dropdown-item').click(function() {
-                var gia = $(this).html()
-                $('#dropdownMenuButton1').html(gia)
-            })
-            var action = "Phổ biến"
-            $.ajax({
-                url: "view_book.php",
-                method: "POST",
-                data: {
-                    action: action
-                },
-                success: function(dt) {
-                    $('#view_book').html(dt)
-                }
-            })
-
-            $('.nav .btn_nav').click(function() {
-                action = $(this).html();
-                // alert(action)
-                $.ajax({
-                    url: "view_book.php",
-                    method: "POST",
-                    data: {
-                        action: action
-                    },
-                    success: function(dt) {
-                        $('#view_book').html(dt)
-                    }
-                })
-            })
-        })
+        $("#wrapper").toggleClass("toggled");
+        $("#menu-toggle").click(function(e) {
+             e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        
     </script>
 </div>
