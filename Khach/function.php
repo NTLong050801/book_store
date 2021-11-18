@@ -1,19 +1,19 @@
 <?php 
-// include('../config/db.php');
+//include('../config/db.php');
 global $conn;
 // Lấy tổng số sách
-<<<<<<< HEAD
-function count_posts()
-{
-    global $conn;
-    $query = mysqli_query($conn, 'select count(*) as total from sach');
-=======
+// <<<<<<< HEAD
+// function count_posts()
+// {
+//     global $conn;
+//     $query = mysqli_query($conn, 'select count(*) as total from sach');
+// =======
 function count_posts($tl_id)
 {
     global $conn;
     $qr = "select count(*) as total from sach where tl_id = $tl_id";
     $query = mysqli_query($conn,$qr );
->>>>>>> minhhn
+// >>>>>>> minhhn
     if ($query){
         $row = mysqli_fetch_assoc($query);
         return $row['total'];
@@ -73,6 +73,11 @@ function CaoDenThap($idtl,$limit, $start){
 function allTheLoai(){
     global $conn;
     $qr = "SELECT * from theloai ";
+    return mysqli_query($conn,$qr) ;
+}
+function search($value){
+    global $conn;
+    $qr = "SELECT * from sach where s_ten LIKE '%$value%' LIMIT 0,5";
     return mysqli_query($conn,$qr) ;
 }
 ?>

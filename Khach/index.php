@@ -1,6 +1,5 @@
 <title>Trang chủ</title>
 <?php
-<<<<<<< HEAD
 include('../Parital/header.php');
 require('./function.php')
 ?>
@@ -8,44 +7,44 @@ require('./function.php')
     .nav button {
         margin: 20px;
     }
-    .act{
+
+    .act {
         background-color: #0d6efd;
         color: yellow;
     }
+
+    .d-flex {
+        position: relative;
+    }
+
+    #list_sach {
+        position: absolute;
+        top: calc(100% - 1 px);
+        left: 0 px;
+        width: calc(100% - 120 px);
+        list-style: none;
+        margin-top: 50px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 0 px 0 px 3 px 3 px;
+        border-top: 1 px solid rgb(225, 225, 225);
+        box-shadow: rgb(0 0 0 / 28%) 0px 6px 12px 0px;
+        z-index: 1;
+        display: none;
+        min-width: 250px;
+    }
+
+    .list-group-item:hover {
+        cursor: pointer;
+        background-color: #6c757d;
+
+    }
 </style>
-=======
-// include('s./config/db.php');
-// include("./partial/header.php");
-// if(!isset($_SESSION['check_email'])){
-//     header('location:./login/login.php');
-// }
-?>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-
-    oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> -->
-<!-- <link rel="stylesheet" href="../css/style.css" />
-<link rel="stylesheet" href="../CSS/style.css"> -->
-
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="../CSS/style.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-
->>>>>>> minhhn
 <div id="wrapper">
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
-<<<<<<< HEAD
                 <h2>Khách</h2>
             </li>
             <li id="true" class="nav-item"> <a href="#"><i class="fa fa-home"></i> Home</a> </li>
@@ -59,14 +58,6 @@ require('./function.php')
             <?php
             }
             ?>
-=======
-                <h2>TEACHER</h2>
-            </li>
-            <li class="nav-item "> <a href="#"> <i class="fa fa-home"></i>Mục lục 1 </a> </li>
-
-            <li class="nav-item "> <a href="#"> <i class="fa fa-home"></i>Mục lục 1 </a> </li>
-
->>>>>>> minhhn
         </ul>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -81,9 +72,11 @@ require('./function.php')
                         <div class="container-fluid">
                             <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fas fa-bars"></i></a>
                             <form class="d-flex">
-<<<<<<< HEAD
-                                <input class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
+                                <input id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
                                 <button class="btn btn-outline-success" type="submit">Tìm</button>
+                                <div id="list_sach">
+
+                                </div>
                             </form>
                             <form class="d-flex">
 
@@ -115,60 +108,37 @@ require('./function.php')
 
                             </div>
                         </div>
-                        <?php
-                        $tongsach = count_posts();
-                        // echo $tongsach;
-                        $sosach1trang = 10;
-                        $sotrang = ceil($tongsach / $sosach1trang);
+                        <div id="page">
+                            <?php $tl_id = $_SESSION['tl_id'];
+                            $tongsach = count_posts($tl_id);
+                            // echo $tongsach;
+                            $sosach1trang = 10;
+                            $sotrang = ceil($tongsach / $sosach1trang);
 
-                        ?>
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination text-center" style="margin-left: 40%;">
-                                <li id="back" class="page-item ">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <?php
-                                for ($i = 1; $i <= $sotrang; $i++) {
-                                    echo  '<li id=' . $i . ' class="page-item ">
+                            ?>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination text-center" style="margin-left: 40%;">
+                                    <li id="back" class="page-item ">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <?php
+                                    for ($i = 1; $i <= $sotrang; $i++) {
+                                        echo  '<li id=' . $i . ' class="page-item ">
                     <a class="page-link"  href="#">' . $i . '</a>
                     </li>';
-                                }
-                                ?>
+                                    }
+                                    ?>
 
-                                <li id="next" class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-=======
-                                <a id="profile_tch" href="#" class="navbar-brand">Tài khoản</a>
-                                <a href="../login/logout.php" class="navbar-brand">Đăng xuất</a>
-                            </form>
+                                    <li id="next" class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
-                    </nav>
-                    <div class="main-content">
-                        <div class="title">
-                            <h3 id="title" style="text-align: center;margin-top:30px">Đây là content</h3>
-                        </div>
-
-<<<<<<< Updated upstream
-=======
-                            </div>
-                        </div>
-                        <?php
-                        $tl_id = $_SESSION['tl_id'];
-                        $tongsach = count_posts($tl_id);
-                        // echo $tongsach;
-                        $sosach1trang = 10;
-                        $sotrang = ceil($tongsach / $sosach1trang);
->>>>>>> Stashed changes
-
-
->>>>>>> minhhn
 
                     </div>
                 </div>
@@ -178,7 +148,6 @@ require('./function.php')
     </div>
 
     <?php
-<<<<<<< HEAD
     include('../Parital/foot.php')
     ?>
     <script>
@@ -187,6 +156,8 @@ require('./function.php')
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
             });
+
+
             $('.nav .btn').click('.btn', function() {
                 $('.nav .btn').removeClass('btn-Info')
                 $(this).addClass('btn-Info')
@@ -210,20 +181,6 @@ require('./function.php')
                 }
             })
 
-=======
-    // include('./partials/footer.php') 
-    ?>
-
-<<<<<<< Updated upstream
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-=======
->>>>>>> minhhn
 
             $('.page-item').click(function() {
                 a = $(this).attr('id')
@@ -271,15 +228,12 @@ require('./function.php')
                     }
                 })
             })
-            $('.nav-item').click(function(){
+            $('.nav-item').click(function(e) {
+                e.preventDefault();
                 id = $(this).attr('id');
                 $('.nav-item').removeClass('act')
                 $(this).addClass('act');
-<<<<<<< HEAD
-                alert(id)
-=======
                 // alert(id)
->>>>>>> minhhn
                 $.ajax({
                     url: "view_book.php",
                     method: "POST",
@@ -291,19 +245,42 @@ require('./function.php')
                     }
                 })
             })
+            
+            $('#wrapper').click(function() {
+                $('#list_sach').css({
+                    "display": "none"
+                })
+            })
+
+            $('#search_ip').keyup(function() {
+                value = $(this).val();
+
+
+                if (value == '') {
+                    $('#list_sach').html('');
+                } else {
+                    $('#list_sach').html('');
+                    $.ajax({
+                        url: "search.php",
+                        method: "POST",
+                        data: {
+                            value: value
+                        },
+                        success: function(dt) {
+                            $('#list_sach').css({
+                                "display": "block"
+                            })
+                            // $('#wrapper').css({"background":"rgb(0 0 0 / 53%)"})                      
+                            $('#list_sach').html(dt);
+                        }
+                    })
+                }
+
+            })
+
+            $('#list_sach li').click(function() {
+               console.log('123')
+            })
         })
-<<<<<<< HEAD
     </script>
 </div>
-=======
->>>>>>> Stashed changes
-    </script>
-</div>
-<!-- /#wrapper -->
-<script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-</script>
->>>>>>> minhhn
