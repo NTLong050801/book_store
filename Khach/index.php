@@ -60,6 +60,17 @@
                             <h3 id="title" style="text-align: center;margin-top:30px">Đây là content</h3>
                         </div>
 
+<<<<<<< Updated upstream
+=======
+                            </div>
+                        </div>
+                        <?php
+                        $tl_id = $_SESSION['tl_id'];
+                        $tongsach = count_posts($tl_id);
+                        // echo $tongsach;
+                        $sosach1trang = 10;
+                        $sotrang = ceil($tongsach / $sosach1trang);
+>>>>>>> Stashed changes
 
 
 
@@ -74,6 +85,7 @@
     // include('./partials/footer.php') 
     ?>
 
+<<<<<<< Updated upstream
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
@@ -81,6 +93,72 @@
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
+=======
+
+            $('.page-item').click(function() {
+                a = $(this).attr('id')
+                $('.page-item').removeClass('active')
+                $(this).addClass('active')
+                $.ajax({
+                    url: "view_book.php",
+                    method: "GET",
+                    data: {
+                        tranghientai: a
+                    },
+                    success: function(dt) {
+                        $('#view_book').html(dt)
+                    }
+                })
+            })
+
+            $('.nav .btn_nav').click(function() {
+                action = $(this).html();
+                $.ajax({
+                    url: "view_book.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        tranghientai: a
+                    },
+                    success: function(dt) {
+                        $('#view_book').html(dt)
+                    }
+                })
+            })
+
+            $('.dropdown-item').click(function() {
+                action = $(this).html();
+                // alert(action);
+                // alert(action)
+                $.ajax({
+                    url: "view_book.php",
+                    method: "POST",
+                    data: {
+                        action: action
+                    },
+                    success: function(dt) {
+                        $('#view_book').html(dt)
+                    }
+                })
+            })
+            $('.nav-item').click(function(){
+                id = $(this).attr('id');
+                $('.nav-item').removeClass('act')
+                $(this).addClass('act');
+                // alert(id)
+                $.ajax({
+                    url: "view_book.php",
+                    method: "POST",
+                    data: {
+                        tl_id: id
+                    },
+                    success: function(dt) {
+                        $('#view_book').html(dt)
+                    }
+                })
+            })
+        })
+>>>>>>> Stashed changes
     </script>
 </div>
 <!-- /#wrapper -->
