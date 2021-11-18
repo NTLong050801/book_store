@@ -1,6 +1,7 @@
 <title>Trang chủ</title>
 <?php
-include('../Parital/header.php')
+include('../Parital/header.php');
+require('./function.php')
 ?>
 <!-- <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -62,6 +63,7 @@ include('../Parital/header.php')
                         </div>
                     </nav>
                     <div class="container main-content">
+                        
                         <div style="margin-top: 10px;" class="nav">
                             <button class="btn btn_nav btn-Info">Phổ biến</button>
                             <button class="btn btn_nav">Mới nhất</button>
@@ -77,12 +79,41 @@ include('../Parital/header.php')
                                 </ul>
                             </div>
                         </div>
-
                         <div class="content">
                             <div id="view_book" class="row">
 
                             </div>
                         </div>
+                        <?php
+                        $tongsach = count_posts();
+                        // echo $tongsach;
+                        $sosach1trang = 10;
+                        $sotrang = ceil($tongsach / $sosach1trang);
+
+                        ?>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination text-center" style="margin-left: 40%;">
+                                <li id="back" class="page-item ">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <?php
+                                for ($i = 1; $i <= $sotrang; $i++) {
+                                    echo  '<li id=' . $i . ' class="page-item ">
+                    <a class="page-link"  href="#">' . $i . '</a>
+                    </li>';
+                                }
+                                ?>
+
+                                <li id="next" class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
                     </div>
                 </div>
             </div>
@@ -95,8 +126,6 @@ include('../Parital/header.php')
     ?>
     <script>
         $(document).ready(function() {
-
-
             $("#menu-toggle").click(function(e) {
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
@@ -110,20 +139,63 @@ include('../Parital/header.php')
                 var gia = $(this).html()
                 $('#dropdownMenuButton1').html(gia)
             })
+
             var action = "Phổ biến"
+            a = 1;
+
             $.ajax({
                 url: "view_book.php",
                 method: "POST",
                 data: {
-                    action: action
+                    action: action,
                 },
                 success: function(dt) {
                     $('#view_book').html(dt)
                 }
             })
 
+
+            $('.page-item').click(function() {
+                
+                a = $(this).attr('id')
+                // if(a == 'back'){
+                //     a = (parseInt($('.page-item active').attr('id'))) 
+                //     alert(a);
+                // }
+                $('.page-item').removeClass('active')
+                $(this).addClass('active')
+                $.ajax({
+                    url: "view_book.php",
+                    method: "GET",
+                    data: {
+                        tranghientai: a
+                    },
+                    success: function(dt) {
+                        $('#view_book').html(dt)
+                    }
+                })
+            })
+
             $('.nav .btn_nav').click(function() {
                 action = $(this).html();
+                
+                // alert(action)
+                $.ajax({
+                    url: "view_book.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        tranghientai : a
+                    },
+                    success: function(dt) {
+                        $('#view_book').html(dt)
+                    }
+                })
+            })
+            
+            $('.dropdown-item').click(function() {
+                action = $(this).html();
+                // alert(action);
                 // alert(action)
                 $.ajax({
                     url: "view_book.php",
@@ -136,6 +208,13 @@ include('../Parital/header.php')
                     }
                 })
             })
+            // $('.pagination .page-item .page-link').click(function() {
+            //     a = $(this).attr('id');
+
+            // })
+
+
+
         })
     </script>
 </div>

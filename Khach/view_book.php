@@ -1,4 +1,5 @@
 <?php
+include('../config/db.php');
 // include('../config/db.php');
 require('./function.php')
 ?>
@@ -118,91 +119,94 @@ require('./function.php')
     }
 </style>
 <?php
-if ($_POST['action'] == "Phổ biến") {
-    $slt_sach = allSach();
+if (isset($_POST['action'])) {
+    $_SESSION['action'] = $_POST['action'];
 }
-if ($_POST['action'] == "Mới nhất") {
-    $slt_sach = MoiNhat();
-}
-if ($_POST['action'] == "Bán chạy") {
-    $slt_sach = BanChay();
-}
-if (mysqli_num_rows($slt_sach) > 0) {
-    while ($row = mysqli_fetch_assoc($slt_sach)) { ?>
-        <div class="col-xl-2">
-            <a href="book.php?s_id=<?php echo $row['s_id'] ?>">
-                <div class="content_book">
-                    <?php
-                    if ($row['s_giamgia'] > 0) { ?>
-                        <div class="giamgia">
-                            <div class="text_gg">
-                                <h6> <?php echo $row['s_giamgia'] . '%' ?></h6>
-                                <span>GIẢM</span>
 
-                            </div>
-                        </div>
-                    <?php
-                    }
-                    ?>
+$tranghientai = isset($_GET['tranghientai']) ? $_GET['tranghientai'] : 1;
+$sosach1trang = 10;
+// echo $tranghientai;
+$limit = ($tranghientai - 1) * $sosach1trang;
+if (isset($_SESSION['action'])) {
+    $action = $_SESSION['action'];
 
-                    <div>
-                        <img src="../Image/VanHoc/<?php echo $row['anh'] ?>" class="container img-fluid" alt="">
-                    </div>
-                    <div class="container book_name" style="margin-top: 5px;">
-                        <p><?php echo $row['s_ten'] ?></p>
-                    </div>
-                    <div class="container price">
+    if ($action == "Phổ biến") {
+        $slt_sach = allSach($limit, $sosach1trang);
+    }
+    if ($action == "Mới nhất") {
+        $slt_sach = MoiNhat($limit, $sosach1trang);
+    }
+    if ($action == "Bán chạy") {
+        $slt_sach = BanChay($limit, $sosach1trang);
+    }
+    if ($action == "Thấp đến cao") {
+        $slt_sach = ThapDenCao($limit, $sosach1trang);
+    }
+    if ($action == "Cao đến thấp") {
+        $slt_sach = CaoDenThap($limit, $sosach1trang);
+    }
+    if (mysqli_num_rows($slt_sach) > 0) {
+        while ($row = mysqli_fetch_assoc($slt_sach)) { ?>
+            <div class="col-xl-2">
+                <a href="book.php?s_id=<?php echo $row['s_id'] ?>">
+                    <div class="content_book">
                         <?php
-                        if ($row['s_giamgia'] > 0) {
-                            echo "<span class ='gia_bd'>" . $row['s_gia'] . "đ" . "</span>";
+                        if ($row['s_giamgia'] > 0) { ?>
+                            <div class="giamgia">
+                                <div class="text_gg">
+                                    <h6> <?php echo $row['s_giamgia'] . '%' ?></h6>
+                                    <span>GIẢM</span>
+
+                                </div>
+                            </div>
+                        <?php
                         }
                         ?>
-                        <span class="gia">
+
+                        <div>
+                            <img src="../Image/VanHoc/<?php echo $row['anh'] ?>" class="container img-fluid" alt="">
+                        </div>
+                        <div class="container book_name" style="margin-top: 5px;">
+                            <p><?php echo $row['s_ten'] ?></p>
+                        </div>
+                        <div class="container price">
                             <?php
-                            $gia = ceil($row['s_gia']  - ($row['s_gia'] * ($row['s_giamgia'] / 100)));
-                            //echo $length;
-                            echo  $gia . 'đ';
+                            if ($row['s_giamgia'] > 0) {
+                                echo "<span class ='gia_bd'>" . $row['s_gia'] . "đ" . "</span>";
+                            }
                             ?>
-                        </span>
-                    </div>
-                    <div class="container star_sold ">
-                        <span class="star"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
-                        <span class="sold">Đã bán : <?php echo $row['luotmua'] ?></span>
+                            <span class="gia">
+                                <?php
+                                if($row['s_giamgia']>1){
+                                    $gia = ceil($row['s_gia']  - ($row['s_gia'] * ($row['s_giamgia'] / 100)));
+                                }else{
+                                    $gia = $row['s_gia'];
+                                }
+                                echo  $gia . 'đ';
+                                //echo $length;
+                              
+
+                                ?>
+                            </span>
+                        </div>
+                        <div class="container star_sold ">
+                            <span class="star"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+                            <span class="sold">Đã bán : <?php echo $row['luotmua'] ?></span>
+
+                        </div>
 
                     </div>
-
-                </div>
-            </a>
-        </div>
-    <?php
-    }
-    ?>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active" aria-current="page">
-                <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>
-    </nav>
+                </a>
+            </div>
 <?php
+        }
+    }
 }
-
 
 ?>
 <script>
-    var gia = parseInt($('.price .gia').html())
-    // alert(gia)
-    gia = gia.toLocaleString() + 'đ';
-    $('.price .gia').html(gia)
-    $('.pagination .page-item .page-link').click(function(){
-        alert($(this).html())
-    })
+    // var gia = parseInt($('.price .gia').html())
+    // // alert(gia)
+    // gia = gia.toLocaleString() + 'đ';
+    // $('.price .gia').html(gia)
 </script>
