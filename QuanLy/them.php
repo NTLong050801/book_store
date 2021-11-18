@@ -13,7 +13,6 @@ if (isset($_POST['btnThem'])) {
     $SoTrang = $_POST['SoTrang'];
     $SoLuong = $_POST['SoLuong'];
     $NgonNgu = $_POST['NgonNgu'];
-    $LuotMua = $_POST['LuotMua'];
     $Gia = $_POST['Gia'];
     $GiamGia = $_POST['GiamGia'];
     $MoTa = $_POST['MoTa'];
@@ -21,12 +20,12 @@ if (isset($_POST['btnThem'])) {
     $fileImg = "../img/" . $images;
     if (move_uploaded_file($_FILES['images']['tmp_name'], $fileImg)) {
 
-        $sql = "INSERT INTO sach(s_ten,nxb, tg_id, tl_id, namxuatban, sotrang, soluong, ngonngu, luotmua,anh, s_gia, s_giamgia, mota)
-            VALUES ('$Name','$nhaXB','$TacGia','$TheLoai','$namXB','$SoTrang','$SoLuong','$NgonNgu','$LuotMua','$images','$Gia','$GiamGia','$MoTa')";
+        $sql = "INSERT INTO sach(s_ten,nxb, tg_id, tl_id, namxuatban, sotrang, soluong, ngonngu,anh, s_gia, s_giamgia, mota)
+            VALUES ('$Name','$nhaXB','$TacGia','$TheLoai','$namXB','$SoTrang','$SoLuong','$NgonNgu','$images','$Gia','$GiamGia','$MoTa')";
         $rs = mysqli_query($conn, $sql);
         if ($rs) {
             $_SESSION['addOK'] = "<h3 class='text-center text-success'>Thêm thành công</h3>";
-            header('location: index.php');
+            header('location: sach.php');
         } else {
             echo "Thêm không thành công";
         }
@@ -98,10 +97,6 @@ if (isset($_POST['btnThem'])) {
             <div class="mb-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Ngôn ngữ</label>
                 <input name="NgonNgu" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3 ms-3 col-md-3">
-                <label for="exampleInputEmail1" class="form-label">Lượt mua</label>
-                <input name="LuotMua" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3 ms-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Ảnh</label>

@@ -1,10 +1,5 @@
 <title>Trang chủ</title>
 <?php
-// include('s./config/db.php');
-// include("./partial/header.php");
-// if(!isset($_SESSION['check_email'])){
-//     header('location:./login/login.php');
-// }
 session_start();
 ?>
 <meta charset="UTF-8">
@@ -13,15 +8,9 @@ session_start();
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-
     oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> -->
-<!-- <link rel="stylesheet" href="../css/style.css" />
-<link rel="stylesheet" href="../CSS/style.css"> -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="../CSS/style.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 
 <div id="wrapper">
 
@@ -31,11 +20,10 @@ session_start();
             <li class="sidebar-brand">
                 <h2>Nhân viên</h2>
             </li>
-            <li class="nav-item "><a href="#"> <i class="fa fa-home"></i>Sách</a></li>
-
-            <li class="nav-item "><a href="#"> <i class="fa fa-home"></i>Tác giả</a></li>
-
-            <li class="nav-item "><a href="#"> <i class="fa fa-home"></i>Thể loại</a></li>
+            <li class="nav-item "><a href="index.php"> <i class="me-2 fa fa-home"></i>Home</a></li>
+            <li class="nav-item "><a href="sach.php"> <i class="me-2 fa fa-home"></i>Sách</a></li>
+            <li class="nav-item "><a href="tacgia.php"> <i class="me-2 fa fa-home"></i>Tác giả</a></li>
+            <li class="nav-item "><a href="theloai.php"> <i class="me-2 fa fa-home"></i>Thể loại</a></li>
 
         </ul>
     </div>
