@@ -18,7 +18,7 @@ session_start();
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
-                <h2>Nhân viên</h2>
+                <h2 class="text-white">Nhân viên</h2>
             </li>
             <li class="nav-item "><a href="index.php"> <i class="me-2 fa fa-home"></i>Home</a></li>
             <li class="nav-item "><a href="sach.php"> <i class="me-2 fa fa-home"></i>Sách</a></li>

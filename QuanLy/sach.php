@@ -1,5 +1,6 @@
 <?php
 include('./header_footer/header.php');
+include('./test.php');
 ?>
 <div class="main-content">
     <div class="container-fluid">
