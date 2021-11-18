@@ -3,26 +3,13 @@
 include('../Parital/header.php');
 require('./function.php')
 ?>
-<!-- <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-
-    oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" /> -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> -->
-<!-- <link rel="stylesheet" href="../css/style.css" />
-<link rel="stylesheet" href="../CSS/style.css"> -->
-
-
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="../CSS/style.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script> -->
 <style>
     .nav button {
         margin: 20px;
+    }
+    .act{
+        background-color: #0d6efd;
+        color: yellow;
     }
 </style>
 <div id="wrapper">
@@ -33,10 +20,17 @@ require('./function.php')
             <li class="sidebar-brand">
                 <h2>Khách</h2>
             </li>
-            <li class="nav-item "> <a href="#"><i class="fa fa-home"></i> Home</a> </li>
-
-            <li class="nav-item "> <a href="#">Sách văn học</a> </li>
-
+            <li id="true" class="nav-item"> <a href="#"><i class="fa fa-home"></i> Home</a> </li>
+            <?php
+            $slt_tl = allTheLoai();
+            while ($row_tl = mysqli_fetch_assoc($slt_tl)) {
+            ?>
+                <li id="<?php echo $row_tl['tl_id'] ?>" class="nav-item">
+                    <a href="#"><?php echo $row_tl['tl_ten'] ?></a>
+                </li>
+            <?php
+            }
+            ?>
         </ul>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -63,7 +57,7 @@ require('./function.php')
                         </div>
                     </nav>
                     <div class="container main-content">
-                        
+
                         <div style="margin-top: 10px;" class="nav">
                             <button class="btn btn_nav btn-Info">Phổ biến</button>
                             <button class="btn btn_nav">Mới nhất</button>
@@ -133,7 +127,6 @@ require('./function.php')
             $('.nav .btn').click('.btn', function() {
                 $('.nav .btn').removeClass('btn-Info')
                 $(this).addClass('btn-Info')
-                // alert('ok')
             })
             $('.dropdown-menu .dropdown-item').click(function() {
                 var gia = $(this).html()
@@ -156,12 +149,7 @@ require('./function.php')
 
 
             $('.page-item').click(function() {
-                
                 a = $(this).attr('id')
-                // if(a == 'back'){
-                //     a = (parseInt($('.page-item active').attr('id'))) 
-                //     alert(a);
-                // }
                 $('.page-item').removeClass('active')
                 $(this).addClass('active')
                 $.ajax({
@@ -178,21 +166,19 @@ require('./function.php')
 
             $('.nav .btn_nav').click(function() {
                 action = $(this).html();
-                
-                // alert(action)
                 $.ajax({
                     url: "view_book.php",
                     method: "POST",
                     data: {
                         action: action,
-                        tranghientai : a
+                        tranghientai: a
                     },
                     success: function(dt) {
                         $('#view_book').html(dt)
                     }
                 })
             })
-            
+
             $('.dropdown-item').click(function() {
                 action = $(this).html();
                 // alert(action);
@@ -208,13 +194,22 @@ require('./function.php')
                     }
                 })
             })
-            // $('.pagination .page-item .page-link').click(function() {
-            //     a = $(this).attr('id');
-
-            // })
-
-
-
+            $('.nav-item').click(function(){
+                id = $(this).attr('id');
+                $('.nav-item').removeClass('act')
+                $(this).addClass('act');
+                alert(id)
+                $.ajax({
+                    url: "view_book.php",
+                    method: "POST",
+                    data: {
+                        tl_id: id
+                    },
+                    success: function(dt) {
+                        $('#view_book').html(dt)
+                    }
+                })
+            })
         })
     </script>
 </div>

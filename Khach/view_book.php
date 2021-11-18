@@ -6,35 +6,23 @@ require('./function.php')
 <style>
     .col-xl-2 {
         background-color: #ccc;
-        /* margin-top: 20px; */
-        /* text-align: center; */
         margin: 20px;
-        /* position:relative; */
-        /* word-wrap: break-word */
+        min-height: 200px;
+        max-height: 250px;
 
     }
 
     .content_book:hover {
         background-color: yellow;
-        /* margin-top: 2px; */
     }
 
     .col-xl-2 button {
-        /* background-color: red;
-        width: 100%;
-        color: #fff; */
         height: auto;
-        /* clear: both; */
-        /* position: absolute;
-        bottom: 20px;
-        right: 20px; */
-        /* display: flex; */
         bottom: 0;
-
     }
 
-    .col-2 img {
-        margin-top: 15px;
+    .col-xl-2 img {
+        min-height: 140px
     }
 
     .col-xl-2 a {
@@ -57,7 +45,6 @@ require('./function.php')
         text-overflow: ellipsis;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
-
     }
 
     .content_book {
@@ -99,9 +86,6 @@ require('./function.php')
         margin-top: 2px;
         margin-left: 0.3125 rem;
         font-size: .75rem;
-
-        /* display: block; */
-        /* padding-right: 10px; */
     }
 
     .sold {
@@ -110,7 +94,6 @@ require('./function.php')
         white-space: nowrap;
         text-overflow: ellipsis;
         margin-left: 20px;
-
     }
 
     .star {
@@ -122,32 +105,42 @@ require('./function.php')
 if (isset($_POST['action'])) {
     $_SESSION['action'] = $_POST['action'];
 }
-
+if (isset($_POST['tl_id'])) {
+     $_SESSION['tl_id'] = $_POST['tl_id'];
+   
+}
 $tranghientai = isset($_GET['tranghientai']) ? $_GET['tranghientai'] : 1;
 $sosach1trang = 10;
 // echo $tranghientai;
 $limit = ($tranghientai - 1) * $sosach1trang;
 if (isset($_SESSION['action'])) {
     $action = $_SESSION['action'];
-
+     $tl_id = $_SESSION['tl_id'];
+    
+    // if ($action == "Home") {
+    //     $slt_sach = home($limit, $sosach1trang);
+    // }
+    if($tl_id == 'true'){
+        $slt_sach = home($limit,$sosach1trang);
+    }
     if ($action == "Phổ biến") {
-        $slt_sach = allSach($limit, $sosach1trang);
+        $slt_sach = allSach($tl_id,$limit, $sosach1trang);
     }
     if ($action == "Mới nhất") {
-        $slt_sach = MoiNhat($limit, $sosach1trang);
+        $slt_sach = MoiNhat($tl_id,$limit, $sosach1trang);
     }
     if ($action == "Bán chạy") {
-        $slt_sach = BanChay($limit, $sosach1trang);
+        $slt_sach = BanChay($tl_id,$limit, $sosach1trang);
     }
     if ($action == "Thấp đến cao") {
-        $slt_sach = ThapDenCao($limit, $sosach1trang);
+        $slt_sach = ThapDenCao($tl_id,$limit, $sosach1trang);
     }
     if ($action == "Cao đến thấp") {
-        $slt_sach = CaoDenThap($limit, $sosach1trang);
+        $slt_sach = CaoDenThap($tl_id,$limit, $sosach1trang);
     }
     if (mysqli_num_rows($slt_sach) > 0) {
         while ($row = mysqli_fetch_assoc($slt_sach)) { ?>
-            <div class="col-xl-2">
+            <div class="col-xl-2" >
                 <a href="book.php?s_id=<?php echo $row['s_id'] ?>">
                     <div class="content_book">
                         <?php
@@ -177,15 +170,8 @@ if (isset($_SESSION['action'])) {
                             ?>
                             <span class="gia">
                                 <?php
-                                if($row['s_giamgia']>1){
-                                    $gia = ceil($row['s_gia']  - ($row['s_gia'] * ($row['s_giamgia'] / 100)));
-                                }else{
-                                    $gia = $row['s_gia'];
-                                }
+                                    $gia = ceil($row['s_gia']  - ($row['s_gia'] * $row['s_giamgia']) / 100);
                                 echo  $gia . 'đ';
-                                //echo $length;
-                              
-
                                 ?>
                             </span>
                         </div>

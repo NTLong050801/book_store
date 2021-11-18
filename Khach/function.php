@@ -29,31 +29,42 @@ function get_all_post($limit, $start)
     return mysqli_query($conn,$sql);
 }
 //limit = (số trang-1) * 20
-function allSach($limit, $start){
+function home($limit, $start){
     global $conn;
-    $qr = "SELECT * from sach LIMIT {$limit}, {$start}";
+    $qr = "SELECT * from sach  LIMIT {$limit}, {$start}";
     return mysqli_query($conn,$qr) ;
 }
-function MoiNhat($limit, $start){
+function allSach($idtl,$limit, $start){
     global $conn;
-    $qr = "SELECT * from sach ORDER BY s_id DESC LIMIT {$limit}, {$start} ";
+    $qr = "SELECT * from sach where tl_id = $idtl LIMIT {$limit}, {$start}";
     return mysqli_query($conn,$qr) ;
 }
-function BanChay($limit, $start){
+function MoiNhat($idtl,$limit, $start){
     global $conn;
-    $qr = "SELECT * from sach ORDER BY luotmua DESC LIMIT {$limit}, {$start} ";
+    $qr = "SELECT * from sach where tl_id = $idtl ORDER BY s_id DESC LIMIT {$limit}, {$start} ";
+    return mysqli_query($conn,$qr) ;
+}
+function BanChay($idtl,$limit, $start){
+    global $conn;
+    $qr = "SELECT * from sach where tl_id = $idtl ORDER BY luotmua DESC LIMIT {$limit}, {$start} ";
     return mysqli_query($conn,$qr) ;
 }
 
-function ThapDenCao($limit, $start){
+function ThapDenCao($idtl,$limit, $start){
     global $conn;
     
-    $qr = "SELECT * from sach ORDER BY (s_gia - (s_gia*s_giamgia)/100) ASC LIMIT {$limit}, {$start} ";
+    $qr = "SELECT * from sach where tl_id = $idtl ORDER BY (s_gia - (s_gia*s_giamgia)/100) ASC LIMIT {$limit}, {$start} ";
     return mysqli_query($conn,$qr) ;
 }
-function CaoDenThap($limit, $start){
+function CaoDenThap($idtl,$limit, $start){
     global $conn;
-    $qr = "SELECT * from sach ORDER BY (s_gia - (s_gia*s_giamgia)/100) DESC LIMIT {$limit}, {$start} ";
+    $qr = "SELECT * from sach where tl_id = $idtl ORDER BY (s_gia - (s_gia*s_giamgia)/100) DESC LIMIT {$limit}, {$start} ";
+    return mysqli_query($conn,$qr) ;
+}
+
+function allTheLoai(){
+    global $conn;
+    $qr = "SELECT * from theloai ";
     return mysqli_query($conn,$qr) ;
 }
 ?>
