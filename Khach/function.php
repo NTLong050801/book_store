@@ -2,10 +2,18 @@
 // include('../config/db.php');
 global $conn;
 // Lấy tổng số sách
+<<<<<<< HEAD
 function count_posts()
 {
     global $conn;
     $query = mysqli_query($conn, 'select count(*) as total from sach');
+=======
+function count_posts($tl_id)
+{
+    global $conn;
+    $qr = "select count(*) as total from sach where tl_id = $tl_id";
+    $query = mysqli_query($conn,$qr );
+>>>>>>> minhhn
     if ($query){
         $row = mysqli_fetch_assoc($query);
         return $row['total'];
