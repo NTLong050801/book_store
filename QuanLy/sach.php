@@ -19,9 +19,20 @@ include('./header_footer/header.php');
             echo $_SESSION['delOK'];
             unset($_SESSION['delOK']);
         }
+
         if (isset($_SESSION['addOK'])) {
             echo $_SESSION['addOK'];
             unset($_SESSION['addOK']);
+        }
+
+        if (isset($_SESSION['updateOK'])) {
+            echo $_SESSION['updateOK'];
+            unset($_SESSION['updateOK']);
+        }
+
+        if (isset($_SESSION['updateNotOK'])) {
+            echo $_SESSION['updateNotOK'];
+            unset($_SESSION['updateNotOK']);
         }
         ?>
         <table class="table">

@@ -5,7 +5,7 @@ include('../config/db.php');
 
 <?php
     $id = $_GET['id'];
-if (isset($_POST['btnThem'])) {
+if (isset($_POST['btnSua'])) {
     $Name = $_POST['Name'];
     $nhaXB = $_POST['nhaXB'];
     $TacGia = $_POST['TacGia'];
@@ -19,25 +19,28 @@ if (isset($_POST['btnThem'])) {
     $MoTa = $_POST['MoTa'];
     $images = basename($_FILES['images']['name']);
     $fileImg = "../img/" . $images;
-    if (move_uploaded_file($_FILES['images']['tmp_name'], $fileImg)) {
+    // if (move_uploaded_file($_FILES['images']['tmp_name'], $fileImg)) {
 
         $sql = "UPDATE sach
                 SET s_ten = '$Name',nxb = '$nhaXB', tg_id = '$TacGia' , tl_id = '$TheLoai', namxuatban = '$namXB',
                  sotrang = '$SoTrang', soluong = '$SoLuong', ngonngu = '$NgonNgu' ,anh = '$images' , s_gia = '$Gia', s_giamgia = '$GiamGia', mota = '$MoTa'              
-                WHERE s_id = '$id";
+                WHERE s_id = '$id'";
           $rs = mysqli_query($conn, $sql);
         if ($rs) {
-            $_SESSION['addOK'] = "<h3 class='text-center text-success'>Thêm thành công</h3>";
+            $_SESSION['updateOK'] = "<h3 class='text-center text-success'>Sửa thành công</h3>";
             header('location: sach.php');
         } else {
-            echo "Thêm không thành công";
+            $_SESSION['updateNotOK'] = "<h3 class='text-center text-success'>Sửa không thành công</h3>";
+            header('location: sach.php');
         }
     }
-}
+
+// }
 ?>
 <?php
-    $sele
-
+    $sql2 = "SELECT * FROM sach where s_id = '$id'";
+    $rs2 = mysqli_query($conn, $sql2);
+    $row2 = mysqli_fetch_array($rs2);
 ?>
 
 <h2 class='text-center'>Thêm sách</h2>
@@ -47,17 +50,17 @@ if (isset($_POST['btnThem'])) {
         <div class="row">
         <div class="mb-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">ID</label>
-                <input value="<?php ?>" name="id" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input readonly value="<?php echo $row2['s_id']?>" name="id" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
-            <div class="mb-3 col-md-3">
+            <div class="mb-3 col-md-3 ms-3">
                 <label for="exampleInputEmail1" class="form-label">Tên sách</label>
-                <input name="Name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input value="<?php echo $row2['s_ten']?>" name="Name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
         </div>
         <div class="row">
             <div class="mb-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Nhà Xuất Bản</label>
-                <input name="nhaXB" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input value="<?php echo $row2['nxb']?>" name="nhaXB" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3 ms-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">TacGia</label>
@@ -91,22 +94,23 @@ if (isset($_POST['btnThem'])) {
         <div class="row">
             <div class="mb-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Năm xuất bản</label>
-                <input name="namXB" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input value="<?php echo $row2['namxuatban']?>" name="namXB" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3 ms-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Số trang</label>
-                <input name="SoTrang" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input value="<?php echo $row2['sotrang']?>" name="SoTrang" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3 ms-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Số lượng</label>
-                <input name="SoLuong" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input value="<?php echo $row2['soluong']?>" name="SoLuong" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
         </div>
         <div class="row">
             <div class="mb-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Ngôn ngữ</label>
-                <input name="NgonNgu" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input value="<?php echo $row2['ngonngu']?>" name="NgonNgu" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
+            <!-- <img src="../img/" alt="" style="height:200px; width: auto;"> -->
             <div class="mb-3 ms-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Ảnh</label>
                 <input name="images" type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -115,21 +119,21 @@ if (isset($_POST['btnThem'])) {
         <div class="row">
             <div class="mb-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Giá</label>
-                <input name="Gia" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input value="<?php echo $row2['s_gia']?>" name="Gia" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3 ms-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Giảm giá</label>
-                <input name="GiamGia" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input value="<?php echo $row2['s_giamgia']?>" name="GiamGia" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
         </div>
         <div class="row">
             <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Mô tả</label>
-                <textarea name="MoTa" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea name="MoTa" class="form-control" id="exampleFormControlTextarea1" rows="3"><?php echo $row2['mota']?></textarea>
             </div>
         </div>
 
-        <button name="btnThem" class="btn btn-success">Thêm</button>
+        <button name="btnSua" class="btn btn-success">Sửa</button>
     </form>
 </div>
 <?php
