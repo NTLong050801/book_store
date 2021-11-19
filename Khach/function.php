@@ -1,19 +1,11 @@
 <?php 
 //include('../config/db.php');
 global $conn;
-// Lấy tổng số sách
-// <<<<<<< HEAD
-// function count_posts()
-// {
-//     global $conn;
-//     $query = mysqli_query($conn, 'select count(*) as total from sach');
-// =======
 function count_posts($tl_id)
 {
     global $conn;
     $qr = "select count(*) as total from sach where tl_id = $tl_id";
     $query = mysqli_query($conn,$qr );
-// >>>>>>> minhhn
     if ($query){
         $row = mysqli_fetch_assoc($query);
         return $row['total'];
@@ -24,16 +16,6 @@ function get_all_post($limit, $start)
 {
     global $conn;
     $sql = "select * from sach limit {$limit}, {$start}";
-    // $query = mysqli_query($conn, $sql);
- 
-    // $result = array();
- 
-    // if ($query) {
-    //     while ($row = mysqli_fetch_assoc($query)) {
-    //         $result[] = $row;
-    //     }
-    // }
- 
     return mysqli_query($conn,$sql);
 }
 //limit = (số trang-1) * 20
@@ -78,6 +60,11 @@ function allTheLoai(){
 function search($value){
     global $conn;
     $qr = "SELECT * from sach where s_ten LIKE '%$value%' LIMIT 0,5";
+    return mysqli_query($conn,$qr) ;
+}
+function search_id($value){
+    global $conn;
+    $qr = "SELECT * from sach where s_id = '$value'";
     return mysqli_query($conn,$qr) ;
 }
 ?>

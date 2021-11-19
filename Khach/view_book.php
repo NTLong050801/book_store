@@ -104,6 +104,8 @@ require('./function.php')
 <?php
 if (isset($_POST['action'])) {
     $_SESSION['action'] = $_POST['action'];
+}else{
+    $_SESSION['action'] = "Phổ biến";
 }
 if (isset($_POST['tl_id'])) {
      $_SESSION['tl_id'] = $_POST['tl_id'];
@@ -137,6 +139,10 @@ if (isset($_SESSION['action'])) {
     }
     if ($action == "Cao đến thấp") {
         $slt_sach = CaoDenThap($tl_id,$limit, $sosach1trang);
+    }
+    if ($action == "search") {
+        $slt_sach = search_id($_POST['get_search']);
+        unset($_SESSION['action']);
     }
     if (mysqli_num_rows($slt_sach) > 0) {
         while ($row = mysqli_fetch_assoc($slt_sach)) { ?>

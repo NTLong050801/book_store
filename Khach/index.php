@@ -73,7 +73,7 @@ require('./function.php')
                             <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fas fa-bars"></i></a>
                             <form class="d-flex">
                                 <input id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Tìm</button>
+                                <button id="btn_search" class="btn btn-outline-success" type="button">Tìm</button>
                                 <div id="list_sach">
 
                                 </div>
@@ -109,7 +109,10 @@ require('./function.php')
                             </div>
                         </div>
                         <div id="page">
-                            <?php $tl_id = $_SESSION['tl_id'];
+                            <?php
+                            if (isset($_SESSION['tl_id'])) {
+                                $tl_id =  $_SESSION['tl_id'];
+                            }
                             $tongsach = count_posts($tl_id);
                             // echo $tongsach;
                             $sosach1trang = 10;
@@ -242,20 +245,23 @@ require('./function.php')
                     },
                     success: function(dt) {
                         $('#view_book').html(dt)
+                        $('.pagination').css('display','')
                     }
                 })
             })
-            
+
             $('#wrapper').click(function() {
                 $('#list_sach').css({
                     "display": "none"
                 })
+                get_ip = $('#val_ip').attr('get_ip')
+                if(get_ip != ''){
+                    $('#search_ip').val(get_ip);
+                }
             })
-
+            
             $('#search_ip').keyup(function() {
                 value = $(this).val();
-
-
                 if (value == '') {
                     $('#list_sach').html('');
                 } else {
@@ -278,9 +284,26 @@ require('./function.php')
 
             })
 
-            $('#list_sach li').click(function() {
-               console.log('123')
+            $('#btn_search').click(function(){
+                get_search = $('#val_ip').attr('id_ip');
+                action = "search"
+               
+                // alert(get_search);
+                $.ajax({
+                    url:"view_book.php",
+                    method :"POST",
+                    data : {
+                        get_search : get_search,
+                        action : action
+                    },
+                    success : function(dt){
+                        $('#view_book').html(dt);
+                        $('.pagination').css('display','none')
+                    }
+                })
+                
             })
         })
+        
     </script>
 </div>
