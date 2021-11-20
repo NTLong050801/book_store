@@ -10,7 +10,7 @@ if (mysqli_num_rows($slt_sach) > 0) {
 <?php
     }
 } else {
-    echo '<li class="list-group-item">Không có sách này</li>';
+    echo '<li  class="list-group-item">Không có sách này</li>';
 }
 ?>
 <div id="val_ip">

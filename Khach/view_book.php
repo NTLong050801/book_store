@@ -104,49 +104,63 @@ require('./function.php')
 <?php
 if (isset($_POST['action'])) {
     $_SESSION['action'] = $_POST['action'];
-}else{
+} else {
     $_SESSION['action'] = "Phổ biến";
 }
 if (isset($_POST['tl_id'])) {
-     $_SESSION['tl_id'] = $_POST['tl_id'];
-   
+    $_SESSION['tl_id'] = $_POST['tl_id'];
 }
+// else{
+//     $_SESSION['tl_id'] =true;
+// }
 $tranghientai = isset($_GET['tranghientai']) ? $_GET['tranghientai'] : 1;
 $sosach1trang = 10;
 // echo $tranghientai;
 $limit = ($tranghientai - 1) * $sosach1trang;
 if (isset($_SESSION['action'])) {
     $action = $_SESSION['action'];
-     $tl_id = $_SESSION['tl_id'];
-    
+
+    if (isset($_SESSION['tl_id'])) {
+        $tl_id = $_SESSION['tl_id'];
+    } else {
+        $tl_id = 'true';
+    }
+
+
     // if ($action == "Home") {
     //     $slt_sach = home($limit, $sosach1trang);
     // }
-    if($tl_id == 'true'){
-        $slt_sach = home($limit,$sosach1trang);
+    if ($tl_id == 'true') {
+        $slt_sach = home($limit, $sosach1trang);
     }
     if ($action == "Phổ biến") {
-        $slt_sach = allSach($tl_id,$limit, $sosach1trang);
+        $slt_sach = allSach($tl_id, $limit, $sosach1trang);
     }
     if ($action == "Mới nhất") {
-        $slt_sach = MoiNhat($tl_id,$limit, $sosach1trang);
+        $slt_sach = MoiNhat($tl_id, $limit, $sosach1trang);
     }
     if ($action == "Bán chạy") {
-        $slt_sach = BanChay($tl_id,$limit, $sosach1trang);
+        $slt_sach = BanChay($tl_id, $limit, $sosach1trang);
     }
     if ($action == "Thấp đến cao") {
-        $slt_sach = ThapDenCao($tl_id,$limit, $sosach1trang);
+        $slt_sach = ThapDenCao($tl_id, $limit, $sosach1trang);
     }
     if ($action == "Cao đến thấp") {
-        $slt_sach = CaoDenThap($tl_id,$limit, $sosach1trang);
+        $slt_sach = CaoDenThap($tl_id, $limit, $sosach1trang);
     }
     if ($action == "search") {
-        $slt_sach = search_id($_POST['get_search']);
-        unset($_SESSION['action']);
+        if(isset($_POST['get_search'])){
+            $slt_sach = search_id($_POST['get_search']);
+            unset($_SESSION['action']);
+        }
+        // else{
+        //     echo '<script>alert("Không tìm thấy sách này !")>/script>';
+        // }
+       
     }
     if (mysqli_num_rows($slt_sach) > 0) {
         while ($row = mysqli_fetch_assoc($slt_sach)) { ?>
-            <div class="col-xl-2" >
+            <div class="col-xl-2">
                 <a href="book.php?s_id=<?php echo $row['s_id'] ?>">
                     <div class="content_book">
                         <?php
@@ -176,7 +190,7 @@ if (isset($_SESSION['action'])) {
                             ?>
                             <span class="gia">
                                 <?php
-                                    $gia = ceil($row['s_gia']  - ($row['s_gia'] * $row['s_giamgia']) / 100);
+                                $gia = ceil($row['s_gia']  - ($row['s_gia'] * $row['s_giamgia']) / 100);
                                 echo  $gia . 'đ';
                                 ?>
                             </span>
@@ -190,15 +204,23 @@ if (isset($_SESSION['action'])) {
                     </div>
                 </a>
             </div>
+
 <?php
         }
     }
 }
 
 ?>
+
+
+
+
 <script>
     // var gia = parseInt($('.price .gia').html())
     // // alert(gia)
     // gia = gia.toLocaleString() + 'đ';
     // $('.price .gia').html(gia)
+    // $('.page-item').click(function(){
+    //             alert('ok')
+    //         })
 </script>

@@ -38,8 +38,13 @@ require('./function.php')
         background-color: #6c757d;
 
     }
+
+    #page h6:hover {
+        cursor: pointer;
+        color: red;
+    }
 </style>
-<div id="wrapper">
+<div id="wrapper" style="overflow: scroll;height:100%">
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
@@ -72,7 +77,7 @@ require('./function.php')
                         <div class="container-fluid">
                             <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fas fa-bars"></i></a>
                             <form class="d-flex">
-                                <input id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
+                                <input require id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
                                 <button id="btn_search" class="btn btn-outline-success" type="button">Tìm</button>
                                 <div id="list_sach">
 
@@ -107,40 +112,28 @@ require('./function.php')
                             <div id="view_book" class="row">
 
                             </div>
+
                         </div>
+                        <br>
+
                         <div id="page">
                             <?php
                             if (isset($_SESSION['tl_id'])) {
                                 $tl_id =  $_SESSION['tl_id'];
+                            } else {
+                                $tl_id = true;
                             }
+                            // $tl_id = $_POST['tl_id'];
                             $tongsach = count_posts($tl_id);
                             // echo $tongsach;
                             $sosach1trang = 10;
                             $sotrang = ceil($tongsach / $sosach1trang);
 
                             ?>
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination text-center" style="margin-left: 40%;">
-                                    <li id="back" class="page-item ">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <?php
-                                    for ($i = 1; $i <= $sotrang; $i++) {
-                                        echo  '<li id=' . $i . ' class="page-item ">
-                    <a class="page-link"  href="#">' . $i . '</a>
-                    </li>';
-                                    }
-                                    ?>
+                            <div id="page_get" tranghientai='1' sotrang='<?php echo $sotrang ?>'>
 
-                                    <li id="next" class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
+                            </div>
+                            <h6 style="text-align: center;">Xem thêm <i class="fas fa-chevron-down"></i></h6>
                         </div>
 
                     </div>
@@ -160,7 +153,6 @@ require('./function.php')
                 $("#wrapper").toggleClass("toggled");
             });
 
-
             $('.nav .btn').click('.btn', function() {
                 $('.nav .btn').removeClass('btn-Info')
                 $(this).addClass('btn-Info')
@@ -171,7 +163,6 @@ require('./function.php')
             })
 
             var action = "Phổ biến"
-            a = 1;
 
             $.ajax({
                 url: "view_book.php",
@@ -183,32 +174,40 @@ require('./function.php')
                     $('#view_book').html(dt)
                 }
             })
+            a = 1
+            $('#page h6').click(function() {
 
+                sotrang = $('#page_get').attr('sotrang')
+                if (a < sotrang) {
+                    a = a + 1;
+                    // console.log(a);
+                    $('#page_get').attr('tranghientai', a)
+                    $.ajax({
+                        url: "view_book.php",
+                        method: "get",
+                        data: {
+                            tranghientai: a
+                        },
+                        success: function(dt) {
+                            $('#view_book').append(dt)
+                        }
+                    })
+                } else {
+                    alert('Đã hết hiển thị hết sách .')
+                }
 
-            $('.page-item').click(function() {
-                a = $(this).attr('id')
-                $('.page-item').removeClass('active')
-                $(this).addClass('active')
-                $.ajax({
-                    url: "view_book.php",
-                    method: "GET",
-                    data: {
-                        tranghientai: a
-                    },
-                    success: function(dt) {
-                        $('#view_book').html(dt)
-                    }
-                })
             })
 
             $('.nav .btn_nav').click(function() {
                 action = $(this).html();
+                a = 1;
+                $('#page h6').css('display', '')
                 $.ajax({
                     url: "view_book.php",
                     method: "POST",
                     data: {
                         action: action,
-                        tranghientai: a
+
                     },
                     success: function(dt) {
                         $('#view_book').html(dt)
@@ -218,8 +217,10 @@ require('./function.php')
 
             $('.dropdown-item').click(function() {
                 action = $(this).html();
+                $('#page h6').css('display', '')
                 // alert(action);
                 // alert(action)
+                a = 1
                 $.ajax({
                     url: "view_book.php",
                     method: "POST",
@@ -228,6 +229,7 @@ require('./function.php')
                     },
                     success: function(dt) {
                         $('#view_book').html(dt)
+
                     }
                 })
             })
@@ -237,6 +239,7 @@ require('./function.php')
                 $('.nav-item').removeClass('act')
                 $(this).addClass('act');
                 // alert(id)
+                a = 1
                 $.ajax({
                     url: "view_book.php",
                     method: "POST",
@@ -245,9 +248,20 @@ require('./function.php')
                     },
                     success: function(dt) {
                         $('#view_book').html(dt)
-                        $('.pagination').css('display','')
+                        $('#page h6').css('display', '')
                     }
                 })
+                // $.ajax({
+                //     url: "page.php",
+                //     method: "POST",
+                //     data: {
+                //         tl_id: id
+                //     },
+                //     success: function(dt) {
+                //         $('#page').html(dt)
+
+                //     }
+                // })
             })
 
             $('#wrapper').click(function() {
@@ -255,14 +269,15 @@ require('./function.php')
                     "display": "none"
                 })
                 get_ip = $('#val_ip').attr('get_ip')
-                if(get_ip != ''){
+                if (get_ip != '') {
                     $('#search_ip').val(get_ip);
                 }
             })
-            
+
             $('#search_ip').keyup(function() {
                 value = $(this).val();
                 if (value == '') {
+
                     $('#list_sach').html('');
                 } else {
                     $('#list_sach').html('');
@@ -284,26 +299,50 @@ require('./function.php')
 
             })
 
-            $('#btn_search').click(function(){
+            $('#btn_search').click(function() {
                 get_search = $('#val_ip').attr('id_ip');
                 action = "search"
-               
+                if (typeof(get_search) == 'string') {
+                    $.ajax({
+                        url: "view_book.php",
+                        method: "POST",
+                        data: {
+                            get_search: get_search,
+                            action: action
+                        },
+                        success: function(dt) {
+                            $('#view_book').html(dt);
+                            $('#page h6').css('display', 'none')
+                        }
+                    })
+                }else{
+                    alert('Không tìm thấy sách của bạn!')
+                }
+
+
+
                 // alert(get_search);
-                $.ajax({
-                    url:"view_book.php",
-                    method :"POST",
-                    data : {
-                        get_search : get_search,
-                        action : action
-                    },
-                    success : function(dt){
-                        $('#view_book').html(dt);
-                        $('.pagination').css('display','none')
-                    }
-                })
-                
+
+
             })
+            // $('.page-item').live('click', function() {
+            //     a = $(this).attr('id')
+            //     alert(a)
+            //     $.ajax({
+            //         url: "view_book.php",
+            //         method: "GET",
+            //         data: {
+            //             tranghientai: a
+            //         },
+            //         success: function(dt) {
+            //             $('#view_book').html(dt);
+            //         }
+            //     })
+            // });
+
+
+
+
         })
-        
     </script>
 </div>
