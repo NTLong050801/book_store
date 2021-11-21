@@ -18,12 +18,14 @@ if (isset($_POST['btnSua'])) {
     $GiamGia = $_POST['GiamGia'];
     $MoTa = $_POST['MoTa'];
     $images = basename($_FILES['images']['name']);
+    $images2 = basename($_FILES['images2']['name']);
     $fileImg = "../img/" . $images;
-    // if (move_uploaded_file($_FILES['images']['tmp_name'], $fileImg)) {
-
+    $fileImg2 = "../img/" . $images2;
+    move_uploaded_file($_FILES['images']['tmp_name'], $fileImg);
+    move_uploaded_file($_FILES['images2']['tmp_name'], $fileImg2);
         $sql = "UPDATE sach
                 SET s_ten = '$Name',nxb = '$nhaXB', tg_id = '$TacGia' , tl_id = '$TheLoai', namxuatban = '$namXB',
-                 sotrang = '$SoTrang', soluong = '$SoLuong', ngonngu = '$NgonNgu' ,anh = '$images' , s_gia = '$Gia', s_giamgia = '$GiamGia', mota = '$MoTa'              
+                 sotrang = '$SoTrang', soluong = '$SoLuong', ngonngu = '$NgonNgu' ,anh = '$images' ,anh1 = '$images2' ,s_gia = '$Gia', s_giamgia = '$GiamGia', mota = '$MoTa'              
                 WHERE s_id = '$id'";
           $rs = mysqli_query($conn, $sql);
         if ($rs) {
@@ -114,6 +116,10 @@ if (isset($_POST['btnSua'])) {
             <div class="mb-3 ms-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Ảnh</label>
                 <input name="images" type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3 ms-3 col-md-3">
+                <label for="exampleInputEmail1" class="form-label">Ảnh thứ 2</label>
+                <input name="images2" type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
         </div>
         <div class="row">

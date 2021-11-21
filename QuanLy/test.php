@@ -1,22 +1,25 @@
 <?php
-include('../config/db.php');
+// include('../config/db.php');
 ?>
 
 <?php
 
+class disP {
     function delSach(){
-            echo "Hello";
-        // include('../config/db.php');
-        // $sql = "DELETE FROM sach where s_id = '$id'";
-        // $rs = mysqli_query($conn, $sql);
-        // if($rs){
-        //     // echo "Xóa thành công";
-        //     $_SESSION['delOK'] = "<h3 class='text-success mt-3'>Xóa thành công sách có mã sách: ".$id."</h3>";
-        //     header('location: sach.php');
-        // }
-        // else{
-        //     echo "Xóa không thành công";
-        // }
+        $id = $_GET['id'];
+        include('../config/db.php');
+        $sql = "DELETE FROM sach where s_id = '$id'";
+        $rs = mysqli_query($conn, $sql);
+        if($rs){
+            // echo "Xóa thành công";
+            $_SESSION['delOK'] = "<h3 class='text-success mt-3'>Xóa thành công sách có mã sách: ".$id."</h3>";
+            header('location: sach.php');
+        }
+        else{
+            echo "Xóa không thành công";
+        }
+        
     }
+}
 
 ?>
