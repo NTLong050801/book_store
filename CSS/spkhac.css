@@ -1,0 +1,93 @@
+.content_book_id img {
+    height: 100px;
+    margin: 10px 0;
+}
+
+.content_book_id {
+    position: relative;
+    height: 100%;
+}
+
+.giamgia {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+
+}
+
+.text_gg_id {
+    background-color: rgb(255 212 36 / 90%);
+    text-align: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.text_gg_id h6 {
+    color: red;
+}
+
+.text_gg_id span {
+    color: white;
+}
+
+.book_id {
+    background-color: #ccc;
+    /* margin: 1px; */
+    border-right: 3px #fff solid;
+}
+
+.book_id a {
+    text-decoration: none;
+}
+
+.name_id {
+    margin-right: 10px;
+    margin-left: 10px;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    min-height: 40px;
+}
+
+.gia_id {
+    color: red;
+    font-size: 12px;
+    margin-right: 10px;
+    margin-left: 10px;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.sold_spkhac {
+    font-size: 12px;
+    color: black;
+    margin-right: 10px;
+    margin-left: 10px;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.price_spkhac {
+    text-align: left;
+   
+}
+
+.book_id:hover {
+    
+    background-color: yellow;
+}

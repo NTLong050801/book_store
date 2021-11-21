@@ -1,0 +1,224 @@
+.title {
+    margin-top: 1.25rem;
+    height: 2rem;
+
+  }
+
+  .title p {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .details-book {
+    margin-top: 30px;
+    background-color: #fff;
+  }
+
+  .row_details {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .img_full {
+    margin-top: 50px;
+  }
+
+  .img_full img {
+    height: 350px;
+    border-radius: 35px;
+  }
+
+  .img_small {
+    margin-top: 20px;
+  }
+
+  .img_small img {
+    width: 40%;
+    height: 100px;
+  }
+
+  .name_book {
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-weight: 500;
+    margin: 0;
+    vertical-align: sub;
+    max-height: 3rem;
+    line-height: 1.5rem;
+    overflow: hidden;
+    max-width: 41.5625rem;
+    font-size: 1.25rem;
+    word-wrap: break-word;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: rgba(0, 0, 0, .8);
+  }
+
+  .sold {
+    margin-top: 15px;
+    display: flex;
+
+  }
+
+  .star {
+    color: red;
+    border-right: #ccc solid 1px;
+    padding-right: 20px;
+  }
+
+  .danhgia {
+    border-right: #ccc solid 1px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .star span {
+    text-decoration: underline;
+  }
+
+  .solder {
+    padding-left: 20px;
+  }
+
+  .price {
+    margin-top: 40px;
+    line-height: 50px;
+    background-color: #ccc;
+    margin-right: 10px;
+  }
+
+  .soluong {
+    margin-top: 30px;
+  }
+
+  .thongdiep {
+
+    margin-right: 20px;
+    line-height: 50px;
+    padding: 5px;
+    position: relative;
+  }
+
+  .act {
+    background-color: red;
+  }
+
+  .thongdiep div {
+    position: absolute;
+  
+  }
+
+  .td_title{
+    background-color: #ccc;
+    color: red;
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    margin-right: 20px;
+    
+  }
+  .col-12  h5{
+    margin-right: 100px;
+  }
+  .row .inf_book {
+    margin-top: 50px;
+    /* padding-right: 10px; */
+
+  }
+
+  .inf_book .inf_book_left {
+    width: 85%;
+    background-color: #fff;
+    border-right: #f7f5f5 solid 30px;
+    margin-top: 50px;
+    
+  }
+
+  .inf_book .inf_book_right {
+    background-color: #fff;
+    width: 15%;
+    /* margin-right: 5px; */
+    /* text-align: center; */
+    margin-top: 50px;
+  }
+  .inf_book .inf_book_right h6 {
+      margin-top: 20px;
+      text-align: center;
+  }
+
+  .chitiet .title {
+    margin-top: 20px;
+    text-align: center;
+    background-color: #f7f5f5;
+    padding-top: 5px;
+    
+  }
+  .noidung {
+      margin-top: 40px;
+  }
+  .nd {
+      margin-left: 30px;
+      padding: 5px;
+  }
+  .noidung label {
+      color: #ccc;
+  }
+  .noidung span {
+      margin-top: 20px;
+  }
+  .book_right{
+      margin: 20px 0;
+      border-bottom: #ccc 2px solid;
+  }
+  .book_right a {
+      text-decoration: none;
+  }
+
+  .name_book_tl{
+    margin-bottom: 4px;
+    /* text-align: center; */
+    line-height: 1rem;
+    height: 2rem;
+    overflow: hidden;
+    word-wrap: break-word;
+    line-height: 1.125rem;
+    height: 2.1875rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .price_book_tl{
+      color: red;
+  }
+  .spkhac {
+      margin-top: 40px;
+  }
+  #back:hover{
+    cursor: pointer;
+    /* background-color: red; */
+    color: red;
+  }
+  #next:hover{
+    cursor: pointer;
+    /* background-color: red; */
+    color: red;
+  }
+  .book_right:hover{
+    background-color: yellow;
+  }
+  .sptt{
+    margin-top: 40px;
+  }
+  #back_tt:hover{
+    cursor: pointer;
+    /* background-color: red; */
+    color: red;
+  }
+  #next_tt:hover{
+    cursor: pointer;
+    /* background-color: red; */
+    color: red;
+  }
+ 

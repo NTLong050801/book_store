@@ -104,9 +104,10 @@ require('./function.php')
 <?php
 if (isset($_POST['action'])) {
     $_SESSION['action'] = $_POST['action'];
-} else {
-    $_SESSION['action'] = "Phổ biến";
-}
+} 
+// else {
+//     $_SESSION['action'] = "Phổ biến";
+// }
 if (isset($_POST['tl_id'])) {
     $_SESSION['tl_id'] = $_POST['tl_id'];
 }

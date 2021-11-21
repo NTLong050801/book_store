@@ -76,7 +76,7 @@ require('./function.php')
                     <nav class="navbar navbar-light">
                         <div class="container-fluid">
                             <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fas fa-bars"></i></a>
-                            <form class="d-flex">
+                            <form class="d-flex" style="margin-left: 50%;">
                                 <input require id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
                                 <button id="btn_search" class="btn btn-outline-success" type="button">Tìm</button>
                                 <div id="list_sach">
@@ -251,17 +251,6 @@ require('./function.php')
                         $('#page h6').css('display', '')
                     }
                 })
-                // $.ajax({
-                //     url: "page.php",
-                //     method: "POST",
-                //     data: {
-                //         tl_id: id
-                //     },
-                //     success: function(dt) {
-                //         $('#page').html(dt)
-
-                //     }
-                // })
             })
 
             $('#wrapper').click(function() {

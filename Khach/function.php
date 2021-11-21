@@ -12,10 +12,21 @@ function count_posts($tl_id)
     }
     return 0;
 }
+function count_alls()
+{
+    global $conn;
+    $qr = "select count(*) as total from sach ";
+    $query = mysqli_query($conn,$qr );
+    if ($query){
+        $row = mysqli_fetch_assoc($query);
+        return $row['total'];
+    }
+    return 0;
+}
 function get_all_post($limit, $start)
 {
     global $conn;
-    $sql = "select * from sach limit {$limit}, {$start}";
+    $sql = "SELECT * from sach ORDER BY s_id DESC  limit {$limit}, {$start}";
     return mysqli_query($conn,$sql);
 }
 //limit = (số trang-1) * 20
@@ -51,7 +62,6 @@ function CaoDenThap($idtl,$limit, $start){
     $qr = "SELECT * from sach where tl_id = $idtl ORDER BY (s_gia - (s_gia*s_giamgia)/100) DESC LIMIT {$limit}, {$start} ";
     return mysqli_query($conn,$qr) ;
 }
-
 function allTheLoai(){
     global $conn;
     $qr = "SELECT * from theloai ";
@@ -65,6 +75,13 @@ function search($value){
 function search_id($value){
     global $conn;
     $qr = "SELECT * from sach where s_id = '$value'";
+    return mysqli_query($conn,$qr) ;
+}
+function SachById($s_id){
+    global $conn;
+    $qr = "SELECT * from sach,theloai,tacgia where 
+    sach.tl_id = theloai.tl_id and sach.tg_id = tacgia.tg_id
+    and sach.s_id = '$s_id'";
     return mysqli_query($conn,$qr) ;
 }
 ?>
