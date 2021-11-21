@@ -13,20 +13,23 @@ if (isset($_POST['btnThem'])) {
     $SoTrang = $_POST['SoTrang'];
     $SoLuong = $_POST['SoLuong'];
     $NgonNgu = $_POST['NgonNgu'];
-    $LuotMua = $_POST['LuotMua'];
     $Gia = $_POST['Gia'];
     $GiamGia = $_POST['GiamGia'];
     $MoTa = $_POST['MoTa'];
     $images = basename($_FILES['images']['name']);
+    $images2 = basename($_FILES['images2']['name']);
     $fileImg = "../img/" . $images;
+    $fileImg2 = "../img/" . $images2;
+    move_uploaded_file($_FILES['images2']['tmp_name'], $fileImg2);
     if (move_uploaded_file($_FILES['images']['tmp_name'], $fileImg)) {
 
-        $sql = "INSERT INTO sach(s_ten,nxb, tg_id, tl_id, namxuatban, sotrang, soluong, ngonngu, luotmua,anh, s_gia, s_giamgia, mota)
-            VALUES ('$Name','$nhaXB','$TacGia','$TheLoai','$namXB','$SoTrang','$SoLuong','$NgonNgu','$LuotMua','$images','$Gia','$GiamGia','$MoTa')";
+        $sql = "INSERT INTO sach(s_ten,nxb, tg_id, tl_id, namxuatban, sotrang, soluong, ngonngu,anh, anh1, s_gia, s_giamgia, mota)
+            VALUES ('$Name','$nhaXB','$TacGia','$TheLoai','$namXB','$SoTrang','$SoLuong','$NgonNgu','$images','$images2','$Gia','$GiamGia','$MoTa')";
         $rs = mysqli_query($conn, $sql);
+        // echo $sql;
         if ($rs) {
             $_SESSION['addOK'] = "<h3 class='text-center text-success'>Thêm thành công</h3>";
-            header('location: index.php');
+            header('location: sach.php');
         } else {
             echo "Thêm không thành công";
         }
@@ -52,7 +55,7 @@ if (isset($_POST['btnThem'])) {
                 <input name="nhaXB" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3 ms-3 col-md-3">
-                <label for="exampleInputEmail1" class="form-label">TacGia</label>
+                <label for="exampleInputEmail1" class="form-label">Tác Giả</label>
                 <select name="TacGia" class="form-select" aria-label="Default select example">
                     <?php
                     $sql_tacGia = "SELECT * FROM tacgia";
@@ -100,12 +103,12 @@ if (isset($_POST['btnThem'])) {
                 <input name="NgonNgu" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3 ms-3 col-md-3">
-                <label for="exampleInputEmail1" class="form-label">Lượt mua</label>
-                <input name="LuotMua" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3 ms-3 col-md-3">
                 <label for="exampleInputEmail1" class="form-label">Ảnh</label>
                 <input name="images" type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3 ms-3 col-md-3">
+                <label for="exampleInputEmail1" class="form-label">Ảnh thứ 2</label>
+                <input name="images2" type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
         </div>
         <div class="row">
