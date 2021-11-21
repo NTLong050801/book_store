@@ -313,7 +313,7 @@ require('./function.php')
       if (b == 'next') {
         a = a + 1;
         $('#back').css("display", "")
-        if (a == sotrang) {
+        if (a == 6) {
           $('#next').css("display", "none")
         }
       }
@@ -343,7 +343,7 @@ require('./function.php')
       if (b1 == 'next_tt') {
         a1 = a1 + 1;
         $('#back_tt').css("display", "")
-        if (a1 == sotrang_tt) {
+        if (a1 == 4) {
           $('#next_tt').css("display", "none")
         }
       }
@@ -354,17 +354,20 @@ require('./function.php')
           $('#back_tt').css("display", "none")
         }
       }
-      $.ajax({
-        url: "sptt.php",
-        method: "POST",
-        data: {
-          tl_id: tl_id,
-          tranghientai: a1
-        },
-        success: function(dt) {
-          $('#sp_tt_tl').html(dt)
-        }
-      })
+      if (a1 < 5) {
+        $.ajax({
+          url: "sptt.php",
+          method: "POST",
+          data: {
+            tl_id: tl_id,
+            tranghientai: a1
+          },
+          success: function(dt) {
+            $('#sp_tt_tl').html(dt)
+          }
+        })
+      }
+
     })
 
 

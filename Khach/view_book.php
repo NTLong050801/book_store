@@ -33,10 +33,11 @@ require('./function.php')
     .price {
         font-size: 1rem;
         color: #ee4d2d;
-        margin-top: 5px;
+        /* margin-top: 5px; */
     }
 
     .book_name {
+        height: 40px;
         font-size: .75rem;
 
         word-wrap: break-word;
