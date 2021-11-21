@@ -4,7 +4,7 @@ include('./header_footer/header.php');
 <div class="main-content">
     <div class="container-fluid">
         <form class="row g-3 mt-3 d-flex justify-content-center">
-         
+
             <div class="col-auto">
                 <label for="inputPassword2" class="visually-hidden">Nhập tên sách...</label>
                 <input type="text" class="form-control" id="inputPassword2" placeholder="Nhập tên sách...">
@@ -14,15 +14,17 @@ include('./header_footer/header.php');
             </div>
         </form>
         <a href="./them.php"><button class="btn btn-success mt-3">Thêm sách</button></a>
+
+        <?php
+        if (isset($_SESSION['addOK'])) {
+            echo $_SESSION['addOK'];
+            unset($_SESSION['addOK']);
+        }
+        ?>
         <?php
         if (isset($_SESSION['delOK'])) {
             echo $_SESSION['delOK'];
             unset($_SESSION['delOK']);
-        }
-
-        if (isset($_SESSION['addOK'])) {
-            echo $_SESSION['addOK'];
-            unset($_SESSION['addOK']);
         }
 
         if (isset($_SESSION['updateOK'])) {

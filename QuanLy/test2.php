@@ -1,8 +1,8 @@
 <?php
 require('./test.php');
 
-$disp = new disP();
+// $disp = new disP();
 
-echo $disp->delSach();
+// $disp->delSach();
 
 ?>

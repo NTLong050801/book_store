@@ -4,7 +4,7 @@
 
 <?php
 
-class disP {
+class books {
     function delSach(){
         $id = $_GET['id'];
         include('../config/db.php');

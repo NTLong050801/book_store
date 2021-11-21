@@ -1,7 +1,10 @@
 <?php
-session_start();
 $id = $_GET['id'];
 include('../config/db.php');
+// require('./test.php');
+
+// $books = new books();
+
 $sql = "DELETE FROM sach where s_id = '$id'";
 $rs = mysqli_query($conn, $sql);
 if($rs){
