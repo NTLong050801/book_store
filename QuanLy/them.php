@@ -18,8 +18,8 @@ if (isset($_POST['btnThem'])) {
     $MoTa = $_POST['MoTa'];
     $images = basename($_FILES['images']['name']);
     $images2 = basename($_FILES['images2']['name']);
-    $fileImg = "../img/" . $images;
-    $fileImg2 = "../img/" . $images2;
+    $fileImg = "../Image/VanHoc/" . $images;
+    $fileImg2 = "../Image/VanHoc/" . $images2;
     move_uploaded_file($_FILES['images2']['tmp_name'], $fileImg2);
     if (move_uploaded_file($_FILES['images']['tmp_name'], $fileImg)) {
 

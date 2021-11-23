@@ -1,7 +1,59 @@
 <?php
 include('./header_footer/header.php');
 include('../config/db.php');
+
 ?>
+
+
+<div class="main-content">
+    <div class="container-fluid">
+        <form class="g-3 mt-3" method="POST">
+            <div class="d-flex justify-content-center">
+                <div class="col-3 g-3 mt-3">
+                    <input type="text" class="form-control" id="inputSach" onkeyup="searchSach()" placeholder="Nhập tên sách...">
+                </div>
+            </div>
+
+            <div class="col-2 mt-3">
+                <select id="listTL" name="listTheLoai" class="form-select" aria-label="Default select example">
+               <?php
+                    $sql_tl = "SELECT * FROM theloai";
+                    $rs_tl = mysqli_query($conn, $sql_tl);
+                    if (mysqli_num_rows($rs_tl) > 0) {
+                        while ($row_tl = mysqli_fetch_assoc($rs_tl)) {
+                    ?>
+                            <option id="okok" value="<?php echo $row_tl['tl_id'] ?>"><?php echo $row_tl['tl_ten'] ?></option>
+                    <?php
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </form>
+        <a href="./them.php"><button class="btn btn-success mt-3">Thêm sách</button></a>
+
+        <?php
+        if (isset($_SESSION['addOK'])) {
+            echo $_SESSION['addOK'];
+            unset($_SESSION['addOK']);
+        }
+        ?>
+        <?php
+        if (isset($_SESSION['delOK'])) {
+            echo $_SESSION['delOK'];
+            unset($_SESSION['delOK']);
+        }
+
+        if (isset($_SESSION['updateOK'])) {
+            echo $_SESSION['updateOK'];
+            unset($_SESSION['updateOK']);
+        }
+
+        if (isset($_SESSION['updateNotOK'])) {
+            echo $_SESSION['updateNotOK'];
+            unset($_SESSION['updateNotOK']);
+        }
+        ?>
 
         <?php 
         // BƯỚC 2: TÌM TỔNG SỐ RECORDS
@@ -102,7 +154,47 @@ include('../config/db.php');
             }
            ?>
         </div>
+        </div>
+</div>
 
 <?php
 include('./header_footer/footer.php');
 ?>
+
+<script>
+    $(document).ready(function(){
+        $('#listTL').click(function(){
+            idTL = $('#listTL').val();
+                $.ajax({
+                    url: "./sach_action.php",
+                    method: "POST",
+                    data: {
+                        idTL: idTL
+                    },
+                    success: function(dt){
+                        $("#bodyTable").html(dt);
+                    }
+                })
+        })
+    })
+
+    function searchSach() {
+        var input = document.getElementById('inputSach');
+        var filter = input.value.toUpperCase();
+        var table = document.getElementById('sachTable');
+        var tr = table.getElementsByTagName('tr');
+
+
+        for (var i = 0; i < tr.length; i++) {
+            var td = tr[i].getElementsByTagName('td')[1];
+            if (td) {
+                var txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

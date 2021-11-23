@@ -10,7 +10,7 @@ include('../config/db.php');
         <form class="g-3 mt-3" method="POST">
             <div class="d-flex justify-content-center">
                 <div class="col-3 g-3 mt-3">
-                    <input type="text" class="form-control" id="inputSach" onkeyup="searchSach()" placeholder="Nhập tên sách...">
+                    <input type="text" class="form-control" id="inputSach" placeholder="Nhập tên sách...">
                 </div>
             </div>
 
@@ -115,25 +115,49 @@ include('./header_footer/footer.php');
                     }
                 })
         })
+
+        $('#inputSach').keyup(function(){
+            var txtBooks = $(this).val();
+            console.log(txtBooks);
+            if(txtBooks != ''){
+                $.ajax({
+                    url: "./sach_action.php",
+                    method: "POST",
+                    data: {
+                        txtBooks: txtBooks
+                    },
+                    dataType: "text",
+                    success: function(dt){
+                        $("#bodyTable").html(dt);
+                    }
+                })
+            }
+            else{
+            }
+        })
+
     })
 
-    function searchSach() {
-        var input = document.getElementById('inputSach');
-        var filter = input.value.toUpperCase();
-        var table = document.getElementById('sachTable');
-        var tr = table.getElementsByTagName('tr');
+     
+
+    // function searchSach() {
+        // var input = document.getElementById('inputSach');
+        // var filter = input.value.toUpperCase();
+        // var table = document.getElementById('sachTable');
+        // var tr = table.getElementsByTagName('tr');
 
 
-        for (var i = 0; i < tr.length; i++) {
-            var td = tr[i].getElementsByTagName('td')[1];
-            if (td) {
-                var txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
+        // for (var i = 0; i < tr.length; i++) {
+        //     var td = tr[i].getElementsByTagName('td')[1];
+        //     if (td) {
+        //         var txtValue = td.textContent || td.innerText;
+        //         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        //             tr[i].style.display = "";
+        //         } else {
+        //             tr[i].style.display = "none";
+        //         }
+        //     }
+        // }
+
+    // }
 </script>
