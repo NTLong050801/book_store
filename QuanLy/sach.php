@@ -1,7 +1,6 @@
 <?php
 include('./header_footer/header.php');
 include('../config/db.php');
-
 ?>
 
 
@@ -54,6 +53,37 @@ include('../config/db.php');
             unset($_SESSION['updateNotOK']);
         }
         ?>
+
+        <?php
+            //Đếm số bản ghi
+            $sql_dem = "SELECT count(s_id) as total from sach";
+            $rs_dem = mysqli_query($conn, $sql_dem);
+            $row_dem = mysqli_fetch_assoc($rs_dem);
+            $total_record = $row_dem['total'];
+
+            //Trang hiện tại
+            $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+            //Số bản ghi 1 trang
+            $limit = 10;
+
+            //Tổng số trang (ceil là làm tròn lên)
+            $total_page = ceil($total_record / $limit);
+
+            if($current_page > $total_page){
+                $current_page = $total_page;
+            }
+            else if($current_page < 1){
+                $current_page = 1;
+            }
+
+            //Tìm start
+            $start = ($current_page - 1 ) * $limit ;
+
+            //Truy vấn lấy dữ liệu
+            $sql = "SELECT * FROM sach, tacgia, theloai where sach.tg_id = tacgia.tg_id and sach.tl_id = theloai.tl_id
+                    LIMIT $start , $limit";
+            $rs = mysqli_query($conn, $sql);
+        ?>
         <table class="table" id="sachTable">
             <thead>
                 <tr>
@@ -69,8 +99,6 @@ include('../config/db.php');
             </thead>
             <tbody id="bodyTable">
                 <?php
-                $sql = "SELECT * FROM sach, tacgia, theloai where sach.tg_id = tacgia.tg_id and sach.tl_id = theloai.tl_id";
-                $rs = mysqli_query($conn, $sql);
                 if (mysqli_num_rows($rs) > 0) {
                     while ($row = mysqli_fetch_assoc($rs)) {
                 ?>
@@ -93,6 +121,28 @@ include('../config/db.php');
                 ?>
             </tbody>
         </table>
+        <div class="container">
+            <div class="d-flex justify-content-center ms-2">
+                 <?php
+                        if($current_page > 1 && $total_page > 1){
+                            echo '<a  class="ms-2" style="text-decoration: none;" href="sach.php?page='.($current_page - 1).'">Trang trước</a>';
+                        }
+                       
+                        for($i = 1 ; $i<= $total_page ; $i++){
+                           if($i == $current_page){
+                            echo '<span class="ms-2">'.$i.'</span>';
+                           }
+                           else{
+                            echo '<a class="ms-2" style="text-decoration: none;" href="sach.php?page='.$i.'">'.$i.'</a>';
+                           }
+                        }
+
+                        if($current_page < $total_page && $total_page > 1){
+                            echo '<a  class="ms-2" style="text-decoration: none;" href="sach.php?page='.($current_page + 1).'">Trang sau</a>';
+                        }
+                 ?>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -133,6 +183,7 @@ include('./header_footer/footer.php');
                 })
             }
             else{
+
             }
         })
 
