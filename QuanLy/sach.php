@@ -154,11 +154,13 @@ include('./header_footer/footer.php');
     $(document).ready(function(){
         $('#listTL').click(function(){
             idTL = $('#listTL').val();
+            action = "theloai"
                 $.ajax({
                     url: "./sach_action.php",
                     method: "POST",
                     data: {
-                        idTL: idTL
+                        idTL: idTL,
+                        action :action
                     },
                     success: function(dt){
                         $("#bodyTable").html(dt);
@@ -168,13 +170,15 @@ include('./header_footer/footer.php');
 
         $('#inputSach').keyup(function(){
             var txtBooks = $(this).val();
-            console.log(txtBooks);
+            action = "search"
+            // console.log(txtBooks);
             if(txtBooks != ''){
                 $.ajax({
                     url: "./sach_action.php",
                     method: "POST",
                     data: {
-                        txtBooks: txtBooks
+                        txtBooks: txtBooks,
+                        action : action
                     },
                     dataType: "text",
                     success: function(dt){

@@ -25,7 +25,7 @@ function showBookTheLoai()
         }
     }
 }
-showBookTheLoai();
+
 
     
 function searchTen(){
@@ -53,5 +53,13 @@ function searchTen(){
         }
     }
 }
-// searchTen();
+    if(isset($_POST['action'])){
+        if($_POST['action'] =='theloai'){
+            showBookTheLoai();
+        }
+        if($_POST['action'] =='search'){
+            searchTen();
+        }
+        
+    }
 ?>
