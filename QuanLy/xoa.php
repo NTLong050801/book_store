@@ -1,5 +1,4 @@
 <?php
-session_start();
 $id = $_GET['id'];
 include('../config/db.php');
 $sql = "DELETE FROM sach where s_id = '$id'";
