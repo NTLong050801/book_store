@@ -16,7 +16,7 @@ include('../config/db.php');
 
             <div class="col-2 mt-3">
                 <select id="listTL" name="listTheLoai" class="form-select" aria-label="Default select example">
-                <?php
+               <?php
                     $sql_tl = "SELECT * FROM theloai";
                     $rs_tl = mysqli_query($conn, $sql_tl);
                     if (mysqli_num_rows($rs_tl) > 0) {
