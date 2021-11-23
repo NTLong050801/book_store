@@ -1,6 +1,6 @@
 <title>Trang chủ</title>
 <?php
-session_start();
+
 ?>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
