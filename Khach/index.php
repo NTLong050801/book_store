@@ -86,7 +86,7 @@ require('./function.php')
                             <form class="d-flex">
 
                                 <a id="profile_tch" href="#" class="navbar-brand">Tài khoản</a>
-                                <a id="profile_tch" href="#" class="navbar-brand">Giỏ hàng</a>
+                                <a id="profile_tch" href="cart.php" class="navbar-brand">Giỏ hàng</a>
                                 <a href="../Login/logout.php" class="navbar-brand">Đăng xuất</a>
                             </form>
                         </div>

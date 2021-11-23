@@ -84,4 +84,18 @@ function SachById($s_id){
     and sach.s_id = '$s_id'";
     return mysqli_query($conn,$qr) ;
 }
+
+function Khach($k_email){
+    global $conn;
+    $qr = mysqli_query($conn,"SELECT * from khach where k_email = '$k_email'");
+    $row = mysqli_fetch_assoc($qr);
+    return $row['k_id'];
+}
+function GioHang_Sach($k_id){
+    global $conn;
+    $qr = "SELECT * from giohang,sach where giohang.s_id = sach.s_id
+     and giohang.k_id = $k_id ";
+     return mysqli_query($conn,$qr);
+
+}
 ?>

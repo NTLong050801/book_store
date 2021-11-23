@@ -1,4 +1,4 @@
-<title>Trang chủ</title>
+<title>Sản phẩm</title>
 <?php
 include('../Parital/header.php');
 require('./function.php')
@@ -26,7 +26,7 @@ require('./function.php')
               </form>
               <form class="d-flex">
                 <a id="profile_tch" href="#" class="navbar-brand">Tài khoản</a>
-                <a id="profile_tch" href="#" class="navbar-brand">Giỏ hàng</a>
+                <a id="profile_tch" href="cart.php" class="navbar-brand">Giỏ hàng</a>
                 <a href="../Login/logout.php" class="navbar-brand">Đăng xuất</a>
               </form>
             </div>
@@ -82,7 +82,7 @@ require('./function.php')
                   <div class="price">
                     <span style="font-size: 1rem;text-decoration: line-through;
                     color: #929292;margin-right: 10px;margin-left:30px"><?php echo $row['s_gia'] ?>đ</span>
-                    <span style="font-size: 1.875rem;color:red;font-weight: 500;"><?php echo $row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100 ?>đ</span>
+                    <span style="font-size: 1.875rem;color:red;font-weight: 500;"><?php echo  $tt =  ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100 )?>đ</span>
                     <?php
                     if ($row['s_giamgia'] > 0) {
                       echo '<span style="margin-left: 15px;font-size: .75rem;color: #fff;text-transform: uppercase;
@@ -96,11 +96,11 @@ require('./function.php')
                   <form action="">
                     <div class="soluong">
                       <span style="color: #827b66;">Số lượng:</span>
-                      <input style="margin-left:20px" type="number" min='1' max='5' value="1">
+                      <input style="margin-left:20px" id="sluong" type="number" min='1' max='5' value="1">
                       <span style="color: #827b66;margin-left:20px"><?php echo $row['soluong'] ?> sản phẩm có sẵn</span>
                     </div>
                     <div style="margin-top: 50px;">
-                      <button class="btn btn-danger" type="submit">Thêm vào giỏ hàng</button>
+                      <button id="add_cart" s_id = <?php echo $s_id ?> tt = <?php echo $tt ?> class="btn btn-danger" type="button">Thêm vào giỏ hàng</button>
                       <button class="btn btn-success" type="submit" style="margin-left: 30px;">Mua ngay</button>
                     </div>
                   </form>
@@ -395,5 +395,26 @@ require('./function.php')
         $('#sp_tt_tl').html(dt)
       }
     })
+  })
+
+
+  //add cart
+
+  $('#add_cart').click(function(){
+      sluong = $('#sluong').val()
+      s_id = $(this).attr('s_id');
+      tt = $(this).attr('tt')
+      $.ajax({
+        url : "process_add_cart.php",
+        method:"POST",
+        data : {
+          sluong : sluong,
+          s_id : s_id,
+          tt : tt
+        },
+        success : function(dt){
+          alert(dt)
+        }
+      })
   })
 </script>
