@@ -84,7 +84,8 @@ include('../config/db.php');
                     LIMIT $start , $limit";
             $rs = mysqli_query($conn, $sql);
         ?>
-        <table class="table" id="sachTable">
+       <div id="showContent">
+       <table class="table" id="sachTable">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -143,6 +144,7 @@ include('../config/db.php');
                  ?>
             </div>
         </div>
+       </div>
     </div>
 </div>
 
@@ -163,7 +165,7 @@ include('./header_footer/footer.php');
                         action :action
                     },
                     success: function(dt){
-                        $("#bodyTable").html(dt);
+                        $("#showContent").html(dt);
                     }
                 })
         })
@@ -182,7 +184,7 @@ include('./header_footer/footer.php');
                     },
                     dataType: "text",
                     success: function(dt){
-                        $("#bodyTable").html(dt);
+                        $("#showContent").html(dt);
                     }
                 })
             }
