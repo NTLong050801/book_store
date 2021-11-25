@@ -3,6 +3,9 @@
 // session_start();
 include('../Parital/header.php');
 require('./function.php');
+// $k_email = $_SESSION['check_login'];
+//                             $k_id = Khach($k_email);
+//                             echo $k_id;
 ?>
 <link rel="stylesheet" href="../CSS/book.css">
 <div id="wrapper" style="overflow: scroll;height:100%;padding-left: 0;">
