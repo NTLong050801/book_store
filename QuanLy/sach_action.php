@@ -1,9 +1,16 @@
 <?php
 function showBookTheLoai()
-{
+{ include('../config/db.php');
     // $idTL = $_POST['idTL'];
-    $idTL = isset($_GET['idtl']) ? $_GET['idtl'] : $_POST['idTL'];
-    include('../config/db.php');
+    //  $idTL = isset($_GET['idtl']) ? $_GET['idtl'] : $_POST['idTL'];
+    if(isset($_POST['idTL'])){
+        $idTL = $_POST['idTL'];
+       $_SESSION['idTL'] =  $idTL ;
+    }else{
+        $idTL =   $_SESSION['idTL'];
+    }
+  
+   
 
     //Đếm số bản ghi
     $sql_dem = "SELECT count(s_id) as total from sach where tl_id = $idTL";
@@ -33,6 +40,12 @@ function showBookTheLoai()
     $sql = "SELECT * FROM sach, tacgia, theloai where theloai.tl_id = '$idTL' and sach.tg_id = tacgia.tg_id and sach.tl_id = theloai.tl_id
     LIMIT $start , $limit";
     $rs = mysqli_query($conn, $sql);
+    $count = mysqli_query($conn,"SELECT count(s_ten) as sobanghi FROM sach, tacgia, theloai where theloai.tl_id = '$idTL' and sach.tg_id = tacgia.tg_id and sach.tl_id = theloai.tl_id
+    LIMIT $start , $limit");
+  
+        $count_get = mysqli_fetch_assoc($count)['sobanghi'];
+
+    
 
 ?>
     <table class="table" id="sachTable">
@@ -51,7 +64,7 @@ function showBookTheLoai()
         <tbody id="bodyTable">
 
             <?php
-            if (mysqli_num_rows($rs) > 0) {
+            if ($count_get > 0) {
                 while ($row = mysqli_fetch_assoc($rs)) {
             ?>
                     <tr>
@@ -70,6 +83,9 @@ function showBookTheLoai()
             <?php
                 }
             }
+            if ($count_get = 0) {
+                echo 'ok';
+            }
             ?>
         </tbody>
     </table>
@@ -77,19 +93,19 @@ function showBookTheLoai()
         <div class="d-flex justify-content-center ms-2">
             <?php
             if ($current_page > 1 && $total_page > 1) {
-                echo '<a  class="ms-2" style="text-decoration: none;" href="sach.php?page=' . ($current_page - 1) . '&idtl='.$idTL.'">Trang trước</a>';
+                echo '<a  class="ms-2" style="text-decoration: none;" href="sach.php?page=' . ($current_page - 1) . '&idtl=' . $idTL . '">Trang trước</a>';
             }
 
             for ($i = 1; $i <= $total_page; $i++) {
                 if ($i == $current_page) {
                     echo '<span class="ms-2">' . $i . '</span>';
                 } else {
-                    echo '<a class="ms-2" style="text-decoration: none;" href="sach.php?page=' . $i .  '&idtl='.$idTL.'">' . $i . '</a>';
+                    echo '<a class="ms-2" style="text-decoration: none;" href="sach.php?page=' . $i .  '&idtl=' . $idTL . '">' . $i . '</a>';
                 }
             }
 
             if ($current_page < $total_page && $total_page > 1) {
-                echo '<a  class="ms-2" style="text-decoration: none;" href="sach.php?page=' . ($current_page + 1) .  '&idtl='.$idTL.'">Trang sau</a>';
+                echo '<a  class="ms-2" style="text-decoration: none;" href="sach.php?page=' . ($current_page + 1) .  '&idtl=' . $idTL . '">Trang sau</a>';
             }
             ?>
         </div>
@@ -204,5 +220,6 @@ if (isset($_POST['action'])) {
     if ($_POST['action'] == 'search') {
         searchTen();
     }
-}
+ }
+
 ?>

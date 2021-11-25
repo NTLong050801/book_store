@@ -40,6 +40,16 @@ require('./function.php')
             $_SESSION['sotrang_moinhat'] = ceil(count_alls() / $sosach1trang);
             $_SESSION['sotrang_tl'] = ceil(count_posts($row['tl_id']) / $sosach1trang)
             ?>
+             <?php 
+                          if(isset($_POST['submit'])){
+                            $gh_soluong = $_POST['sluong'];
+                            $gia = ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100 );
+                            $k_email = $_SESSION['check_login'];
+                            $k_id = Khach($k_email);
+                            insertCart($k_id,$s_id,$gh_soluong,$gia);
+                            header('location:cart.php');
+                          }
+                      ?>
             <div class="title">
               <a href="index.php">Trang chủ</a>
               <i class="fas fa-chevron-right"></i>
@@ -93,15 +103,16 @@ require('./function.php')
                     ?>
 
                   </div>
-                  <form action="">
+                  <form action="" method="POST">
                     <div class="soluong">
                       <span style="color: #827b66;">Số lượng:</span>
-                      <input style="margin-left:20px" id="sluong" type="number" min='1' max='5' value="1">
+                      <input name="sluong" style="margin-left:20px" id="sluong" type="number" min='1' max='5' value="1">
                       <span style="color: #827b66;margin-left:20px"><?php echo $row['soluong'] ?> sản phẩm có sẵn</span>
                     </div>
                     <div style="margin-top: 50px;">
                       <button id="add_cart" s_id = <?php echo $s_id ?> tt = <?php echo $tt ?> class="btn btn-danger" type="button">Thêm vào giỏ hàng</button>
-                      <button class="btn btn-success" type="submit" style="margin-left: 30px;">Mua ngay</button>
+                     <button name="submit" class="btn btn-success" type="submit" style="margin-left: 30px;">Mua ngay</button>
+                     
                     </div>
                   </form>
                   <div class="row thongdiep">
