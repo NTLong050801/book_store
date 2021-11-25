@@ -8,7 +8,7 @@ include('./function.php')
     $sluong = $_POST['sluong'];
     $s_id = $_POST['s_id'];
     $tt = $_POST['tt'];
-    insertCart($k_id,$s_id,$sluong,$tt);
+    $insert= insertCart($k_id,$s_id,$sluong,$tt);
     if($insert){
         echo 'đã thêm vào giỏ hàng';
     }
