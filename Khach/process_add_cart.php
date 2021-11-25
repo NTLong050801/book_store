@@ -12,4 +12,5 @@ include('./function.php')
     if($insert){
         echo 'đã thêm vào giỏ hàng';
     }
+    //avc
 ?>
