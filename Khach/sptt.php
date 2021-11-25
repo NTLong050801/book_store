@@ -12,7 +12,7 @@ include('./function.php')
     $tl_id = $_POST['tl_id'];
     $sosach1trang = 6;
     $limit = ($tranghientai - 1) * $sosach1trang;
-    $slt_sach = MoiNhat($tl_id,$limit, $sosach1trang);
+    $slt_sach = sptt($tl_id,$limit, $sosach1trang);
     // $_SESSION['sotrang'] = ceil(count_posts($tl_id)/$sosach1trang);
 
     while ($row = mysqli_fetch_assoc($slt_sach)) { ?>

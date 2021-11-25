@@ -27,64 +27,31 @@ require('./function.php')
                     </nav>
                     <div class="container main-content">
                         <h4 class="title">Giỏ hàng</h4>
-                        <div class="data_table">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th><input type="checkbox"></th>
-                                        <th scope="col">Sản phẩm</th>
-                                        <th scope="col">Đơn giá</th>
-                                        <th scope="col">Số lượng</th>
-                                        <th scope="col">Số tiền</th>
-                                        <th scope="col">Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $k_email = $_SESSION['check_login'];
-                                    $k_id = Khach($k_email);
-                                    $qr =  GioHang_Sach($k_id);
-                                    if (mysqli_num_rows($qr) > 0) {
-                                        while ($row = mysqli_fetch_assoc($qr)) { ?>
-                                            <tr>
-                                                <td><input type="checkbox"></td>
-                                                <td>
-                                                    <div class="row">
-                                                        <span class="col-3"> <img class=" container img-fluid" src="../Image/VanHoc/<?php echo $row['anh'] ?>" alt=""></span>
-                                                        <span class="col-3"><?php echo $row['s_ten'] ?></span>
-                                                    </div>
-                                                </td>
-                                                <!-- đơn giá -->
-                                                <td>
-                                                    <span id="price" >
-                                                    <?php echo $row['tongtien'] ?>đ
-                                                    </span>
-                                                </td>
-                                                <!-- soluong -->
-                                                <td>
-                                                    <input id_sp = <?php echo $row['s_id'] ?> tien1sach = <?php echo $row['tongtien'] ?> type="number" min =1 max = 5  class="sluong_get" value="<?php echo $row['gh_soluong'] ?>">
-                                                </td>
-                                                <!-- tongtien -->
-                                                <th scope="col">
-                                                    <span id="<?php echo $row['s_id'] ?>"><?php echo $row['gh_soluong']*$row['tongtien'] ?>đ</span>
-                                                </th>
-                                                <th scope="col">Xoá</th>
-                                            </tr>
 
-                                    <?php
-                                        }
-                                    }
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th><input id="checkall" type="checkbox"></th>
+                                    <th scope="col">Sản phẩm</th>
+                                    <th scope="col">Đơn giá</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Số tiền</th>
+                                    <th scope="col">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data">
 
+                            </tbody>
+                        </table>
 
-
-                                    ?>
-                                </tbody>
-
-                            </table>
-
+                        <div class="" id="thanhtoan">
+                            <label for="">Tổng thanh toán :<span id="ttt">0</span>đ </label>
+                            <button class="btn btn-danger">Mua hàng</button>
                         </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
     </div>
@@ -94,13 +61,157 @@ require('./function.php')
 include('../Parital/foot.php')
 ?>
 <script>
-    $(document).ready(function(){
-        $('.sluong_get').change(function(){
-            tien1sach = $(this).attr('tien1sach');
-            sluong = $(this).val()
-            tongtien = tien1sach*sluong;
-            id_sp = $(this).attr('id_sp')
-            $('#'+id_sp).html(tongtien+'đ')
+    $(document).ready(function() {
+        fetch_data()
+
+        function fetch_data() {
+            // action = "get_data"
+            // alert(action);
+            $.ajax({
+                url: "data_cart.php",
+                method: "POST",
+                data: {
+
+                },
+                success: function(dt) {
+                    if (dt != '') {
+                        $('#data').html(dt)
+                        //alert(dt)
+                    }
+                    if (dt == '') {
+                        $('.main-content').html('<div><label for="">Giỏ hàng của bạn còn trống</label><br><a href="index.php"><button class="btn btn-success">Mua ngay</button></a></div>')
+                    }
+
+
+                }
+            })
+
+        }
+
+
+        $(document).on('click', '.delete', function() {
+            s_id = $(this).attr('id_delete');
+            var action = "delete"
+            $.ajax({
+                url: "data_cart.php",
+                method: "POST",
+                data: {
+                    s_id: s_id,
+                    action: action
+                },
+                success: function(dt) {
+                    // alert(dt)
+                    fetch_data();
+                }
+            })
         })
+        // thay đổi số lượng
+        $(document).on('change', '.sluong', function() {
+            ttt = 0;
+            sluong = $(this).val();
+            if (sluong > 10) {
+                sluong = 10;
+                $(this).val('10');
+            }
+            gia = $(this).attr('price');
+            s_id = $(this).attr('s_id');
+            tongtien = sluong * gia;
+            $('#tongtien' + s_id).html(tongtien)
+            $('.check').each(function() {
+                if ($(this).prop('checked') == true) {
+                    s_id = $(this).attr('s_id');
+                    tiensp = parseInt($('#tongtien' + s_id).html())
+                    ttt = ttt + tiensp;
+                    $('#ttt').html(ttt)
+                }
+
+            })
+        })
+        tong = 0;
+        ttt = 0;
+        // click all
+        $(document).on('click', '#checkall', function() {
+            ttt = 0;
+            if ($(this).is(':checked')) {
+                $(this).attr('checked', true)
+                console.log('1')
+                $('.check').each(function() {
+                    $(this).prop("checked", true)
+                    s_id = $(this).attr('s_id');
+                    tongthanhtoan(s_id)
+
+                })
+            } else {
+                $(this).removeAttr('checked')
+                $('.check').each(function() {
+                    $(this).prop("checked", false)
+                    ttt = 0;
+                    $('#ttt').html(ttt)
+
+                })
+            }
+        })
+        // hàm tính tổng
+        function tongthanhtoan(s_id) {
+            tiensp = parseInt($('#tongtien' + s_id).html())
+            ttt = ttt + tiensp;
+            $('#ttt').html(ttt)
+        }
+
+        // click từng checkbox
+        $(document).on('click', '.check', function() {
+
+            if ($(this).is(':checked')) {
+                $(this).prop("checked", true)
+
+            } else {
+                $(this).prop("checked", false)
+            }
+            check_length = $('.check').length
+            dem = 0
+            $('.check').each(function() {
+
+                if ($(this).prop('checked') == true) {
+                    dem = dem + 1;
+
+                } else {
+                    dem = dem - 1
+                    // console.log(dem)
+                }
+
+            })
+            console.log(dem)
+            // nêu đếm bằng tổng số checkbox thì checkbox đầu checked
+            if (dem == check_length) {
+                $('#checkall').prop('checked', true)
+            } else {
+                $('#checkall').prop('checked', false)
+
+            }
+            ttt = 0;
+
+            // tính tiền khi click checkbox
+            $('.check').each(function() {
+                if ($(this).prop("checked") == true) {
+                    s_id = $(this).attr('s_id');
+                    tongthanhtoan(s_id);
+                }
+
+            })
+            if (dem == -4) {
+                ttt = 0;
+                $('#ttt').html(ttt)
+            }
+
+        })
+
+
+
+
+
+
+
+
+
     })
 </script>

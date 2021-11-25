@@ -5,3 +5,46 @@
 .data_table{
     margin-top: 30px;
 }
+#thanhtoan{
+    float: right;
+    width:85%;
+    height: 50px;
+    /*   */
+    font-size:24px;
+    position: fixed;
+    z-index: 1;
+    bottom: 0;
+    background-color: #ccc;
+    
+}
+#thanhtoan label {
+    margin-left: 30%;
+    float: left;
+    width: 25%;
+    margin-top: 5px;
+}
+#thanhtoan span {
+    color: red;
+}
+#thanhtoan button {
+    float: left;
+    margin-top: 5px;
+}
+#wrapper{
+    overflow: scroll;
+    height:100%;
+    padding-left: 0;
+    
+}
+.delete{
+    text-align: center;
+}
+.delete i {
+    cursor: pointer;
+}
+.delete i:hover{
+    color: red;
+}
+.main-content {
+    position: relative;
+}

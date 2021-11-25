@@ -26,7 +26,7 @@ function count_alls()
 function get_all_post($limit, $start)
 {
     global $conn;
-    $sql = "SELECT * from sach ORDER BY s_id DESC  limit {$limit}, {$start}";
+    $sql = "SELECT * from sach ORDER BY rand()  limit {$limit}, {$start}";
     return mysqli_query($conn,$sql);
 }
 //limit = (số trang-1) * 20
@@ -43,6 +43,11 @@ function allSach($idtl,$limit, $start){
 function MoiNhat($idtl,$limit, $start){
     global $conn;
     $qr = "SELECT * from sach where tl_id = $idtl ORDER BY s_id DESC LIMIT {$limit}, {$start} ";
+    return mysqli_query($conn,$qr) ;
+}
+function sptt($idtl,$limit, $start){
+    global $conn;
+    $qr = "SELECT * from sach where tl_id = $idtl ORDER BY rand() LIMIT {$limit}, {$start} ";
     return mysqli_query($conn,$qr) ;
 }
 function BanChay($idtl,$limit, $start){
@@ -84,6 +89,12 @@ function SachById($s_id){
     and sach.s_id = '$s_id'";
     return mysqli_query($conn,$qr) ;
 }
+function insertCart($k_id,$s_id,$sluong,$tt){
+    global $conn;
+    $qr = "INSERT INTO giohang (k_id, s_id, gh_soluong,tongtien)
+    VALUES (' $k_id', '$s_id', '$sluong','$tt')";
+    return mysqli_query($conn,$qr);
+}
 
 function Khach($k_email){
     global $conn;
@@ -96,6 +107,13 @@ function GioHang_Sach($k_id){
     $qr = "SELECT * from giohang,sach where giohang.s_id = sach.s_id
      and giohang.k_id = $k_id ";
      return mysqli_query($conn,$qr);
+
+}
+
+function delete_Cart($k_id,$s_id){
+    global $conn;
+    $qr = "DELETE from giohang where k_id = '$k_id' and s_id = '$s_id'";
+    return mysqli_query($conn,$qr);
 
 }
 ?>
