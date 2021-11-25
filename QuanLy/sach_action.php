@@ -1,8 +1,8 @@
 <?php
 function showBookTheLoai()
 {
-    // $idTL = $_POST['idTL'];
-    $idTL = isset($_GET['idtl']) ? $_GET['idtl'] : $_POST['idTL'];
+    $idTL = $_POST['idTL'];
+    // $idTL = isset($_GET['idtl']) ? $_GET['idtl'] : $_POST['idTL'];
     include('../config/db.php');
 
     //Đếm số bản ghi
@@ -107,7 +107,7 @@ function searchTen()
     include('../config/db.php');
 
     //Đếm số bản ghi
-    $sql_dem = "SELECT count(s_id) as total from sach where sach.s_ten LIKE '%$txtBooks%'";
+    $sql_dem = "SELECT count(s_id) as total from sach";
     $rs_dem = mysqli_query($conn, $sql_dem);
     $row_dem = mysqli_fetch_assoc($rs_dem);
     $total_record = $row_dem['total'];

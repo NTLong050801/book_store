@@ -56,7 +56,10 @@ include('../config/db.php');
 
         <?php
             //Đếm số bản ghi
-            $sql_dem = "SELECT count(s_id) as total from sach";
+            // if(isset($_GET['idtl'])){
+            //     $idtl = $_GET['idtl'];
+            // }
+            $sql_dem = "SELECT count(s_id) as total from sach " ;
             $rs_dem = mysqli_query($conn, $sql_dem);
             $row_dem = mysqli_fetch_assoc($rs_dem);
             $total_record = $row_dem['total'];

@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 include('../config/db.php')
 
 ?>
@@ -93,7 +93,7 @@ include('../config/db.php')
                             if (mysqli_num_rows($slt_email) > 0) {
                                 $row = mysqli_fetch_assoc($slt_email);
                                 $pass_sql = $row['u_pass'];
-                                if ($pass = $pass_sql) {
+                                if ($pass == $pass_sql) {
                                     $_SESSION['check_login'] = $email;
                                     // echo $_SESSION['check_login'];
                                     //sinh vien :195
