@@ -129,7 +129,7 @@ include('../Parital/foot.php')
         })
         tong = 0;
         ttt = 0;
-        // click all
+        // click alll
         $(document).on('click', '#checkall', function() {
             ttt = 0;
             if ($(this).is(':checked')) {

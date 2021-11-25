@@ -1,7 +1,7 @@
 <?php
 include('../config/db.php');
 include('./function.php');
-// include('../Parital/header.php')
+// include('../Parital/header.php')a
 ?>
 <?php
 if (isset($_POST['action'])) {
