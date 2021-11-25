@@ -1,7 +1,8 @@
 <title>Sản phẩm</title>
 <?php
+// session_start();
 include('../Parital/header.php');
-require('./function.php')
+require('./function.php');
 ?>
 <link rel="stylesheet" href="../CSS/book.css">
 <div id="wrapper" style="overflow: scroll;height:100%;padding-left: 0;">
