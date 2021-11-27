@@ -38,15 +38,33 @@ require('./function.php')
             $row = mysqli_fetch_assoc($slt);
             $sosach1trang = 6;
             $_SESSION['sotrang_moinhat'] = ceil(count_alls() / $sosach1trang);
-            $_SESSION['sotrang_tl'] = ceil(count_posts($row['tl_id']) / $sosach1trang)
+            $_SESSION['sotrang_tl'] = ceil(count_posts($row['tl_id']) / $sosach1trang);
+            if(!isset($_SESSION['daxem'])){
+              $_SESSION['daxem'] =[];
+            };
+            $tt = ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100 );
+            $sp = [$s_id,$row['anh'],$tt];
+            $_SESSION['daxem'][]=$sp;
+            // var_dump($_SESSION['daxem']);
+            
             ?>
              <?php 
                           if(isset($_POST['submit'])){
-                            $gh_soluong = $_POST['sluong'];
+                            $sluong = $_POST['sluong'];
                             $gia = ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100 );
                             $k_email = $_SESSION['check_login'];
                             $k_id = Khach($k_email);
-                            insertCart($k_id,$s_id,$gh_soluong,$gia);
+                            $check = check_GioHang($k_id,$s_id);
+                            if(mysqli_num_rows($check) > 0){
+                              $row = mysqli_fetch_assoc($check);
+                              $sluong = $sluong + $row['gh_soluong'];
+                              if($sluong < 10){
+                                update_Gh_Soluong($k_id,$s_id,$sluong);
+                              }
+                          }
+                          else{
+                              $insert= insertCart($k_id,$s_id,$sluong,$tt);
+                          } 
                             header('location:cart.php');
                           }
                       ?>
@@ -92,7 +110,7 @@ require('./function.php')
                   <div class="price">
                     <span style="font-size: 1rem;text-decoration: line-through;
                     color: #929292;margin-right: 10px;margin-left:30px"><?php echo $row['s_gia'] ?>đ</span>
-                    <span style="font-size: 1.875rem;color:red;font-weight: 500;"><?php echo  $tt =  ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100 )?>đ</span>
+                    <span style="font-size: 1.875rem;color:red;font-weight: 500;"><?php echo  $tt ?>đ</span>
                     <?php
                     if ($row['s_giamgia'] > 0) {
                       echo '<span style="margin-left: 15px;font-size: .75rem;color: #fff;text-transform: uppercase;
@@ -106,7 +124,7 @@ require('./function.php')
                   <form action="" method="POST">
                     <div class="soluong">
                       <span style="color: #827b66;">Số lượng:</span>
-                      <input name="sluong" style="margin-left:20px" id="sluong" type="number" min='1' max='5' value="1">
+                      <input name="sluong" style="margin-left:20px" id="sluong" type="number" min='1' max='10' value="1">
                       <span style="color: #827b66;margin-left:20px"><?php echo $row['soluong'] ?> sản phẩm có sẵn</span>
                     </div>
                     <div style="margin-top: 50px;">
@@ -365,7 +383,7 @@ require('./function.php')
           $('#back_tt').css("display", "none")
         }
       }
-      if (a1 < 5) {
+      if (a1 < 3) {
         $.ajax({
           url: "sptt.php",
           method: "POST",
@@ -413,6 +431,9 @@ require('./function.php')
 
   $('#add_cart').click(function(){
       sluong = $('#sluong').val()
+      if(sluong > 10){
+        sluong = 10;
+      }
       s_id = $(this).attr('s_id');
       tt = $(this).attr('tt')
       $.ajax({

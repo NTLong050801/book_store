@@ -11,12 +11,15 @@ include('./function.php')
     $tranghientai = isset($_POST['tranghientai']) ? $_POST['tranghientai'] : 1;
     $tl_id = $_POST['tl_id'];
     $sosach1trang = 6;
+    if(isset($_POST['action'])){
+        $sosach1trang = 12;
+    }
     $limit = ($tranghientai - 1) * $sosach1trang;
     $slt_sach = sptt($tl_id,$limit, $sosach1trang);
     // $_SESSION['sotrang'] = ceil(count_posts($tl_id)/$sosach1trang);
 
     while ($row = mysqli_fetch_assoc($slt_sach)) { ?>
-        <div class="col-2 book_id">
+        <div class="col-2 book_id" >
             <a href="book.php?s_id=<?php echo $row['s_id'] ?>">
                 <div class="content_book_id">
                     <?php

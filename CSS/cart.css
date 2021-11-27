@@ -11,7 +11,7 @@
     height: 50px;
     /*   */
     font-size:24px;
-    position: fixed;
+    /* position: fixed; */
     z-index: 1;
     bottom: 0;
     background-color: #ccc;
@@ -45,6 +45,6 @@
 .delete i:hover{
     color: red;
 }
-.main-content {
+#tbl_data {
     position: relative;
 }

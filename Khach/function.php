@@ -116,4 +116,18 @@ function delete_Cart($k_id,$s_id){
     return mysqli_query($conn,$qr);
 
 }
-?>
+
+function check_GioHang($k_id,$s_id){
+    global $conn;
+    $qr = "SELECT * from giohang where s_id = $s_id
+     and k_id = $k_id ";
+     return mysqli_query($conn,$qr);
+}
+
+
+function update_Gh_Soluong($k_id,$s_id,$sluong){
+    global $conn;
+    $sql = "UPDATE giohang set gh_soluong = $sluong 
+    where k_id = $k_id and s_id = $s_id";
+   return mysqli_query($conn,$sql);
+}

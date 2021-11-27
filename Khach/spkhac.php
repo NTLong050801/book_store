@@ -8,7 +8,7 @@ include('./function.php')
     <?php
     
     $tranghientai = isset($_POST['tranghientai']) ? $_POST['tranghientai'] : 1;
-    $tl_id = $_POST['tl_id'];
+    // $tl_id = $_POST['tl_id'];
     $sosach1trang = 6;
     $limit = ($tranghientai - 1) * $sosach1trang;
     $slt_sach = get_all_post($limit, $sosach1trang);
