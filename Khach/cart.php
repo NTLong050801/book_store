@@ -1,105 +1,5 @@
 <title>Giỏ hàng</title>
-<!-- <link rel="stylesheet" href="../CSS/cart.css"> -->
-<style>
-    .main-content {
-        margin-top: 40px;
-
-    }
-
-    .data_table {
-        margin-top: 30px;
-    }
-
-    #thanhtoan {
-        float: right;
-        width: 85%;
-        height: 50px;
-        font-size: 24px;
-        position: fixed;
-        z-index: 5;
-        bottom: 0;
-        background-color: #ccc;
-
-    }
-
-    #thanhtoan label {
-        margin-left: 5%;
-        /* float: left; */
-        width: 25%;
-        margin-top: 5px;
-    }
-
-    #thanhtoan span {
-        color: red;
-    }
-
-    #thanhtoan button {
-        /* float: left; */
-        margin-top: 5px;
-    }
-
-    #wrapper {
-        overflow: scroll;
-        height: 100%;
-        padding-left: 0;
-
-    }
-
-    .delete {
-        text-align: center;
-    }
-
-    .delete i {
-        cursor: pointer;
-    }
-
-    .delete i:hover {
-        color: red;
-    }
-
-    #tbl_data {
-        position: relative;
-    }
-
-    #sptt:hover {
-        color: red;
-    }
-
-    #banthich {
-        margin-top: 70px;
-    }
-
-    .tiep i:hover {
-        color: red;
-        cursor: pointer;
-    }
-
-    #daxem {
-        margin-top: 50px;
-    }
-
-    .daxem a:hover {
-        background-color: yellow;
-
-    }
-
-    .daxem a {
-        text-decoration: none;
-    }
-
-    .checkbox_all {
-        /* float: left; */
-        margin-left: 3%;
-        cursor: pointer;
-
-    }
-
-    #delete_all {
-        margin-left: 3%;
-        cursor: pointer;
-
-    }
-</style>
+<link rel="stylesheet" href="../CSS/cart.css">
 <?php
 include('../Parital/header.php');
 require('./function.php')
@@ -236,7 +136,7 @@ require('./function.php')
             </div>
             <div class="modal-footer">
                 <button id="huy" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
-                <button  id="xoa" type="button" class="btn btn-primary">Xóa</button>
+                <button id="xoa" type="button" class="btn btn-primary">Xóa</button>
             </div>
 
         </div>
@@ -251,8 +151,6 @@ include('../Parital/foot.php')
         fetch_data()
 
         function fetch_data() {
-            // action = "get_data"
-            // alert(action);
             $.ajax({
                 url: "data_cart.php",
                 method: "POST",
@@ -267,8 +165,6 @@ include('../Parital/foot.php')
                     if (dt == '') {
                         $('#tbl_data').html('<div><label for="">Giỏ hàng của bạn còn trống</label><br><a href="index.php"><button class="btn btn-success">Mua ngay</button></a></div>')
                     }
-
-
                 }
             })
 
@@ -278,7 +174,7 @@ include('../Parital/foot.php')
         $(document).on('click', '.delete', function() {
             s_id = $(this).attr('id_delete');
             var action = "delete"
-            s_ids=[];
+            s_ids = [];
             $('.check').each(function() {
                 if ($(this).prop("checked") == true) {
                     s_ids.push($(this).attr("s_id"));
@@ -293,16 +189,38 @@ include('../Parital/foot.php')
                 },
                 success: function(dt) {
                     // alert(dt)
-                    fetch_data();
-                    // $('.check').each(function(){
-                    //     for(i = 0 ; i < sizeof(s_ids);i++){
-                    //         $(this).attr("s_id") = i;
-                    //         $(this).prop("checked",true)
-                    //     }
-                        
-                    // })
+                    $.ajax({
+                        url: "data_cart.php",
+                        method: "POST",
+                        data: {},
+                        success: function(dt) {
+                            if (dt != '') {
+                                $('#data').html(dt)
+                                //alert(dt)
+                                ttt = 0;
+                                $('.check').each(function() {
+                                    for (i = 0; i < s_ids.length; i++) {
+
+                                        x = $(this).attr("s_id")
+                                        if (x == s_ids[i]) {
+                                            $(this).prop("checked", true)
+                                        }
+                                    }
+                                    if ($(this).prop("checked") == true) {
+                                        s_id = $(this).attr('s_id');
+                                        tongthanhtoan(x)
+                                    }else{
+                                        ttt = 0;
+                                        $('#ttt').html(ttt);
+                                    }
+                                })
+                            }
+                        }
+                    })
+
                 }
             })
+
         })
 
         $('#delete_all').click(function() {
@@ -320,12 +238,12 @@ include('../Parital/foot.php')
                 $('#exampleModal1').modal('show')
                 $('.modal-body').html("Vui lòng chọn sản phẩm")
                 $('#huy').html('OK bro !')
-                $('#xoa').css("display","none")
+                $('#xoa').css("display", "none")
             } else {
                 $('#exampleModal1').modal('show')
                 $('.modal-body').html("Bạn có muốn bỏ " + dem + " sản phẩm ?")
                 $('#huy').html('Thôi')
-                $('#xoa').css("display","block")
+                $('#xoa').css("display", "block")
                 $('#xoa').click(function() {
                     var action = "delete_all"
                     $.ajax({
