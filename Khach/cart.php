@@ -60,7 +60,7 @@ include('./function.php');
                                         while ($row = mysqli_fetch_array($rs)) {
                                     ?>
                                             <tr>
-                                                <td><input s_id="<?php echo $row['sachID'] ?>" class="checkSP" name="checkSP" type="checkbox"></td>
+                                                <td><input s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="checkSP" name="checkSP" type="checkbox"></td>
                                                 <td>
                                                     <img height="50" src="../Image/VanHoc/<?php echo $row['anh'] ?>" alt="">
                                                     <?php
@@ -75,7 +75,7 @@ include('./function.php');
                                                     <p id="soTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] * $row['gh_soluong'] ?></p>
                                                 </td>
                                                 <td>
-                                                    <a href="#"><button s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="btn btn-danger btnXoa">Xóa</button></a>
+                                                   <button s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="btn btn-danger btnXoa">Xóa</button>
                                                 </td>
                                             </tr>
 
@@ -93,7 +93,7 @@ include('./function.php');
                     <div class="container">
                         <div class="d-flex mb-3">
                             <div class="p-2 col-1"><input type="checkbox" name="checkAll" class="checkAll"></div>
-                            <div class="me-auto p-2 col-2"><button class="btn btn-danger">Xóa</button></div>
+                            <div class="me-auto p-2 col-2"><button class="btn btn-danger btnXoaAll">Xóa</button></div>
                             <div class="p-2 col-2">Tổng tiền : <span id="tongTienAll">0đ</span></div>
                             <div class="p-2 col-2"><button class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></div>
                         </div>
@@ -127,6 +127,32 @@ include('../Parital/foot.php')
                 }
             })
         })
+
+        $('.btnXoaAll').click(function(){
+            $('.checkSP').each(function() {
+                if ($(this).is(':checked')) {
+                    action = "delAllSP";
+                    s_id = $(this).attr('s_id');
+                    k_id = $(this).attr('k_id');
+                    $.ajax({
+                        url: "./cart_action.php",
+                        method: "POST",
+                        data: {
+                            s_id: s_id,
+                            k_id: k_id,
+                            action: action
+                        },
+                        success: function(dt) {
+                            alert(dt);
+                        }
+                    })
+                    // console.log('MinhHN');
+                } else {
+                    // console.log('Lỗi r');
+                }
+        })
+        });
+
         $('.soLuong').change(function() {
             //Tổng tiền SP
             s_id = $(this).attr('s_id');
@@ -159,6 +185,18 @@ include('../Parital/foot.php')
                     // alert(dt);
                 }
             })
+            tongThanhToan = 0;
+            $('.checkSP').each(function() {
+                if ($(this).is(':checked')) {
+                    s_id = $(this).attr('s_id');
+                    tongTienSP = parseInt($('#soTien' + s_id).html());
+                    tongThanhToan = tongThanhToan + tongTienSP;
+                } else {
+                    // console.log('Lỗi r');
+                }
+            $('#tongTienAll').html(tongThanhToan + "đ");
+
+            })
         })
 
         $('.checkSP').click(function() {
@@ -168,6 +206,7 @@ include('../Parital/foot.php')
                     s_id = $(this).attr('s_id');
                     tongTienSP = parseInt($('#soTien' + s_id).html());
                     tongThanhToan = tongThanhToan + tongTienSP;
+
                 } else {
                     // console.log('Lỗi r');
                 }
@@ -214,7 +253,6 @@ include('../Parital/foot.php')
                 $('.checkAll').prop('checked', false);
                 $('#tongTienAll').html( "0đ");
 
-               
             }
         })
 
