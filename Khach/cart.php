@@ -39,56 +39,70 @@ include('./function.php');
                         </div>
                     </nav>
                     <div class="container main-content">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="col-md-1" scope="col"><input type="checkbox"></th>
-                                    <th class="col-md-5" scope="col">Sản phẩm</th>
-                                    <th class="col-md-1" scope="col">Đơn giá</th>
-                                    <th class="col-md-1" scope="col">Số lượng</th>
-                                    <th class="col-md-1" scope="col">Số tiền</th>
-                                    <th class="col-md-1" scope="col">Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                               <?php
+                        <form action="" method="POST">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-1" scope="col"><input name="checkAll" id="checkAll" type="checkbox"></th>
+                                        <th class="col-md-5" scope="col">Sản phẩm</th>
+                                        <th class="col-md-1" scope="col">Đơn giá</th>
+                                        <th class="col-md-1" scope="col">Số lượng</th>
+                                        <th class="col-md-1" scope="col">Số tiền</th>
+                                        <th class="col-md-1" scope="col">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
                                     $email_kh = $_SESSION['check_login'];
                                     $sql = "SELECT  giohang.s_id as sachID, khach.k_id as idKhach, anh, s_ten, gh_soluong , tongtien FROM giohang, sach, khach where k_email = '$email_kh'  and giohang.k_id = khach.k_id and giohang.s_id = sach.s_id";
                                     $rs = mysqli_query($conn, $sql);
-                                    if(mysqli_num_rows($rs) > 0){
-                                        while($row = mysqli_fetch_array($rs)){
-                                        ?>
+                                    if (mysqli_num_rows($rs) > 0) {
+                                        while ($row = mysqli_fetch_array($rs)) {
+                                    ?>
                                             <tr>
-                                                <td><input type="checkbox"></td>
+                                                <td><input s_id="<?php echo $row['sachID'] ?>" class="checkSP" name="checkSP" type="checkbox"></td>
                                                 <td>
-                                                   <img height="50" src="../Image/VanHoc/<?php echo $row['anh']?>" alt="">
-                                                   <?php
-                                                        echo $row['s_ten'];
-                                                   ?>
+                                                    <img height="50" src="../Image/VanHoc/<?php echo $row['anh'] ?>" alt="">
+                                                    <?php
+                                                    echo $row['s_ten'];
+                                                    ?>
                                                 </td>
-                                                <td><?php echo $row['tongtien'] ?></td>
-                                                <td><input value="<?php echo $row['gh_soluong'] ?>" type="number" min=0 max=10></td>
-                                                <td></td>
                                                 <td>
-                                                    <button id="btnXoa" s_id = "<?php echo $row['sachID']?>" k_id = "<?php echo $row['idKhach'] ?>" class="btn btn-danger" >Xóa</button>
+                                                    <p id="tongTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] ?></p>
+                                                </td>
+                                                <td><input s_id="<?php echo $row['sachID'] ?>" class="soLuong" value="<?php echo $row['gh_soluong'] ?>" type="number" min="0" max="10"></td>
+                                                <td>
+                                                    <p id="soTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] * $row['gh_soluong'] ?></p>
+                                                </td>
+                                                <td>
+                                                    <a href="#"><button s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="btn btn-danger btnXoa">Xóa</button></a>
                                                 </td>
                                             </tr>
 
 
-                                        <?php
+                                    <?php
                                         }
-                                    }
-                                    else{
+                                    } else {
                                         echo "Không có kq";
                                     }
-                               ?>
-                            </tbody>
-                        </table>
+                                    ?>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
-
+                    <div class="container">
+                        <div class="d-flex mb-3">
+                            <div class="p-2 col-1"><input type="checkbox" name="" id=""></div>
+                            <div class="me-auto p-2 col-2"><button class="btn btn-danger">Xóa</button></div>
+                            <div class="p-2 col-2">Tổng tiền : 
+                              
+                                <span id="tongTienAll">0đ</span></div>
+                            <div class="p-2 col-2"><button class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
+
         </div>
     </div>
 </div>
@@ -97,22 +111,73 @@ include('./function.php');
 include('../Parital/foot.php')
 ?>
 <script>
-    $(document).ready(function(){
-        $('#btnXoa').click(function(){
+    $(document).ready(function() {
+        $('.btnXoa').click(function() {
             s_id = $(this).attr('s_id');
             k_id = $(this).attr('k_id');
-            alert(s_id + " " + k_id);
-            // $.ajax({
-            //     url: "./cart_action.php",
-            //     method: "POST",
-            //     data: {
-            //         s_id: s_id,
-            //         k_id: k_id
-            //     },
-            //     success: function(dt){
-            //         alert(dt);
-            //     }
-            // })
+            action = "delSP";
+            $.ajax({
+                url: "./cart_action.php",
+                method: "POST",
+                data: {
+                    s_id: s_id,
+                    k_id: k_id,
+                    action: action
+                },
+                success: function(dt) {
+                    alert(dt);
+                }
+            })
         })
+        $('.soLuong').change(function() {
+            //Tổng tiền SP
+           
+            //Tổng tiền SP
+
+
+            s_id = $(this).attr('s_id');
+            tongTien = $('#tongTien' + s_id).text();
+            soLuong = $(this).val();
+            $('#soTien' + s_id).html(tongTien * soLuong);
+            action = "updateSL";
+            $.ajax({
+                url: "./cart_action.php",
+                method: "POST",
+                data: {
+                    s_id: s_id,
+                    soLuong: soLuong,
+                    action: action
+                },
+                success: function(dt) {
+                    // alert(dt);
+                }
+            })
+        })
+
+        $('.checkSP').click(function() {
+            tongThanhToan = 0;
+            // tongAll = $(this).is(':checked');
+                $('.checkSP').each(function(){
+                    if ($(this).is(':checked')) {
+                        s_id = $(this).attr('s_id');
+                        tongTienSP = parseInt($('#soTien' + s_id).html());
+                        tongThanhToan = tongThanhToan+tongTienSP;
+                    } else {
+                        // console.log('Lỗi r');
+                    }                
+                    
+                })
+                $('#tongTienAll').html(tongThanhToan + "đ");
+        })
+
+
+        $('#checkAll').click(function() {
+            if ($(this).is(':checked')) {
+                alert('Dang check');
+            } else {
+                alert('Chưa check');
+            }
+        })
+
     })
 </script>
