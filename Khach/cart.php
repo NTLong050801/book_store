@@ -194,13 +194,27 @@ include('../Parital/foot.php')
 
         $('.checkAll').click(function() {
             if ($(this).is(':checked')) {
-                $('.checkSP').prop('checked', true, function() {
-                    console.log('MinhHn');
-                });
+                $('.checkSP').prop('checked', true);
                 $('.checkAll').prop('checked', true);
+
+                tongThanhToan = 0;
+                $('.checkSP').each(function() {
+                if ($(this).is(':checked')) {
+                    s_id = $(this).attr('s_id');
+                    tongTienSP = parseInt($('#soTien' + s_id).html());
+                    tongThanhToan = tongThanhToan + tongTienSP;
+                } else {
+                    // console.log('Lỗi r');
+                }
+                $('#tongTienAll').html(tongThanhToan + "đ");
+            })
+            $('#tongTienAll').html(tongThanhToan + "đ");
             } else {
                 $('.checkSP').prop('checked', false);
                 $('.checkAll').prop('checked', false);
+                $('#tongTienAll').html( "0đ");
+
+               
             }
         })
 
