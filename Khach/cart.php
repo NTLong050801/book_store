@@ -43,7 +43,7 @@ include('./function.php');
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="col-md-1" scope="col"><input name="checkAll" id="checkAll" type="checkbox"></th>
+                                        <th class="col-md-1" scope="col"><input name="checkAll" class="checkAll" type="checkbox"></th>
                                         <th class="col-md-5" scope="col">Sản phẩm</th>
                                         <th class="col-md-1" scope="col">Đơn giá</th>
                                         <th class="col-md-1" scope="col">Số lượng</th>
@@ -70,7 +70,7 @@ include('./function.php');
                                                 <td>
                                                     <p id="tongTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] ?></p>
                                                 </td>
-                                                <td><input s_id="<?php echo $row['sachID'] ?>" class="soLuong" value="<?php echo $row['gh_soluong'] ?>" type="number" min="0" max="10"></td>
+                                                <td><input s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="soLuong" value="<?php echo $row['gh_soluong'] ?>" type="number" min="0" max="10"></td>
                                                 <td>
                                                     <p id="soTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] * $row['gh_soluong'] ?></p>
                                                 </td>
@@ -92,11 +92,9 @@ include('./function.php');
                     </div>
                     <div class="container">
                         <div class="d-flex mb-3">
-                            <div class="p-2 col-1"><input type="checkbox" name="" id=""></div>
+                            <div class="p-2 col-1"><input type="checkbox" name="checkAll" class="checkAll"></div>
                             <div class="me-auto p-2 col-2"><button class="btn btn-danger">Xóa</button></div>
-                            <div class="p-2 col-2">Tổng tiền : 
-                              
-                                <span id="tongTienAll">0đ</span></div>
+                            <div class="p-2 col-2">Tổng tiền : <span id="tongTienAll">0đ</span></div>
                             <div class="p-2 col-2"><button class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></div>
                         </div>
                     </div>
@@ -131,11 +129,8 @@ include('../Parital/foot.php')
         })
         $('.soLuong').change(function() {
             //Tổng tiền SP
-           
-            //Tổng tiền SP
-
-
             s_id = $(this).attr('s_id');
+            k_id = $(this).attr('k_id');
             tongTien = $('#tongTien' + s_id).text();
             soLuong = $(this).val();
             $('#soTien' + s_id).html(tongTien * soLuong);
@@ -145,8 +140,20 @@ include('../Parital/foot.php')
                 method: "POST",
                 data: {
                     s_id: s_id,
+                    k_id: k_id,
                     soLuong: soLuong,
                     action: action
+                },
+                success: function(dt) {
+                    // alert(dt);
+                }
+            })
+            $.ajax({
+                url: "./cart_action.php",
+                method: "POST",
+                data: {
+                    s_id: s_id,
+                    k_id: k_id,
                 },
                 success: function(dt) {
                     // alert(dt);
@@ -156,26 +163,44 @@ include('../Parital/foot.php')
 
         $('.checkSP').click(function() {
             tongThanhToan = 0;
-            // tongAll = $(this).is(':checked');
-                $('.checkSP').each(function(){
-                    if ($(this).is(':checked')) {
-                        s_id = $(this).attr('s_id');
-                        tongTienSP = parseInt($('#soTien' + s_id).html());
-                        tongThanhToan = tongThanhToan+tongTienSP;
-                    } else {
-                        // console.log('Lỗi r');
-                    }                
-                    
-                })
-                $('#tongTienAll').html(tongThanhToan + "đ");
+            $('.checkSP').each(function() {
+                if ($(this).is(':checked')) {
+                    s_id = $(this).attr('s_id');
+                    tongTienSP = parseInt($('#soTien' + s_id).html());
+                    tongThanhToan = tongThanhToan + tongTienSP;
+                } else {
+                    // console.log('Lỗi r');
+                }
+
+            })
+            $('#tongTienAll').html(tongThanhToan + "đ");
+
+            $(".checkSP").click(function() {
+                if ($(this).is(":checked")) {
+                    var isAllChecked = 0;
+                    $(".checkSP").each(function() {
+                        if (!this.checked)
+                            isAllChecked = 1;
+                    })
+                    if (isAllChecked == 0) {
+                        $(".checkAll").prop("checked", true);
+                    }
+                } else {
+                    $(".checkAll").prop("checked", false);
+                }
+            });
         })
 
 
-        $('#checkAll').click(function() {
+        $('.checkAll').click(function() {
             if ($(this).is(':checked')) {
-                alert('Dang check');
+                $('.checkSP').prop('checked', true, function() {
+                    console.log('MinhHn');
+                });
+                $('.checkAll').prop('checked', true);
             } else {
-                alert('Chưa check');
+                $('.checkSP').prop('checked', false);
+                $('.checkAll').prop('checked', false);
             }
         })
 
