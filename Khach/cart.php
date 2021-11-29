@@ -39,7 +39,7 @@ include('./function.php');
                         </div>
                     </nav>
                     <div class="container main-content">
-                        <form action="" method="POST">
+                        <!-- <form action="" method="POST"> -->
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -75,11 +75,9 @@ include('./function.php');
                                                     <p id="soTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] * $row['gh_soluong'] ?></p>
                                                 </td>
                                                 <td>
-                                                   <button s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="btn btn-danger btnXoa">Xóa</button>
+                                                    <button s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="btn btn-danger btnXoa">Xóa</button>
                                                 </td>
                                             </tr>
-
-
                                     <?php
                                         }
                                     } else {
@@ -88,14 +86,14 @@ include('./function.php');
                                     ?>
                                 </tbody>
                             </table>
-                        </form>
+                        <!-- </form> -->
                     </div>
                     <div class="container">
                         <div class="d-flex mb-3">
                             <div class="p-2 col-1"><input type="checkbox" name="checkAll" class="checkAll"></div>
                             <div class="me-auto p-2 col-2"><button class="btn btn-danger btnXoaAll">Xóa</button></div>
                             <div class="p-2 col-2">Tổng tiền : <span id="tongTienAll">0đ</span></div>
-                            <div class="p-2 col-2"><button class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></div>
+                            <div class="p-2 col-2"><button disabled id="btnBuys" class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></div>
                         </div>
                     </div>
                 </div>
@@ -110,6 +108,7 @@ include('../Parital/foot.php')
 ?>
 <script>
     $(document).ready(function() {
+     
         $('.btnXoa').click(function() {
             s_id = $(this).attr('s_id');
             k_id = $(this).attr('k_id');
@@ -123,12 +122,14 @@ include('../Parital/foot.php')
                     action: action
                 },
                 success: function(dt) {
-                    alert(dt);
+                    // $('.main-content').html(dt);
+                      // alert(dt);
                 }
             })
+            // console.log('Minhhn');
         })
 
-        $('.btnXoaAll').click(function(){
+        $('.btnXoaAll').click(function() {
             $('.checkSP').each(function() {
                 if ($(this).is(':checked')) {
                     action = "delAllSP";
@@ -143,14 +144,14 @@ include('../Parital/foot.php')
                             action: action
                         },
                         success: function(dt) {
-                            alert(dt);
+                            $('.main-content').html(dt);
                         }
                     })
                     // console.log('MinhHN');
                 } else {
                     // console.log('Lỗi r');
                 }
-        })
+            })
         });
 
         $('.soLuong').change(function() {
@@ -191,10 +192,11 @@ include('../Parital/foot.php')
                     s_id = $(this).attr('s_id');
                     tongTienSP = parseInt($('#soTien' + s_id).html());
                     tongThanhToan = tongThanhToan + tongTienSP;
+                    // console.log('OK');
                 } else {
                     // console.log('Lỗi r');
                 }
-            $('#tongTienAll').html(tongThanhToan + "đ");
+                $('#tongTienAll').html(tongThanhToan + "đ");
 
             })
         })
@@ -213,9 +215,10 @@ include('../Parital/foot.php')
 
             })
             $('#tongTienAll').html(tongThanhToan + "đ");
-
-            $(".checkSP").click(function() {
+        })
+        $(".checkSP").click(function() {
                 if ($(this).is(":checked")) {
+                    $('#btnBuys').prop("disabled", false);
                     var isAllChecked = 0;
                     $(".checkSP").each(function() {
                         if (!this.checked)
@@ -226,32 +229,35 @@ include('../Parital/foot.php')
                     }
                 } else {
                     $(".checkAll").prop("checked", false);
+                    $('#btnBuys').prop("disabled", true);
+
                 }
             });
-        })
-
 
         $('.checkAll').click(function() {
             if ($(this).is(':checked')) {
+                $('#btnBuys').prop("disabled", false);
+                
                 $('.checkSP').prop('checked', true);
                 $('.checkAll').prop('checked', true);
-
                 tongThanhToan = 0;
                 $('.checkSP').each(function() {
-                if ($(this).is(':checked')) {
-                    s_id = $(this).attr('s_id');
-                    tongTienSP = parseInt($('#soTien' + s_id).html());
-                    tongThanhToan = tongThanhToan + tongTienSP;
-                } else {
-                    // console.log('Lỗi r');
-                }
+                    if ($(this).is(':checked')) {
+                        s_id = $(this).attr('s_id');
+                        tongTienSP = parseInt($('#soTien' + s_id).html());
+                        tongThanhToan = tongThanhToan + tongTienSP;
+                    } else {
+                        // console.log('Lỗi r');
+                    }
+                    $('#tongTienAll').html(tongThanhToan + "đ");
+                })
                 $('#tongTienAll').html(tongThanhToan + "đ");
-            })
-            $('#tongTienAll').html(tongThanhToan + "đ");
             } else {
+                $('#btnBuys').prop("disabled", true);
+
                 $('.checkSP').prop('checked', false);
                 $('.checkAll').prop('checked', false);
-                $('#tongTienAll').html( "0đ");
+                $('#tongTienAll').html("0đ");
 
             }
         })
