@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     fetch_data()
 
     function fetch_data() {
@@ -8,7 +8,7 @@ $(document).ready(function() {
             data: {
 
             },
-            success: function(dt) {
+            success: function (dt) {
                 if (dt != '') {
                     $('#data').html(dt)
                     //alert(dt)
@@ -22,11 +22,11 @@ $(document).ready(function() {
     }
 
 
-    $(document).on('click', '.delete', function() {
+    $(document).on('click', '.delete', function () {
         s_id = $(this).attr('id_delete');
         var action = "delete"
         s_ids = [];
-        $('.check').each(function() {
+        $('.check').each(function () {
             if ($(this).prop("checked") == true) {
                 s_ids.push($(this).attr("s_id"));
             }
@@ -38,33 +38,46 @@ $(document).ready(function() {
                 s_id: s_id,
                 action: action,
             },
-            success: function(dt) {
+            success: function () {
                 // alert(dt)
                 $.ajax({
                     url: "data_cart.php",
                     method: "POST",
                     data: {},
-                    success: function(dt) {
+                    success: function (dt) {
                         if (dt != '') {
-                            $('#data').html(dt)
+                            
                             //alert(dt)
-                            ttt = 0;
-                            $('.check').each(function() {
-                                for (i = 0; i < s_ids.length; i++) {
-                                    x = $(this).attr("s_id")
-                                    if (x == s_ids[i]) {
-                                        $(this).prop("checked", true)
-                                    }
-                                }
+
+                            // $('.check').each(function () {
+                            //     for (i = 0; i < s_ids.length; i++) {
+                            //         x = $(this).attr("s_id")
+                            //         if (x == s_ids[i]) {
+                            //             $(this).prop("checked", true)
+                            //             // console.log(x)
+                            //         }
+                            //     }
+
+                            // })
+                            $('.check').each(function () {
+                                ttt = 0;
+                                dem = 0;
                                 if ($(this).prop("checked") == true) {
                                     s_id = $(this).attr('s_id');
-                                    tongthanhtoan(x)
-                                } 
-                                // else {
-                                //     ttt = 0;
-                                //     $('#ttt').html(ttt);
-                                // }
+                                    
+                                    tongthanhtoan(s_id)
+                                    dem = dem + 1;
+                                    // tiensp = parseInt($('#tongtien' + s_id).html())
+                                    // ttt = ttt + tiensp;
+                                    // $('#ttt').html(ttt)
+                                }
+                                if(dem == 0) {
+                                    ttt = 0;
+                                    $('#ttt').html('0');
+                                }
                             })
+                            $('#data').html(dt)
+
                         }
                     }
                 })
@@ -74,11 +87,11 @@ $(document).ready(function() {
 
     })
 
-    $('#delete_all').click(function() {
+    $('#delete_all').click(function () {
         // check = confirm("Bạn có chắc chắn muốn xóa ?")
         s_ids = []
         dem = 0;
-        $('.check').each(function() {
+        $('.check').each(function () {
             if ($(this).prop("checked") == true) {
                 s_ids.push($(this).attr("s_id"));
                 dem = dem + 1;
@@ -95,7 +108,7 @@ $(document).ready(function() {
             $('.modal-body').html("Bạn có muốn bỏ " + dem + " sản phẩm ?")
             $('#huy').html('Thôi')
             $('#xoa').css("display", "block")
-            $('#xoa').click(function() {
+            $('#xoa').click(function () {
                 var action = "delete_all"
                 $.ajax({
                     url: "data_cart.php",
@@ -104,7 +117,7 @@ $(document).ready(function() {
                         s_ids: s_ids,
                         action: action
                     },
-                    success: function(dt) {
+                    success: function (dt) {
                         //  alert(dt)
                         fetch_data();
                         $('#ttt').html('0')
@@ -116,7 +129,7 @@ $(document).ready(function() {
 
     })
     // thay đổi số lượng
-    $(document).on('change', '.sluong', function() {
+    $(document).on('change', '.sluong', function () {
         ttt = 0;
         action = "update"
         sluong = $(this).val();
@@ -135,12 +148,12 @@ $(document).ready(function() {
                 sluong: sluong,
                 s_id: s_id
             },
-            success: function(dt) {
+            success: function (dt) {
                 // fetch_data()
             }
         })
         $('#tongtien' + s_id).html(tongtien)
-        $('.check').each(function() {
+        $('.check').each(function () {
             if ($(this).prop('checked') == true) {
                 s_id = $(this).attr('s_id');
                 tiensp = parseInt($('#tongtien' + s_id).html())
@@ -153,13 +166,13 @@ $(document).ready(function() {
     tong = 0;
     ttt = 0;
     // click alll
-    $(document).on('click', '#checkall', function() {
+    $(document).on('click', '#checkall', function () {
         ttt = 0;
         if ($(this).is(':checked')) {
             $(this).attr('checked', true)
             $('#checkbox_all').prop("checked", true)
             console.log('1')
-            $('.check').each(function() {
+            $('.check').each(function () {
                 $(this).prop("checked", true)
                 s_id = $(this).attr('s_id');
                 tongthanhtoan(s_id)
@@ -168,7 +181,7 @@ $(document).ready(function() {
         } else {
             $(this).removeAttr('checked')
             $('#checkbox_all').prop("checked", false)
-            $('.check').each(function() {
+            $('.check').each(function () {
                 $(this).prop("checked", false)
                 ttt = 0;
                 $('#ttt').html(ttt)
@@ -177,12 +190,12 @@ $(document).ready(function() {
         }
     })
 
-    $(document).on('click', '#checkbox_all', function() {
+    $(document).on('click', '#checkbox_all', function () {
         ttt = 0;
         if ($(this).is(':checked')) {
             $(this).attr('checked', true)
             $('#checkall').prop("checked", true)
-            $('.check').each(function() {
+            $('.check').each(function () {
                 $(this).prop("checked", true)
                 s_id = $(this).attr('s_id');
                 tongthanhtoan(s_id)
@@ -191,7 +204,7 @@ $(document).ready(function() {
         } else {
             $(this).removeAttr('checked')
             $('#checkall').prop("checked", false)
-            $('.check').each(function() {
+            $('.check').each(function () {
                 $(this).prop("checked", false)
                 ttt = 0;
                 $('#ttt').html(ttt)
@@ -208,7 +221,7 @@ $(document).ready(function() {
     }
 
     // click từng checkbox
-    $(document).on('click', '.check', function() {
+    $(document).on('click', '.check', function () {
         if ($(this).is(':checked')) {
             $(this).prop("checked", true)
             // s_id = $(this).attr('s_id');
@@ -219,7 +232,7 @@ $(document).ready(function() {
         }
         check_length = $('.check').length
         dem = 0
-        $('.check').each(function() {
+        $('.check').each(function () {
 
             if ($(this).prop('checked') == true) {
                 dem = dem + 1;
@@ -241,7 +254,7 @@ $(document).ready(function() {
         ttt = 0;
 
         // tính tiền khi click checkbox
-        $('.check').each(function() {
+        $('.check').each(function () {
             if ($(this).prop("checked") == true) {
                 s_id = $(this).attr('s_id');
                 tongthanhtoan(s_id);
@@ -255,7 +268,7 @@ $(document).ready(function() {
 
     })
 
-    $(document).on('click', '#sptt', function() {
+    $(document).on('click', '#sptt', function () {
         id_tl = $(this).attr('id_tl');
         $('#exampleModal').modal('show')
         action = "sptt"
@@ -266,7 +279,7 @@ $(document).ready(function() {
                 tl_id: id_tl,
                 action: action
             },
-            success: function(dt) {
+            success: function (dt) {
                 $('.modal-body').html(dt)
                 $('.book_id').css("margin-top", "20px")
             }
@@ -282,7 +295,7 @@ $(document).ready(function() {
                 // tl_id: tl_id,
                 tranghientai: a
             },
-            success: function(dt) {
+            success: function (dt) {
                 $('#sp_new_tl').html(dt)
             }
         })
@@ -290,18 +303,18 @@ $(document).ready(function() {
     get_banthich()
 
 
-    $('.tiep i').mouseover(function() {
+    $('.tiep i').mouseover(function () {
         $(this).addClass('fa-3x')
 
     })
-    $('.tiep i').mouseleave(function() {
+    $('.tiep i').mouseleave(function () {
         $(this).removeClass('fa-3x')
 
     })
     if (a = 1) {
         $('#back').css("display", 'none')
     }
-    $('#next').click(function() {
+    $('#next').click(function () {
         a = a + 1;
         if (a < 7 || a > 1) {
             get_banthich()
@@ -312,7 +325,7 @@ $(document).ready(function() {
         }
 
     })
-    $('#back').click(function() {
+    $('#back').click(function () {
         a = a - 1;
         if (a > 0) {
             get_banthich()
@@ -329,6 +342,6 @@ $(document).ready(function() {
 
 
 
-
+// alert('okj')
 
 })

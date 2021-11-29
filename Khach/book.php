@@ -293,6 +293,17 @@ require('./function.php')
       </div>
     </div>
   </div>
+  <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="background-color: #ee4d2d;color:#fff; border-radius: 25px;">
+            <br>
+            <div class="modal-body3" style="text-align: center;">
+                <h4></h4>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
   <?php
   include('../Parital/foot.php')
   ?>
