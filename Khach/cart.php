@@ -243,7 +243,7 @@ include('../Parital/foot.php')
             })
 
         })
-
+        //click xóa all
         $('#delete_all').click(function() {
             // check = confirm("Bạn có chắc chắn muốn xóa ?")
             s_ids = []
@@ -327,23 +327,27 @@ include('../Parital/foot.php')
             ttt = 0;
             if ($(this).is(':checked')) {
                 $(this).attr('checked', true)
+             
                 $('#checkbox_all').prop("checked", true)
-                console.log('1')
+                // console.log('1')
                 $('.check').each(function() {
                     $(this).prop("checked", true)
                     s_id = $(this).attr('s_id');
                     tongthanhtoan(s_id)
 
                 })
+                $('#buying').attr("disabled",false)
             } else {
                 $(this).removeAttr('checked')
                 $('#checkbox_all').prop("checked", false)
+               
                 $('.check').each(function() {
                     $(this).prop("checked", false)
                     ttt = 0;
                     $('#ttt').html(ttt)
 
                 })
+                $('#buying').attr("disabled",true)
             }
         })
 
@@ -358,6 +362,7 @@ include('../Parital/foot.php')
                     tongthanhtoan(s_id)
 
                 })
+                $('#buying').attr("disabled",false)
             } else {
                 $(this).removeAttr('checked')
                 $('#checkall').prop("checked", false)
@@ -367,6 +372,7 @@ include('../Parital/foot.php')
                     $('#ttt').html(ttt)
 
                 })
+                $('#buying').attr("disabled",true)
             }
         })
         // hàm tính tổng
