@@ -170,7 +170,7 @@ require('./function.php')
                                             <tr>
                                                 <td>
                                                     <span id="img" style="width:20%;"><img style="max-height:100px" class="img-fluid" src="../Image/VanHoc/<?php echo $rows['anh'] ?>" alt=""></span>
-                                                    <span id="name"><?php echo $rows['s_ten'] ?></span>
+                                                    <span id="name" class="names" sluong=<?php echo $rows['gh_soluong'] ?> s_id=<?php echo $rows['s_id'] ?>><?php echo $rows['s_ten'] ?></span>
                                                 </td>
                                                 <td><span><?php echo $gia = $rows['tongtien'] ?></span>đ</td>
                                                 <td><span><?php echo $sluong = $rows['gh_soluong'];
@@ -216,10 +216,12 @@ require('./function.php')
                                 <label for="">Giảm giá:</label><span id="giamgia">0đ</span>
                                 <br>
                                 <br>
-                                <label for="">Tổng thanh toán:</label><span class="ttt" id="tongall"><?php echo $ttt ?>đ</span>
+                                <label for="">Tổng thanh toán:</label>
+                                <span class="ttt" id="tongall"><?php echo $ttt ?>đ</span>
                                 <br>
                                 <br>
-                                <button id="dathang" class="btn btn-success" style="float: right;">ĐẶT HÀNG</button>
+                                <a href="donhang.php">
+                                    <button id="dathang" class="btn btn-success" style="float: right;">ĐẶT HÀNG</button></a>
                             </div>
                         </div>
 
@@ -449,6 +451,8 @@ include('../Parital/foot.php')
                         $("#exampleModal3").modal('hide')
                     }, 1500)
                     magg = $('#ip_magg').val('');
+                    $('#giamgia').html('0đ')
+                    $('#tongall').html(ttt + 'đ')
                 }
                 $('.use_voucher').each(function() {
                     if ($(this).hasClass("btn-success")) {
@@ -466,20 +470,54 @@ include('../Parital/foot.php')
             $(this).click(function() {
                 $('.pay').removeClass("btn-primary")
                 $(this).addClass("btn-primary")
-                pay = "pay"
+                $('#dathang').attr('disabled', false)
             })
         })
         $('.pay').mouseleave(function() {
             $(this).removeClass("change")
         })
-
-        $('#dathang').click(function(){
-            
-            if(pay == "pay"){
-                alert("Đặt hàng thành công")
-            }else{
-                alert('Vui lòng chọn phương thức thanh toán')
-            }
+        $('#dathang').attr('disabled', true)
+        $('#dathang').click(function() {
+            dem = 0
+            s_ids = []
+            action = 'insert_dh';
+            note = $('#loinhan').val();
+            a = $('#tongall').html()
+            tongall = parseInt(a.slice(0,-1))
+            // alert(a)
+            $.ajax({
+                url: "process_dh.php",
+                method: "POST",
+                data: {
+                    action: action,
+                    note: note,
+                    tongall : tongall
+                    // s_ids: s_ids
+                },
+                success: function(dt) {
+                    // alert(dt);
+                }
+            })
+            action = "delete_giohang";
+            $('.names').each(function() { 
+                s_id = $(this).attr('s_id');
+                // s_ids = s_ids.push(s_id)
+                sluong = $(this).attr('sluong');
+                console.log(s_id)
+                $.ajax({
+                    url: "process_dh.php",
+                    method: "POST",
+                    data: {
+                        s_id: s_id,
+                        sluong: sluong,
+                        action: action
+                    },
+                    success: function(dt) {
+                        // alert(dt)
+                    }
+                })
+            })
         })
+
     })
 </script>

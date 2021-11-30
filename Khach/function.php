@@ -105,7 +105,7 @@ function Khach($k_email){
 function GioHang_Sach($k_id){
     global $conn;
     $qr = "SELECT * from giohang,sach where giohang.s_id = sach.s_id
-     and giohang.k_id = $k_id ";
+     and giohang.k_id = $k_id and trangthai = 0 ";
      return mysqli_query($conn,$qr);
 
 }
@@ -120,7 +120,7 @@ function delete_Cart($k_id,$s_id){
 function check_GioHang($k_id,$s_id){
     global $conn;
     $qr = "SELECT * from giohang,sach where giohang.s_id = sach.s_id and  giohang.s_id = $s_id
-     and k_id = $k_id ";
+     and k_id = $k_id and trangthai = '0' ";
      return mysqli_query($conn,$qr);
 }
 
@@ -131,3 +131,49 @@ function update_Gh_Soluong($k_id,$s_id,$sluong){
     where k_id = $k_id and s_id = $s_id";
    return mysqli_query($conn,$sql);
 }
+
+function insert_Donhang($k_id,$note,$tongall){
+    global $conn;
+    $date1 = date("Y/m/d");
+    $sql = "Insert into donhang(k_id,hd_date,note,tongtien) values ('$k_id','$date1','$note','$tongall')";
+    return mysqli_query($conn,$sql);
+    // return $sql;
+}
+function slt_Donhang(){
+    global $conn;
+    $sql = "SELECT * from DonHang order by hd_id DESC LIMIT 1";
+    $qr = mysqli_query($conn,$sql);
+    $row = mysqli_fetch_assoc($qr);
+    return $row['hd_id'];
+}
+
+function insert_CTHD($hd_id,$s_id,$sluong){
+    global $conn;
+    $sql = "Insert into chitiethd(hd_id,s_id,sluong) values ('$hd_id','$s_id','$sluong')";
+    return mysqli_query($conn,$sql);;
+}
+
+function show_allDh($k_id){
+    global $conn;
+    $sql = "SELECT  * from donhang where donhang.k_id = '$k_id' order by donhang.hd_id DESC  ";
+    return mysqli_query($conn,$sql);
+}
+
+function show_allDh_status($k_id,$status){
+    global $conn;
+    $sql = "SELECT  * from donhang where donhang.k_id = '$k_id' and status ='$status' 
+    order by donhang.hd_id DESC  ";
+    return mysqli_query($conn,$sql);
+}
+
+function Chitiethd($dh_id,$k_id){
+    global $conn;
+    $sql = "SELECT  * from donhang,chitiethd,sach
+    where donhang.hd_id = chitiethd.hd_id and sach.s_id = chitiethd.s_id
+    and donhang.hd_id = '$dh_id' and donhang.k_id = '$k_id' order by donhang.hd_id DESC  ";
+    return mysqli_query($conn,$sql);
+}
+
+
+
+

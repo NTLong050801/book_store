@@ -230,8 +230,6 @@ include('../Parital/foot.php')
                                     }
                                 })
                                 $('#ttt').html(ttt);
-
-
                             }
                             if (dt == '') {
                                 $('#tbl_data').html('<div><label for="">Giỏ hàng của bạn còn trống</label><br><a href="index.php"><button class="btn btn-success">Mua ngay</button></a></div>')
@@ -320,6 +318,7 @@ include('../Parital/foot.php')
 
             })
         })
+        
         tong = 0;
         ttt = 0;
         // click alll
