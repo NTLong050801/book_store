@@ -1,25 +1,4 @@
 <title>Giỏ hàng</title>
-
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    .totalSP {
-
-        width: 80%;
-        background-color: #fff;
-        position: fixed;
-        bottom: 0;
-        /* left: 0; */
-        /* right: 0; */
-        z-index: 1;
-    }
-</style>
-
-
 <?php
 include('../Parital/header.php');
 include('./function.php');
@@ -72,15 +51,15 @@ include('./function.php');
                                     <th class="col-md-1" scope="col">Thao tác</th>
                                 </tr>
                             </thead>
-                            <tbody class="bodySP">
+                            <tbody id="bodyTable">
                                 <?php
                                 $email_kh = $_SESSION['check_login'];
-                                $sql = "SELECT  giohang.s_id as sachID, khach.k_id as idKhach, anh, s_ten, gh_soluong , tongtien, tl_id FROM giohang, sach, khach where k_email = '$email_kh'  and giohang.k_id = khach.k_id and giohang.s_id = sach.s_id";
+                                $sql = "SELECT  giohang.s_id as sachID, khach.k_id as idKhach, anh, s_ten, gh_soluong , tongtien FROM giohang, sach, khach where k_email = '$email_kh'  and giohang.k_id = khach.k_id and giohang.s_id = sach.s_id";
                                 $rs = mysqli_query($conn, $sql);
                                 if (mysqli_num_rows($rs) > 0) {
                                     while ($row = mysqli_fetch_array($rs)) {
                                 ?>
-                                        <tr>
+                                        <tr class="rowSP<?php echo $row['sachID'] ?>">
                                             <td><input s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="checkSP" name="checkSP" type="checkbox"></td>
                                             <td>
                                                 <img height="50" src="../Image/VanHoc/<?php echo $row['anh'] ?>" alt="">
@@ -96,37 +75,7 @@ include('./function.php');
                                                 <p id="soTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] * $row['gh_soluong'] ?></p>
                                             </td>
                                             <td>
-                                                <button s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" id="liveToastBtn" class="btn btn-danger btnXoa" style="background-color: #EE4D2D">Xóa</button>
-
-                                                <!-- Start modal SP tương tự-->
-                                                <div class="row">
-                                                    <!-- Button trigger modal -->
-                                                    <span class="spTuongTu" tl_id="<?php echo $row['tl_id'] ?>" style="color: #EE4D2D" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                        Sản phẩm tương tự
-                                                    </span>
-
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Sản phẩm tương tự</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body modal-body-sptt">
-                                                                  
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <!-- End modal SP tương tự -->
-
+                                                <button s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" id="liveToastBtn" class="btn btn-danger btnXoa">Xóa</button>
                                             </td>
                                         </tr>
                                 <?php
@@ -140,7 +89,7 @@ include('./function.php');
                         <!-- </form> -->
                     </div>
                     <div class="container">
-                        <div class="d-flex mb-3 totalSP">
+                        <div class="d-flex mb-3">
                             <div class="p-2 col-1"><input type="checkbox" name="checkAll" class="checkAll"></div>
                             <!-- Delete modal -->
                             <div class="me-auto p-2 col-2">
@@ -184,43 +133,26 @@ include('./function.php');
 include('../Parital/foot.php')
 ?>
 <script>
-    var toastTrigger = document.getElementById('liveToastBtn')
-    var toastLiveExample = document.getElementById('liveToast')
-    if (toastTrigger) {
-        toastTrigger.addEventListener('click', function() {
-            var toast = new bootstrap.Toast(toastLiveExample)
-            toast.show()
-        })
-    }
-
-
-
     $(document).ready(function() {
-        $('.spTuongTu').click(function() {
-            tl_id = $(this).attr('tl_id');
-            action = "spTuongTu";
-            $.ajax({
-                url: "./cart_action.php",
-                method: "POST",
-                data: {
-                    tl_id: tl_id,
-                    action: action
-                },
-                success: function(dt) {
-                    $('.modal-body-sptt').html(dt);
-                }
-            })
-            // console.log('Minhhn');
-        })
-        
-
+        const s_ids = [];
         $('.btnXoa').click(function() {
-            var btnXoa = this;
+                var btnXoa = this;
+            // $('.checkSP').each(function() {
+            //     {
+            //         if ($(this).is(':checked')) {
+            //             s_id = $(this).attr('s_id');
+            //             s_ids.push(s_id);
+            //         } else {
+
+            //         }
+            //     }
+            // })
+        
             s_id = $(this).attr('s_id');
             k_id = $(this).attr('k_id');
-            action = "delSP";
+            action = "delSP";           
             $.ajax({
-                url: "./cart_action.php",
+                url: "./test-action.php",
                 method: "POST",
                 data: {
                     s_id: s_id,
@@ -228,23 +160,23 @@ include('../Parital/foot.php')
                     action: action
                 },
                 success: function(dt) {
-                    $(btnXoa).closest('tr').fadeOut(500, function() {
-                        $(this).remove();
-                    })
+                    // alert(dt);
+                    $(btnXoa).closest('tr').fadeOut(800,function(){
+	                  $(this).remove();
+	    });
                 }
             })
             // console.log('Minhhn');
         })
 
         $('.btnXoaAll').click(function() {
-            // var btnXoaAll = this;
             $('.checkSP').each(function() {
                 if ($(this).is(':checked')) {
                     action = "delAllSP";
                     s_id = $(this).attr('s_id');
                     k_id = $(this).attr('k_id');
                     $.ajax({
-                        url: "./cart_action.php",
+                        url: "./test-action.php",
                         method: "POST",
                         data: {
                             s_id: s_id,
@@ -252,14 +184,12 @@ include('../Parital/foot.php')
                             action: action
                         },
                         success: function(dt) {
-                            $('.bodySP').closest('tr').fadeOut(500, function() {
-                                $(this).remove();
-                            })
+                            // $('.main-content').html(dt);
                         }
                     })
-
+                    // console.log('MinhHN');
                 } else {
-
+                    // console.log('Lỗi r');
                 }
             })
         });
@@ -273,7 +203,7 @@ include('../Parital/foot.php')
             $('#soTien' + s_id).html(tongTien * soLuong);
             action = "updateSL";
             $.ajax({
-                url: "./cart_action.php",
+                url: "./test-action.php",
                 method: "POST",
                 data: {
                     s_id: s_id,
@@ -286,7 +216,7 @@ include('../Parital/foot.php')
                 }
             })
             $.ajax({
-                url: "./cart_action.php",
+                url: "./test-action.php",
                 method: "POST",
                 data: {
                     s_id: s_id,

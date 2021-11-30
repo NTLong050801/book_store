@@ -1,6 +1,27 @@
 <?php
-function delSP()
-{
+
+function spTuongTu(){
+    include('../config/db.php');
+    $tl_id = $_POST['tl_id'];
+    $spTuongTu = "SELECT * FROM sach , giohang , theloai where theloai.tl_id = sach.tl_id and sach.s_id = giohang.s_id and sach.tl_id = '$tl_id' LIMIT 5";
+    $rsSPTuongTu = mysqli_query($conn, $spTuongTu);
+    if (mysqli_num_rows($rsSPTuongTu) > 0) {
+        while ($rowSPTT = mysqli_fetch_assoc($rsSPTuongTu)) {
+    ?>
+            <div class="card mb-3" style="width: 80%;">
+                <img src="../Image/VanHoc/<?php echo $rowSPTT['anh']?>" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><?php echo $rowSPTT['s_ten']?></h5>
+                    <p class="card-text"><?php echo $rowSPTT['s_gia']?></p>
+                    <a href="#" class="btn btn-primary">Mua</a>
+                </div>
+            </div>
+    <?php
+        }
+    }
+}
+
+function delSP(){
     // include('./function.php');
     include('../config/db.php');
     $s_id = $_POST['s_id'];
@@ -58,5 +79,8 @@ if (isset($_POST['action'])) {
     if ($_POST['action'] == "updateSL") {
         updateSL();
         updateTienHD();
+    }
+    if ($_POST['action'] == "spTuongTu") {
+        spTuongTu();
     }
 }
