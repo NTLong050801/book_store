@@ -76,7 +76,7 @@ require('./function.php')
                     <nav class="navbar navbar-light">
                         <div class="container-fluid">
                             <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fas fa-bars"></i></a>
-                            <form class="d-flex" style="margin-left: 50%;">
+                            <form class="d-flex" style="margin-left: 30%;">
                                 <input require id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
                                 <button id="btn_search" class="btn btn-outline-success" type="button">Tìm</button>
                                 <div id="list_sach" style="z-index: 4;">

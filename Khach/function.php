@@ -181,7 +181,23 @@ function search_dh($k_id,$val){
     and donhang.k_id = '$k_id' and sach.s_ten like '%$val%'  order by donhang.hd_id DESC";
     return mysqli_query($conn , $sql);
 
+}
 
+function update_status($hd_id){
+    global $conn;
+    $sql = "Update donhang set status = 4 where hd_id = '$hd_id' ";
+    return mysqli_query($conn , $sql);
+}
+
+function count_status0($k_id){
+    global $conn;
+    $sql = "SELECT count(hd_id) from donhang where k_id = '$k_id' and donhang.status = '0'";
+    $qr = mysqli_query($conn , $sql);
+    $row = mysqli_fetch_assoc($qr);
+    if($row['count(hd_id)'] > 0){
+        return '('.$row['count(hd_id)'].')' ;
+    }
+   
 }
 
 

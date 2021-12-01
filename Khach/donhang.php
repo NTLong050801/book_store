@@ -87,6 +87,9 @@ require('./function.php')
         margin-bottom: 200px;
         border-top: #ee4d2d solid;
     }
+    .sluongdh_xn{
+        color: #ee4d2d ;
+    }
 </style>
 <link rel="stylesheet" href="../CSS/banking.css">
 <div id="wrapper" style="overflow: scroll;height:100%;padding-left: 0;">
@@ -116,7 +119,7 @@ require('./function.php')
                     <div class="container main-content">
                         <div class="row" style="margin-top: 40px;">
                             <div class="col-2 view maucam"><span>Tất cả</span></div>
-                            <div class="col-2 view"><span>Chờ xác nhận</span></div>
+                            <div class="col-2 view"><span>Chờ xác nhận</span><span class='sluongdh_xn'><?php echo (count_status0(1)) ?></span></div>
                             <div class="col-2 view"><span>Chờ lấy hàng</span></div>
                             <div class="col-2 view"><span>Đang giao</span></div>
                             <div class="col-2 view"><span>Đã giao</span></div>
@@ -138,7 +141,21 @@ require('./function.php')
     </div>
 </div>
 
-
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn hủy không ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không</button>
+                <button id="xnhuy" type="button" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 include('../Parital/foot.php')
@@ -169,11 +186,12 @@ include('../Parital/foot.php')
         load_data()
 
         function load_data() {
+
             $.ajax({
                 url: "process_dh.php",
                 method: "POST",
                 data: {
-                    action: action
+                    action: action,
                 },
                 success: function(dt) {
                     $('.data').html(dt)
@@ -187,21 +205,58 @@ include('../Parital/foot.php')
                 val = $(this).val();
                 if (val != '') {
                     $.ajax({
+                        url: "process_dh.php",
+                        method: "POST",
+                        data: {
+                            action: action,
+                            val: val
+                        },
+                        success: function(dt) {
+                            $('.data').html(dt)
+                            // alert(dt)
+                        }
+                    })
+                }
+
+            }
+        })
+
+        $(document).on('click', '.huydh', function() {
+            $('#exampleModal').modal('show')
+            hd_id = $(this).attr('hd_id')
+            $('#xnhuy').click(function() {
+                
+                //    alert(hd_id)
+                // action = "update"
+                $.ajax({
                     url: "process_dh.php",
                     method: "POST",
                     data: {
                         action: action,
-                        val: val
+                        hd_id: hd_id
                     },
                     success: function(dt) {
                         $('.data').html(dt)
-                        // alert(dt)
+                        $('#exampleModal').modal('hide')
+                        sluong_st0 = $('.mualai').attr('sluong_st0');
+                        if(sluong_st0 != '(undefined)'){
+                            $('.sluongdh_xn').html(sluong_st0)
+                        }else{
+                            $('.sluongdh_xn').html('')
+                        }
+                        
                     }
                 })
-                }
-                
-            }
+
+            })
         })
+
+
+        // $('.huydh').click(function(){
+        //     hd_id = $(this).attr('hd_id')
+        //     alert(hd_id)
+        // })
+        
 
 
 

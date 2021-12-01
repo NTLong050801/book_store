@@ -20,16 +20,29 @@ if ($action == 'insert_dh') {
 }
 
 if ($action == 'Tất cả') {
-    if(isset($_POST['val'])){
-        $val = $_POST['val'];
-        $show = search_dh($k_id,$val);
+    if (isset($_POST['hd_id'])) {
+        $hd_id = $_POST['hd_id'];
+        update_status($hd_id);
+        $show = show_allDh($k_id);
     }else{
         $show = show_allDh($k_id);
     }
-   
+    if (isset($_POST['val'])) {
+        $val = $_POST['val'];
+        $show = search_dh($k_id, $val);
+    } else {
+        $show = show_allDh($k_id);
+    }
 }
 if ($action == 'Chờ xác nhận') {
-    $show = show_allDh_status($k_id, '0');
+    if (isset($_POST['hd_id'])) {
+        $hd_id = $_POST['hd_id'];
+        update_status($hd_id);
+        $show = show_allDh_status($k_id, '0');
+    }else{
+        $show = show_allDh_status($k_id, '0');
+    }
+    
 }
 if ($action == 'Chờ lấy hàng') {
     $show = show_allDh_status($k_id, '1');
@@ -105,12 +118,12 @@ if (mysqli_num_rows($show) > 0) {
             <br>
             <br>
 
-            <div class='mualai'>
-            <button class="btn btn-primary">Mua lại</button>
-                <?php if($row['status'] == '0'){ ?>
-                     <button class="btn btn-danger">Hủy đơn</button>
-              <?php  }?>
-               
+            <div class='mualai' sluong_st0 = <?php echo count_status0($k_id) ?>>
+                <button class="btn btn-primary">Mua lại</button>
+                <?php if ($row['status'] == '0') { ?>
+                    <button class="btn btn-danger huydh" hd_id=<?php echo $row['hd_id'] ?>>Hủy đơn</button>
+                <?php  } ?>
+
             </div>
         </div>
 
@@ -124,6 +137,7 @@ if (mysqli_num_rows($show) > 0) {
     Chưa có đơn hàng
     </div>';
 }
+
 
 
 
