@@ -63,8 +63,9 @@ require('./function.php')
         text-overflow: ellipsis;
         text-decoration: line-through;
     }
+
     .kodh {
-        background-color: #ee4d2d ;
+        background-color: #ee4d2d;
         color: #fff;
         font-size: 20px;
         text-align: center;
@@ -73,11 +74,18 @@ require('./function.php')
         border-radius: 20px;
         padding-top: 5px;
     }
+
     .mualai {
         margin-top: 5px;
         float: right;
         margin: 15px;
-        
+
+    }
+
+    .data_show {
+        margin-top: 40px;
+        margin-bottom: 200px;
+        border-top: #ee4d2d solid;
     }
 </style>
 <link rel="stylesheet" href="../CSS/banking.css">
@@ -99,7 +107,8 @@ require('./function.php')
                             </form>
                             <form class="d-flex">
                                 <a id="profile_tch" href="#" class="navbar-brand">Tài khoản</a>
-                                <a id="profile_tch" href="cart.php" class="navbar-brand">Giỏ hàng</a>
+                                <a href="donhang.php" class="navbar-brand">Đơn mua</a>
+                                <a id="profile_tch" href="cart.php" class="navbar-brand"><i class="fas fa-shopping-cart fa-2x"></i></a>
                                 <a href="../Login/logout.php" class="navbar-brand">Đăng xuất</a>
                             </form>
                         </div>
@@ -120,10 +129,6 @@ require('./function.php')
                         <div class="data">
 
                         </div>
-
-
-
-
                     </div>
 
                 </div>
@@ -176,6 +181,29 @@ include('../Parital/foot.php')
                 }
             })
         }
+
+        $(document).on('keypress', '#search_ip', function(e) {
+            if (e.which == '13') {
+                val = $(this).val();
+                if (val != '') {
+                    $.ajax({
+                    url: "process_dh.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        val: val
+                    },
+                    success: function(dt) {
+                        $('.data').html(dt)
+                        // alert(dt)
+                    }
+                })
+                }
+                
+            }
+        })
+
+
 
     })
 </script>

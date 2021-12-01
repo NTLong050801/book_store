@@ -174,6 +174,15 @@ function Chitiethd($dh_id,$k_id){
     return mysqli_query($conn,$sql);
 }
 
+function search_dh($k_id,$val){
+    global $conn;
+    $sql = "SELECT * from sach,chitiethd,donhang 
+    where donhang.hd_id = chitiethd.hd_id and sach.s_id = chitiethd.s_id
+    and donhang.k_id = '$k_id' and sach.s_ten like '%$val%'  order by donhang.hd_id DESC";
+    return mysqli_query($conn , $sql);
+
+
+}
 
 
 

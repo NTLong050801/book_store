@@ -27,7 +27,9 @@ require('./function.php')
               </form>
               <form class="d-flex">
                 <a id="profile_tch" href="#" class="navbar-brand">Tài khoản</a>
-                <a id="profile_tch" href="cart.php" class="navbar-brand">Giỏ hàng</a>
+                <a href="donhang.php" class="navbar-brand" >Đơn mua</a>
+
+                <a id="profile_tch" href="cart.php" class="navbar-brand"><i class="fas fa-shopping-cart fa-2x"></i></a>
                 <a href="../Login/logout.php" class="navbar-brand">Đăng xuất</a>
               </form>
             </div>

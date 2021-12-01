@@ -20,7 +20,13 @@ if ($action == 'insert_dh') {
 }
 
 if ($action == 'Tất cả') {
-    $show = show_allDh($k_id);
+    if(isset($_POST['val'])){
+        $val = $_POST['val'];
+        $show = search_dh($k_id,$val);
+    }else{
+        $show = show_allDh($k_id);
+    }
+   
 }
 if ($action == 'Chờ xác nhận') {
     $show = show_allDh_status($k_id, '0');
@@ -47,7 +53,7 @@ if (mysqli_num_rows($show) > 0) {
         // nếu trạng thái bằng 4 : đã hủy
 ?>
 
-        <div class="data_show" style="margin-top:40px;margin-bottom:200px;border-top: #ee4d2d solid;">
+        <div class="data_show">
             <span class='thongbao'><?php
                                     if ($row['status'] == '0') {
                                         echo 'Chờ xác nhận';
@@ -81,7 +87,7 @@ if (mysqli_num_rows($show) > 0) {
                     while ($row_sp = mysqli_fetch_assoc($chitiet)) { ?>
                         <tr>
                             <td>
-                                <img style="width:100px" class='container img-fluid' src="../Image/VanHoc/<?php echo $row_sp['anh'] ?>" alt="">
+                                <img style="width:150px" class='container img-fluid' src="../Image/VanHoc/<?php echo $row_sp['anh'] ?>" alt="">
                                 <span><?php echo $row_sp['s_ten'] ?></span>
                             </td>
                             <td><?php echo $row_sp['sluong'] ?></td>
@@ -100,7 +106,11 @@ if (mysqli_num_rows($show) > 0) {
             <br>
 
             <div class='mualai'>
-                <button class="btn btn-danger">Mua lại</button>
+            <button class="btn btn-primary">Mua lại</button>
+                <?php if($row['status'] == '0'){ ?>
+                     <button class="btn btn-danger">Hủy đơn</button>
+              <?php  }?>
+               
             </div>
         </div>
 
