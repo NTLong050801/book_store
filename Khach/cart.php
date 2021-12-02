@@ -12,7 +12,7 @@ require('./function.php')
                     <nav class="navbar navbar-light">
                         <div class="container-fluid">
                             <a href="index.php"><img src="../Image/logo.png" class="container img-fluid" alt="" style="height: 70px;"></a>
-                            <form class="d-flex" style="margin-left: 50%;">
+                            <form class="d-flex" style="margin-left: 30%;">
                                 <input require id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
                                 <button id="btn_search" class="btn btn-outline-success" type="button">Tìm</button>
                                 <div id="list_sach">
@@ -21,7 +21,7 @@ require('./function.php')
                             </form>
                             <form class="d-flex">
                                 <a id="profile_tch" href="#" class="navbar-brand">Tài khoản</a>
-                                <a href="donhang.php" class="navbar-brand" >Đơn mua</a>
+                                <a href="donhang.php" class="navbar-brand">Đơn mua</a>
 
                                 <a id="profile_tch" href="cart.php" class="navbar-brand">Giỏ hàng</a>
                                 <a href="../Login/logout.php" class="navbar-brand">Đăng xuất</a>
@@ -52,8 +52,10 @@ require('./function.php')
                                         <input id="checkbox_all" type="checkbox" style="margin-right: 3%;">Chọn tất cả</span>
                                     <span id="delete_all"><i class="fas fa-trash-alt"></i></span>
                                     <label for="">Tổng thanh toán :<span id="ttt">0</span>đ </label>
-                                    <button id="buying" name="banking" type="submit" class="btn btn-danger" disabled>
-                                            Mua hàng</button>
+                                    <button id="buying" name="banking" type="submit" class="btn btn-danger" <?php if (!isset($_SESSION['cb_mualai'])) {
+                                                                                                                echo 'disabled';
+                                                                                                            } ?>>
+                                        Mua hàng</button>
                                 </div>
                             </form>
 
@@ -157,6 +159,16 @@ include('../Parital/foot.php')
 <script>
     $(document).ready(function() {
         fetch_data()
+        ttt = 0
+        // $('.check').each(function(){
+        //     a = $(this).attr('s_id')
+        //     console.log(a)
+        // })
+        // $(document).on('click', '#ttt', function() {
+
+
+        // })
+        // $('#ttt').html(ttt);
 
         function fetch_data() {
             $.ajax({
@@ -169,6 +181,17 @@ include('../Parital/foot.php')
                     if (dt != '') {
                         $('#data').html(dt)
                         //alert(dt)
+                        $('.check').each(function() {
+                            if ($(this).prop("checked") == true) {
+                                s_id = $(this).attr('s_id');
+                                // dem = dem + 1;
+                                tiensp = parseInt($('#tongtien' + s_id).html())
+                                ttt = ttt + tiensp;
+
+                            }
+
+                        })
+                        $('#ttt').html(ttt)
                     }
                     if (dt == '') {
                         $('#tbl_data').html('<div><label for="">Giỏ hàng của bạn còn trống</label><br><a href="index.php"><button class="btn btn-success">Mua ngay</button></a></div>')
@@ -177,6 +200,7 @@ include('../Parital/foot.php')
             })
 
         }
+
 
 
         $(document).on('click', '.delete', function() {
@@ -320,7 +344,7 @@ include('../Parital/foot.php')
 
             })
         })
-        
+
         tong = 0;
         ttt = 0;
         // click alll
@@ -328,7 +352,7 @@ include('../Parital/foot.php')
             ttt = 0;
             if ($(this).is(':checked')) {
                 $(this).attr('checked', true)
-             
+
                 $('#checkbox_all').prop("checked", true)
                 // console.log('1')
                 $('.check').each(function() {
@@ -337,18 +361,18 @@ include('../Parital/foot.php')
                     tongthanhtoan(s_id)
 
                 })
-                $('#buying').attr("disabled",false)
+                $('#buying').attr("disabled", false)
             } else {
                 $(this).removeAttr('checked')
                 $('#checkbox_all').prop("checked", false)
-               
+
                 $('.check').each(function() {
                     $(this).prop("checked", false)
                     ttt = 0;
                     $('#ttt').html(ttt)
 
                 })
-                $('#buying').attr("disabled",true)
+                $('#buying').attr("disabled", true)
             }
         })
 
@@ -363,7 +387,7 @@ include('../Parital/foot.php')
                     tongthanhtoan(s_id)
 
                 })
-                $('#buying').attr("disabled",false)
+                $('#buying').attr("disabled", false)
             } else {
                 $(this).removeAttr('checked')
                 $('#checkall').prop("checked", false)
@@ -373,7 +397,7 @@ include('../Parital/foot.php')
                     $('#ttt').html(ttt)
 
                 })
-                $('#buying').attr("disabled",true)
+                $('#buying').attr("disabled", true)
             }
         })
         // hàm tính tổng
@@ -400,14 +424,14 @@ include('../Parital/foot.php')
 
                 if ($(this).prop('checked') == true) {
                     dem = dem + 1;
-                    
+
 
                 } else {
                     dem = dem - 1
                     // console.log(dem)
                 }
 
-            }) 
+            })
             console.log(dem)
             console.log(check_length)
             // nêu đếm bằng tổng số checkbox thì checkbox đầu checked
@@ -419,10 +443,10 @@ include('../Parital/foot.php')
                 $('#checkbox_all').prop('checked', false)
 
             }
-            if(dem == -check_length){
-                $('#buying').attr("disabled",true)
-            }else{
-                $('#buying').attr("disabled",false)
+            if (dem == -check_length) {
+                $('#buying').attr("disabled", true)
+            } else {
+                $('#buying').attr("disabled", false)
             }
             ttt = 0;
 
@@ -507,7 +531,7 @@ include('../Parital/foot.php')
                 }
             }
         })
-
+        ttt = 0;
 
 
 

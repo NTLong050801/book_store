@@ -87,10 +87,35 @@ require('./function.php')
         margin-bottom: 200px;
         border-top: #ee4d2d solid;
     }
-    .sluongdh_xn{
-        color: #ee4d2d ;
+
+    .sluongdh_xn {
+        color: #ee4d2d;
     }
+
+    .star_color {
+        color: yellow;
+        /* background-color: yellow;  */
+        /* border: black 1px solid; */
+    }
+    .chose_cmt{
+        text-align: center;
+    }
+    .chose_cmt span {
+        cursor: pointer;
+        border-radius: 15px ;
+        border: black 2px solid;
+        margin: 10px;
+    }
+    .click_chose_cmt{
+        background-color:#ee4d2d ;
+        color: #fff ;
+    }
+
 </style>
+<?php
+$email = $_SESSION['check_login'];
+$k_id = Khach($email);
+?>
 <link rel="stylesheet" href="../CSS/banking.css">
 <div id="wrapper" style="overflow: scroll;height:100%;padding-left: 0;">
     <div id="page-content-wrapper">
@@ -119,7 +144,9 @@ require('./function.php')
                     <div class="container main-content">
                         <div class="row" style="margin-top: 40px;">
                             <div class="col-2 view maucam"><span>Tất cả</span></div>
-                            <div class="col-2 view"><span>Chờ xác nhận</span><span class='sluongdh_xn'><?php echo (count_status0(1)) ?></span></div>
+                            <div class="col-2 view"><span>Chờ xác nhận</span>
+                                <p class='sluongdh_xn'><?php echo count_status0($k_id) ?></p>
+                            </div>
                             <div class="col-2 view"><span>Chờ lấy hàng</span></div>
                             <div class="col-2 view"><span>Đang giao</span></div>
                             <div class="col-2 view"><span>Đã giao</span></div>
@@ -157,6 +184,24 @@ require('./function.php')
     </div>
 </div>
 
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Đánh giá sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="container modal-body1">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trờ lại</button>
+                <button type="button" id="btn_hoanthanh" class="btn btn-primary">Hoàn thành</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php
 include('../Parital/foot.php')
 ?>
@@ -164,24 +209,6 @@ include('../Parital/foot.php')
 <!-- <script src="../JS/Khach_JS/banking.js"></script> -->
 <script>
     $(document).ready(function() {
-        $('.view').click(function() {
-            $('.view').removeClass('maucam')
-            $(this).addClass('maucam')
-        })
-        $('.view span').click(function() {
-            view = $(this).html()
-            if (view == 'Tất cả') {
-                $('.search').css("display", 'block')
-            } else {
-                $('.search').css("display", 'none')
-            }
-            action = view;
-            load_data()
-        })
-
-
-
-
         action = "Tất cả"
         load_data()
 
@@ -199,6 +226,20 @@ include('../Parital/foot.php')
                 }
             })
         }
+        $('.view').click(function() {
+            $('.view').removeClass('maucam')
+            $(this).addClass('maucam')
+        })
+        $('.view span').click(function() {
+            view = $(this).html()
+            if (view == 'Tất cả') {
+                $('.search').css("display", 'block')
+            } else {
+                $('.search').css("display", 'none')
+            }
+            action = view;
+            load_data()
+        })
 
         $(document).on('keypress', '#search_ip', function(e) {
             if (e.which == '13') {
@@ -225,9 +266,6 @@ include('../Parital/foot.php')
             $('#exampleModal').modal('show')
             hd_id = $(this).attr('hd_id')
             $('#xnhuy').click(function() {
-                
-                //    alert(hd_id)
-                // action = "update"
                 $.ajax({
                     url: "process_dh.php",
                     method: "POST",
@@ -238,25 +276,96 @@ include('../Parital/foot.php')
                     success: function(dt) {
                         $('.data').html(dt)
                         $('#exampleModal').modal('hide')
+
                         sluong_st0 = $('.mualai').attr('sluong_st0');
-                        if(sluong_st0 != '(undefined)'){
+                        if (sluong_st0 != '(undefined)' && sluong_st0 != '0') {
                             $('.sluongdh_xn').html(sluong_st0)
-                        }else{
+                        } else {
                             $('.sluongdh_xn').html('')
                         }
-                        
+
                     }
                 })
 
             })
         })
 
+        $(document).on('click', '.btn_mualai', function() {
+            hd_id = $(this).attr('hd_id')
+            action = "Mua lại"
+            // alert(hd_id)
+            $.ajax({
+                url: "process_dh.php",
+                method: "POST",
+                data: {
+                    hd_id: hd_id,
+                    action: action
+                },
+                success: function(dt) {
+                    // alert(dt)
+                }
+            })
+        })
 
-        // $('.huydh').click(function(){
-        //     hd_id = $(this).attr('hd_id')
-        //     alert(hd_id)
-        // })
+        $(document).on('click', '.danhgia', function() {
+            $('#exampleModal1').modal('show')
+            hd_id = $(this).attr('hd_id');
+            // alert(hd_id)
+            action = "Đánh giá";
+            $.ajax({
+                url: "process_dh.php",
+                method: "POST",
+                data: {
+                    action: action,
+                    hd_id: hd_id
+                },
+                success: function(dt) {
+                    $('.modal-body1').html(dt)
+                    $('.star').addClass('star_color')
+                    $('#btn_hoanthanh').attr('hd_id',hd_id)
+                    // $('.star span i').addClass('star')
+                }
+            })
+        })
+        $(document).on('click', '.star', function() {
+            val = $(this).attr('val');
+            s_id = $(this).attr('s_id');
+
+            $('.star'+s_id).removeClass('star_color')
+            for(i =1 ; i <=val ; i++){
+                $('.star'+s_id+''+'.star'+i).addClass('star_color')
+            }
+            action = "cmt_page";
+            $.ajax({
+                url : "process_dh.php",
+                method : "POST",
+                data : {
+                    val : val,
+                    action : action
+                },success : function(dt){
+                    $('.cmt_page'+s_id).html(dt)
+                }
+            })
+        })
+        $(document).on('click','.chose_cmt span',function(){
+            if($(this).hasClass('click_chose_cmt')){
+                $(this).removeClass('click_chose_cmt')
+            }else{
+                $(this).addClass('click_chose_cmt')
+            }
         
+        })
+        // [
+        //     [s_id , hd_id , k_id , sao , cmt],
+        //     [s_id , hd_id , k_id , sao , cmt]
+
+        // ]
+        $(document).on('click','#btn_hoanthanh',function(){
+            // alert('ok');
+            rc = [];
+        })
+     
+
 
 
 

@@ -14,9 +14,15 @@ $k_id = Khach($email);
 $qr = GioHang_Sach($k_id);
 if ($action == 'get_data') {
     while ($row = mysqli_fetch_assoc($qr)) { ?>
-
         <tr>
-            <td scope="col"><input name="check[]" value="<?php echo $row['s_id'] ?>" class="check" s_id=<?php echo $row['s_id'] ?> type="checkbox"></td>
+            <td scope="col"><input name="check[]" value="<?php echo $row['s_id'] ?>" <?php if (isset($_SESSION['cb_mualai'])) {
+                                                                                            for ($i = 0; $i < sizeof($_SESSION['cb_mualai']); $i++) {
+                                                                                                if ($row['s_id'] == $_SESSION['cb_mualai'][$i]) {
+                                                                                                    echo 'checked = true';
+                                                                                                }
+                                                                                            }
+                                                                                           
+                                                                                        } ?> class="check" s_id=<?php echo $row['s_id'] ?> type="checkbox"></td>
             <td scope="col">
                 <a href="./book.php?s_id=<?php echo $row['s_id'] ?>" style="text-decoration: none;">
                     <span id="img" style="width:20%;"><img style="max-height:100px" class="img-fluid" src="../Image/VanHoc/<?php echo $row['anh'] ?>" alt=""></span>
@@ -38,6 +44,7 @@ if ($action == 'get_data') {
 
     <?php
     }
+    unset($_SESSION['cb_mualai']);
 }
 
 if ($action == 'delete') {
@@ -84,7 +91,7 @@ if ($action == "update_khach") {
     $k_sdt = $_POST['k_sdt'];
     $k_diachi = $_POST['k_diachi'];
     $sql = "UPDATE khach set k_ten = '$k_ten',k_sdt = '$k_sdt', k_diachi = '$k_diachi' where k_id = '$k_id' ";
-    $qr = mysqli_query($conn,$sql);
+    $qr = mysqli_query($conn, $sql);
 }
 
 ?>
