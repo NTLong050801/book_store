@@ -5,54 +5,6 @@ require('./function.php')
 ?>
 <link rel="stylesheet" href="../CSS/book.css">
 <div id="wrapper" style="overflow: scroll;height:100%;padding-left: 0;">
-  <style>
-    .color_star {
-      color: #ee4d2d;
-      margin: 5px
-    }
-
-    .k_id {
-      text-decoration: none;
-      color: rgba(0, 0, 0, .87);
-      font-size: .75rem;
-    }
-
-    .star_cmt_k {
-      --brand-primary-color: #d0011b;
-      --brand-primary-light-color: rgba(208, 1, 27, 0.08);
-      margin-top: 0.375rem;
-      font-size: 12px;
-
-    }
-
-    .nd_cmt {
-      margin-top: 0.875rem;
-      margin-bottom: 0.875rem;
-      /* display: flex; */
-      /* flex-direction: column; */
-      /* flex: 1;
-    white-space: pre-wrap; */
-      word-break: break-word
-    }
-
-    .date_cmt {
-      margin-top: 0.75rem;
-      font-size: .75rem;
-      color: rgba(0, 0, 0, .54);
-      margin-bottom: 10px;
-
-    }
-
-    .color_star_k {
-      background-color: #ee4d2d;
-      color: #fff;
-      /* border: #ee4d2d solid 1px; */
-    }
-  </style>
-  <!-- Sidebar -->
-
-  <!-- /#sidebar-wrapper -->
-
   <!-- Page Content -->
   <div id="page-content-wrapper">
     <div class="container-fluid" style="background-color: rgb(148 122 126 / 8%);">
