@@ -193,7 +193,7 @@
       color: red;
   }
   .spkhac {
-      margin-top: 40px;
+      margin-top: 100px;
   }
   #back:hover{
     cursor: pointer;
@@ -220,5 +220,32 @@
     cursor: pointer;
     /* background-color: red; */
     color: red;
+  }
+  .danhgiasp{
+    margin-top: 50px;
+  }
+  .alldiem{
+    margin: 10px;
+    padding: 5px;
+    width: 20%;
+    float: left;
+    
+    text-align: center;
+  }
+  .alldiem .diem{
+    color: red;
+  }
+  .diem span {
+    font-size: 22px;
+   
+  }
+  .star_ed{
+    text-align: center;
+    background-color: #ccc;
+  }
+  .star_ed .row .col-2 {
+    margin: 10px;
+    border: black 1px solid;
+    cursor: pointer;
   }
  

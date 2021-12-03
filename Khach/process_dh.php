@@ -125,7 +125,14 @@ if (isset($show)) {
                         <button class="btn btn-danger huydh" hd_id=<?php echo $row['hd_id'] ?>>Hủy đơn</button>
                     <?php  } ?>
                     <?php if ($row['status'] == '3') { ?>
-                        <button class="btn btn-danger danhgia" hd_id=<?php echo $row['hd_id'] ?>>Đánh giá sản phẩm</button>
+                        <button class="btn btn-danger danhgia" hd_id=<?php echo $row['hd_id'] ?>><?php
+                            $qr = Slt_Danhgia($k_id, $hd_id);
+                            if (mysqli_num_rows($qr) > 0) {
+                                echo "Đã đánh giá";
+                            } else {
+                                echo "Đánh giá sản phẩm";
+                            }
+                            ?></button>
                     <?php  } ?>
 
                 </div>
@@ -163,7 +170,7 @@ if ($action == "Đánh giá") {
     $qr = Chitiethd($hd_id, $k_id);
     while ($row = mysqli_fetch_assoc($qr)) { ?>
         <br>
-        <div class="sp_danhgia">
+        <div class="sp_danhgia" s_id='<?php echo $row['s_id'] ?>'>
             <img src="../Image/VanHoc/<?php echo $row['anh'] ?>" style="height: 70px;" class="img-fluid" alt="">
             <span class="s_ten"><?php echo $row['s_ten'] ?></span>
         </div>
@@ -177,7 +184,7 @@ if ($action == "Đánh giá") {
         </div>
         <br>
         <div class="cmt_page<?php echo $row['s_id'] ?>" style="height:100px">
-        <div class="row chose_cmt">
+            <div class="row chose_cmt">
                 <span class="col-4 ">Chất lượng tuyệt vời</span>
                 <span class="col-3">Đóng gói đẹp</span>
                 <span class="col-4">Phục vụ nhiệt tình</span>
@@ -249,6 +256,22 @@ if ($action == 'cmt_page') {
             </div>
 <?php
     }
+}
+if ($action == 'update đánh giá') {
+    $hd_id = $_POST['hd_id'];
+    $arr_all = $_POST['arr_all'];
+    //print_r($arr_all) ;
+    for ($i = 0; $i < sizeof($arr_all); $i++) {
+        $s_id = $arr_all[$i][0];
+        $sao = $arr_all[$i][1];
+        $cmt = $arr_all[$i][2];
+        // echo $cmt;
+        $qr =  InsertDanhGia($k_id, $hd_id, $s_id, $sao, $cmt);
+        // if($qr){
+        //     echo $s_id;
+        // }
+    }
+    
 }
 
 

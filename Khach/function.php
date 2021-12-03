@@ -199,6 +199,69 @@ function count_status0($k_id){
     }
    
 }
+function InsertDanhGia($k_id,$hd_id,$s_id,$sao,$cmt){
+    global $conn;
+    $date = date("Y-m-d");
+    $sql = "INSERT into danhgia values ('$k_id','$hd_id','$s_id','$sao','$date','$cmt') ";
+    return mysqli_query($conn,$sql);
+}
 
+function Slt_Danhgia($k_id,$hd_id){
+    global $conn;
+    $sql = "SELECT * from danhgia where k_id = $k_id and hd_id = '$hd_id'";
+     return mysqli_query($conn,$sql);
+}
+
+function count_sao_sach($s_id,$sao){
+    global $conn;
+    $sql = "SELECT count(hd_id) as sluong_sao from danhgia where s_id = '$s_id' and sao = '$sao'";
+    $qr = mysqli_query($conn,$sql);
+    if(mysqli_num_rows($qr) > 0){
+        $row = mysqli_fetch_assoc($qr);
+        return $row['sluong_sao'];
+    }else{
+        return 0;
+    }
+}
+
+function count_cmt($s_id){
+    global $conn;
+    $sql = "SELECT count(hd_id) as sluong_sao from danhgia where s_id = '$s_id' and cmt != ''";
+    $qr = mysqli_query($conn,$sql);
+    if(mysqli_num_rows($qr) > 0){
+        $row = mysqli_fetch_assoc($qr);
+        return $row['sluong_sao'];
+    }else{
+        return 0;
+    }
+}
+
+function slt_cmt($s_id,$limit){
+    global $conn;
+    $sql = "SELECT * from danhgia,khach where danhgia.k_id = khach.k_id 
+    and danhgia.s_id = '$s_id' and cmt != '' order by danhgia.hd_id DESC LIMIT $limit,5";
+    return mysqli_query($conn,$sql);
+}
+
+
+function avg_sao($s_id){
+    global $conn;
+    $sql = "SELECT avg(sao) as avg_sao from danhgia where s_id = '$s_id'";
+    $qr = mysqli_query($conn,$sql);
+    $row = mysqli_fetch_assoc($qr);
+    if($row['avg_sao']> 0){
+       
+        return number_format($row['avg_sao'],1,'.','');
+    }else{
+        return number_format(5,1,'.','');
+    }
+}
+
+function sao_Khach($s_id,$sao,$limit){
+    global $conn;
+    $sql = "SELECT * from danhgia,khach where danhgia.k_id = khach.k_id 
+    and danhgia.s_id = '$s_id' and sao = '$sao' order by hd_id DESC LIMIT $limit,5";
+    return mysqli_query($conn,$sql);
+}
 
 

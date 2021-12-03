@@ -5,7 +5,50 @@ require('./function.php')
 ?>
 <link rel="stylesheet" href="../CSS/book.css">
 <div id="wrapper" style="overflow: scroll;height:100%;padding-left: 0;">
+  <style>
+    .color_star {
+      color: #ee4d2d;
+      margin: 5px
+    }
 
+    .k_id {
+      text-decoration: none;
+      color: rgba(0, 0, 0, .87);
+      font-size: .75rem;
+    }
+
+    .star_cmt_k {
+      --brand-primary-color: #d0011b;
+      --brand-primary-light-color: rgba(208, 1, 27, 0.08);
+      margin-top: 0.375rem;
+      font-size: 12px;
+
+    }
+
+    .nd_cmt {
+      margin-top: 0.875rem;
+      margin-bottom: 0.875rem;
+      /* display: flex; */
+      /* flex-direction: column; */
+      /* flex: 1;
+    white-space: pre-wrap; */
+      word-break: break-word
+    }
+
+    .date_cmt {
+      margin-top: 0.75rem;
+      font-size: .75rem;
+      color: rgba(0, 0, 0, .54);
+      margin-bottom: 10px;
+
+    }
+
+    .color_star_k {
+      background-color: #ee4d2d;
+      color: #fff;
+      /* border: #ee4d2d solid 1px; */
+    }
+  </style>
   <!-- Sidebar -->
 
   <!-- /#sidebar-wrapper -->
@@ -17,7 +60,7 @@ require('./function.php')
         <div class="col-12">
           <nav class="navbar navbar-light">
             <div class="container-fluid">
-            <a href="index.php"><img src="../Image/logo.png" class="container img-fluid" alt="" style="height: 70px;"></a>
+              <a href="index.php"><img src="../Image/logo.png" class="container img-fluid" alt="" style="height: 70px;"></a>
               <form class="d-flex" style="margin-left: 50%;">
                 <input require id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
                 <button id="btn_search" class="btn btn-outline-success" type="button">Tìm</button>
@@ -27,7 +70,7 @@ require('./function.php')
               </form>
               <form class="d-flex">
                 <a id="profile_tch" href="#" class="navbar-brand">Tài khoản</a>
-                <a href="donhang.php" class="navbar-brand" >Đơn mua</a>
+                <a href="donhang.php" class="navbar-brand">Đơn mua</a>
 
                 <a id="profile_tch" href="cart.php" class="navbar-brand"><i class="fas fa-shopping-cart fa-2x"></i></a>
                 <a href="../Login/logout.php" class="navbar-brand">Đăng xuất</a>
@@ -42,35 +85,34 @@ require('./function.php')
             $sosach1trang = 6;
             $_SESSION['sotrang_moinhat'] = ceil(count_alls() / $sosach1trang);
             $_SESSION['sotrang_tl'] = ceil(count_posts($row['tl_id']) / $sosach1trang);
-            if(!isset($_SESSION['daxem'])){
-              $_SESSION['daxem'] =[];
+            if (!isset($_SESSION['daxem'])) {
+              $_SESSION['daxem'] = [];
             };
-            $tt = ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100 );
-            $sp = [$s_id,$row['anh'],$tt];
-            $_SESSION['daxem'][]=$sp;
+            $tt = ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100);
+            $sp = [$s_id, $row['anh'], $tt];
+            $_SESSION['daxem'][] = $sp;
             // var_dump($_SESSION['daxem']);
-            
+
             ?>
-             <?php 
-                          if(isset($_POST['submit'])){
-                            $sluong = $_POST['sluong'];
-                            $gia = ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100 );
-                            $k_email = $_SESSION['check_login'];
-                            $k_id = Khach($k_email);
-                            $check = check_GioHang($k_id,$s_id);
-                            if(mysqli_num_rows($check) > 0){
-                              $row = mysqli_fetch_assoc($check);
-                              $sluong = $sluong + $row['gh_soluong'];
-                              if($sluong < 10){
-                                update_Gh_Soluong($k_id,$s_id,$sluong);
-                              }
-                          }
-                          else{
-                              $insert= insertCart($k_id,$s_id,$sluong,$tt);
-                          } 
-                            header('location:cart.php');
-                          }
-                      ?>
+            <?php
+            if (isset($_POST['submit'])) {
+              $sluong = $_POST['sluong'];
+              $gia = ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100);
+              $k_email = $_SESSION['check_login'];
+              $k_id = Khach($k_email);
+              $check = check_GioHang($k_id, $s_id);
+              if (mysqli_num_rows($check) > 0) {
+                $row = mysqli_fetch_assoc($check);
+                $sluong = $sluong + $row['gh_soluong'];
+                if ($sluong < 10) {
+                  update_Gh_Soluong($k_id, $s_id, $sluong);
+                }
+              } else {
+                $insert = insertCart($k_id, $s_id, $sluong, $tt);
+              }
+              header('location:cart.php');
+            }
+            ?>
             <div class="title">
               <a href="index.php">Trang chủ</a>
               <i class="fas fa-chevron-right"></i>
@@ -131,9 +173,9 @@ require('./function.php')
                       <span style="color: #827b66;margin-left:20px"><?php echo $row['soluong'] ?> sản phẩm có sẵn</span>
                     </div>
                     <div style="margin-top: 50px;">
-                      <button id="add_cart" s_id = <?php echo $s_id ?> tt = <?php echo $tt ?> class="btn btn-danger" type="button">Thêm vào giỏ hàng</button>
-                     <button name="submit" class="btn btn-success" type="submit" style="margin-left: 30px;">Mua ngay</button>
-                     
+                      <button id="add_cart" s_id=<?php echo $s_id ?> tt=<?php echo $tt ?> class="btn btn-danger" type="button">Thêm vào giỏ hàng</button>
+                      <button name="submit" class="btn btn-success" type="submit" style="margin-left: 30px;">Mua ngay</button>
+
                     </div>
                   </form>
                   <div class="row thongdiep">
@@ -212,6 +254,37 @@ require('./function.php')
 
                 </div>
                 <div class="danhgiasp">
+                  <div class="container star_ed">
+                    <div class="alldiem">
+                      <div class="diem"><span><?php echo avg_sao($s_id) ?></span> Trên 5</div>
+                      <div>
+                        <?php
+                        // $avg_sao = ceil(avg_sao($s_id));
+                        // for($i = 1;$i<=$avg_sao;$i++){
+                        //   // echo '<span style ="color: #ee4d2d;margin:5px"><i class="fas fa-star"></i></span>';
+                        // }
+                        ?>
+                        <span class="star_s1"><i class="fas fa-star"></i></span>
+                        <span class="star_s2"><i class="fas fa-star"></i></span>
+                        <span class="star_s3"><i class="fas fa-star"></i></span>
+                        <span class="star_s4"><i class="fas fa-star"></i></span>
+                        <span class="star_s5"><i class="fas fa-star"></i></span>
+
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-2 star_cmt" sao='5'><span>5 Sao(<?php echo count_sao_sach($s_id, 5) ?>)</span></div>
+                      <div class="col-2 star_cmt" sao='4'><span>4 Sao(<?php echo count_sao_sach($s_id, 4) ?>)</span></div>
+                      <div class="col-2 star_cmt" sao='3'><span>3 Sao(<?php echo count_sao_sach($s_id, 3) ?>)</span></div>
+                      <div class="col-2 star_cmt" sao='2'><span>2 Sao(<?php echo count_sao_sach($s_id, 2) ?>)</span></div>
+                      <div class="col-2 star_cmt" sao='1'><span>1 Sao(<?php echo count_sao_sach($s_id, 1) ?>)</span></div>
+                      <br>
+                      <div class="col-2 star_cmt" sao='0'><span>Có bình luận(<?php echo count_cmt($s_id) ?>)</span></div>
+                    </div>
+                  </div>
+                  <div class="comment">
+
+                  </div>
 
                 </div>
 
@@ -297,18 +370,63 @@ require('./function.php')
   </div>
   <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="background-color: #ee4d2d;color:#fff; border-radius: 25px;">
-            <br>
-            <div class="modal-body3" style="text-align: center;">
-                <h4></h4>
-            </div>
-            <br>
+      <div class="modal-content" style="background-color: #ee4d2d;color:#fff; border-radius: 25px;">
+        <br>
+        <div class="modal-body3" style="text-align: center;">
+          <h4></h4>
         </div>
+        <br>
+      </div>
     </div>
-</div>
+  </div>
   <?php
   include('../Parital/foot.php')
   ?>
 
 </div>
 <script src="../JS/Khach_JS/book.js"></script>
+<script>
+  $(document).ready(function() {
+    a = Math.round($('.diem span').html())
+    for (i = 1; i <= a; i++) {
+      $('.star_s' + i).addClass('color_star')
+    }
+    sao = 5
+    load_cmt()
+
+    $(document).on('click', '.page-item', function() {
+      tranghientai = $(this).attr('trang');
+      //$('.page-item').removeClass('active')
+     
+      load_cmt(sao, tranghientai)
+      // $(this).addClass('active')
+    })
+
+    $('.star_cmt').click(function() {
+      sao = $(this).attr('sao');
+      $('.star_cmt').removeClass('color_star_k')
+      $(this).addClass('color_star_k')
+      load_cmt(sao);
+    })
+
+
+
+    function load_cmt(sao, tranghientai) {
+      // action = "5sao";
+      s_id = $('#add_cart').attr('s_id');
+      $.ajax({
+        url: "comment.php",
+        method: "POST",
+        data: {
+          s_id: s_id,
+          sao: sao,
+          tranghientai: tranghientai
+        },
+        success: function(dt) {
+          $('.comment').html(dt)
+        }
+      })
+
+    }
+  })
+</script>

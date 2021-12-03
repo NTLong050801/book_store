@@ -97,20 +97,22 @@ require('./function.php')
         /* background-color: yellow;  */
         /* border: black 1px solid; */
     }
-    .chose_cmt{
+
+    .chose_cmt {
         text-align: center;
     }
+
     .chose_cmt span {
         cursor: pointer;
-        border-radius: 15px ;
+        border-radius: 15px;
         border: black 2px solid;
         margin: 10px;
     }
-    .click_chose_cmt{
-        background-color:#ee4d2d ;
-        color: #fff ;
-    }
 
+    .click_chose_cmt {
+        background-color: #ee4d2d;
+        color: #fff;
+    }
 </style>
 <?php
 $email = $_SESSION['check_login'];
@@ -222,6 +224,11 @@ include('../Parital/foot.php')
                 },
                 success: function(dt) {
                     $('.data').html(dt)
+                    $('.danhgia').each(function(){
+                        if($(this).html() == "Đã đánh giá"){
+                            $(this).prop("disabled",true)
+                        }
+                    })
                     // alert(dt)
                 }
             })
@@ -322,7 +329,7 @@ include('../Parital/foot.php')
                 success: function(dt) {
                     $('.modal-body1').html(dt)
                     $('.star').addClass('star_color')
-                    $('#btn_hoanthanh').attr('hd_id',hd_id)
+                    $('#btn_hoanthanh').attr('hd_id', hd_id)
                     // $('.star span i').addClass('star')
                 }
             })
@@ -331,41 +338,83 @@ include('../Parital/foot.php')
             val = $(this).attr('val');
             s_id = $(this).attr('s_id');
 
-            $('.star'+s_id).removeClass('star_color')
-            for(i =1 ; i <=val ; i++){
-                $('.star'+s_id+''+'.star'+i).addClass('star_color')
+            $('.star' + s_id).removeClass('star_color')
+            for (i = 1; i <= val; i++) {
+                $('.star' + s_id + '' + '.star' + i).addClass('star_color')
             }
             action = "cmt_page";
             $.ajax({
-                url : "process_dh.php",
-                method : "POST",
-                data : {
-                    val : val,
-                    action : action
-                },success : function(dt){
-                    $('.cmt_page'+s_id).html(dt)
+                url: "process_dh.php",
+                method: "POST",
+                data: {
+                    val: val,
+                    action: action
+                },
+                success: function(dt) {
+                    $('.cmt_page' + s_id).html(dt)
                 }
             })
         })
-        $(document).on('click','.chose_cmt span',function(){
-            if($(this).hasClass('click_chose_cmt')){
+        $(document).on('click', '.chose_cmt span', function() {
+            if ($(this).hasClass('click_chose_cmt')) {
                 $(this).removeClass('click_chose_cmt')
-            }else{
+            } else {
                 $(this).addClass('click_chose_cmt')
             }
-        
-        })
-        // [
-        //     [s_id , hd_id , k_id , sao , cmt],
-        //     [s_id , hd_id , k_id , sao , cmt]
 
-        // ]
-        $(document).on('click','#btn_hoanthanh',function(){
-            // alert('ok');
-            rc = [];
         })
-     
 
+        $(document).on('click', '#btn_hoanthanh', function() {
+            // lấy dữ liệu [k_id,h_id,s_id] = json
+            //dùng vòng for lấy số sao của mỗi sách và cmt của môi sách (lưu vào 1 mảng)
+            hd_id = $(this).attr('hd_id');
+            // alert(hd_id)
+            s_ids = []
+            cmts = []
+            $('.sp_danhgia').each(function() {
+                s_ids.push($(this).attr('s_id'))
+                cmt = $('#input' + $(this).attr('s_id')).val();
+                cmts.push(cmt)
+            })
+            stars = [];
+            for (i = 0; i < s_ids.length; i++) {
+                dem = 0;
+                $('.star' + s_ids[i]).each(function() {
+                    if ($(this).hasClass('star_color')) {
+                        dem = dem + 1;
+                    }
+                })
+                stars.push(dem)
+            }
+            // alert(stars)
+            data = [s_ids, stars, cmts]
+            //console.log(data)
+            arr_all = []
+            for (i = 0; i < s_ids.length; i++) {
+                arr_chua = []
+                for (j = 0; j < data.length; j++) { // chạy 3 lần
+                    arr_chua.push(data[j][i])
+                }
+                arr_all.push(arr_chua)
+            }
+            // console.log(arr_all)
+            action = "update đánh giá"
+            $.ajax({
+                url: 'process_dh.php',
+                method: "POST",
+                data: {
+                    arr_all: arr_all,
+                    hd_id: hd_id,
+                    action: action
+                },
+                success: function(dt) {
+                    $('#exampleModal1').modal('hide')
+                    action = "Đã giao";
+                    load_data()
+                }
+            })
+
+        })
 
 
 
