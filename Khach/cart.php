@@ -107,14 +107,14 @@ include('./function.php');
 
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
+                                                        <div class="modal-dialog modal-xl">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="exampleModalLabel">Sản phẩm tương tự</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
-                                                                <div class="modal-body modal-body-sptt">
-                                                                  
+                                                                <div class="modal-body modal-body-sptt row d-flex justify-content-around">
+
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -139,6 +139,68 @@ include('./function.php');
                         </table>
                         <!-- </form> -->
                     </div>
+
+
+                    <!-- SP khác -->
+                    <div class="container" style="margin-bottom: 10rem;;">
+                        <div class="row">
+                            <h3 class="mt-3 mb-3">Sản phẩm khác</h3>
+                            <?php
+                            $spKhac = mysqli_query($conn, "SELECT * FROM sach ORDER BY rand() limit 5");
+                            if (mysqli_num_rows($spKhac) > 0) {
+                                while ($rowSPKhac = mysqli_fetch_assoc($spKhac)) {
+                            ?>
+                                    <div class="card ms-3" style="width: 18%;">
+                                        <img src="../Image/VanHoc/<?php echo $rowSPKhac['anh'] ?>" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo $rowSPKhac['s_ten'] ?></h5>
+                                            <p class="card-text"><?php echo $rowSPKhac['s_gia'] - $rowSPKhac['s_gia'] * $rowSPKhac['s_giamgia'] / 100 ?></p>
+                                            <a href="./book.php?s_id=<?php echo $rowSPKhac['s_id'] ?>" class="btn btn-primary">Xem</a>
+                                        </div>
+                                    </div>
+
+
+                            <?php
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <!-- SP khác -->
+
+
+                    <!-- SP đã xem -->
+                    <div class="container" style="margin-bottom: 10rem;;">
+                        <div class="row">
+                            <h3 class="mt-3 mb-3">Sản phẩm đã xem</h3>
+                            <?php
+                            $s_id = $_SESSION['sachID'.$s_id];
+                            $spKhac = mysqli_query($conn, "SELECT * FROM sach where s_id = '$s_id' limit 5");
+                            if (mysqli_num_rows($spKhac) > 0) {
+                                while ($rowSPKhac = mysqli_fetch_assoc($spKhac)) {
+                            ?>
+                                    <div class="card ms-3" style="width: 18%;">
+                                        <img src="../Image/VanHoc/<?php echo $rowSPKhac['anh'] ?>" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo $rowSPKhac['s_ten'] ?></h5>
+                                            <p class="card-text"><?php echo $rowSPKhac['s_gia'] - $rowSPKhac['s_gia'] * $rowSPKhac['s_giamgia'] / 100 ?></p>
+                                            <a href="./book.php?s_id=<?php echo $rowSPKhac['s_id'] ?>" class="btn btn-primary">Xem</a>
+                                        </div>
+                                    </div>
+
+
+                            <?php
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <!-- SP đã xem -->
+
+
+
+
+                    <!-- Tính tiền -->
                     <div class="container">
                         <div class="d-flex mb-3 totalSP">
                             <div class="p-2 col-1"><input type="checkbox" name="checkAll" class="checkAll"></div>
@@ -169,15 +231,17 @@ include('./function.php');
                             </div>
                             <!-- Delete modal -->
                             <div class="p-2 col-2">Tổng tiền : <span id="tongTienAll">0đ</span></div>
-                            <div class="p-2 col-2"><button disabled id="btnBuys" class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></div>
+                            <div class="p-2 col-2"><a href="./checkout.php"><button disabled id="btnBuys" class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></a></div>
                         </div>
                     </div>
+                    <!-- Tính tiền -->
                 </div>
             </div>
 
         </div>
     </div>
 </div>
+
 
 
 <?php
@@ -212,9 +276,27 @@ include('../Parital/foot.php')
             })
             // console.log('Minhhn');
         })
-        
 
-        $('.btnXoa').click(function() {
+        $(document).on('click', '.page-current', function() {
+            current_page = $(this).text();
+            // alert(current_page);
+            tl_id = $(this).attr('tl_id');
+            action = "spTuongTu";
+            $.ajax({
+                url: "./cart_action.php",
+                method: "POST",
+                data: {
+                    tl_id: tl_id,
+                    action: action,
+                    trangHienTai: current_page
+                },
+                success: function(dt) {
+                    $('.modal-body-sptt').html(dt);
+                }
+            })
+        })
+
+        $(document).on('click', '.btnXoa', function() {
             var btnXoa = this;
             s_id = $(this).attr('s_id');
             k_id = $(this).attr('k_id');
@@ -230,11 +312,30 @@ include('../Parital/foot.php')
                 success: function(dt) {
                     $(btnXoa).closest('tr').fadeOut(500, function() {
                         $(this).remove();
+
+                        tongThanhToan = 0;
+                        $('.checkSP').each(function() {
+                            if ($(this).is(':checked')) {
+                                s_id = $(this).attr('s_id');
+                                tongTienSP = parseInt($('#soTien' + s_id).html());
+                                tongThanhToan = tongThanhToan + tongTienSP;
+
+                            } else {
+                                // console.log('Lỗi r');
+                            }
+
+                        })
+                        $('#tongTienAll').html(tongThanhToan + "đ");
                     })
+
+
                 }
             })
             // console.log('Minhhn');
         })
+
+
+
 
         $('.btnXoaAll').click(function() {
             // var btnXoaAll = this;

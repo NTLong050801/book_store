@@ -171,7 +171,6 @@ if (isset($_SESSION['action'])) {
                                 <div class="text_gg">
                                     <h6> <?php echo $row['s_giamgia'] . '%' ?></h6>
                                     <span>GIẢM</span>
-
                                 </div>
                             </div>
                         <?php

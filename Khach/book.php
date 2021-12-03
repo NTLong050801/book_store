@@ -38,22 +38,26 @@ require('./function.php');
           <div class="container main-content">
             <?php
             $s_id = $_GET['s_id'];
+
+            $_SESSION['sachID'.$s_id] = $s_id;
+
+
             $slt = SachById($s_id);
             $row = mysqli_fetch_assoc($slt);
             $sosach1trang = 6;
             $_SESSION['sotrang_moinhat'] = ceil(count_alls() / $sosach1trang);
             $_SESSION['sotrang_tl'] = ceil(count_posts($row['tl_id']) / $sosach1trang)
             ?>
-             <?php 
-                          if(isset($_POST['submit'])){
-                            $gh_soluong = $_POST['sluong'];
-                            $gia = ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100 );
-                            $k_email = $_SESSION['check_login'];
-                            $k_id = Khach($k_email);
-                            insertCart($k_id,$s_id,$gh_soluong,$gia);
-                            header('location:cart.php');
-                          }
-                      ?>
+            <?php
+            if (isset($_POST['submit'])) {
+              $gh_soluong = $_POST['sluong'];
+              $gia = ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100);
+              $k_email = $_SESSION['check_login'];
+              $k_id = Khach($k_email);
+              insertCart($k_id, $s_id, $gh_soluong, $gia);
+              header('location:cart.php');
+            }
+            ?>
             <div class="title">
               <a href="index.php">Trang chủ</a>
               <i class="fas fa-chevron-right"></i>
@@ -96,7 +100,7 @@ require('./function.php');
                   <div class="price">
                     <span style="font-size: 1rem;text-decoration: line-through;
                     color: #929292;margin-right: 10px;margin-left:30px"><?php echo $row['s_gia'] ?>đ</span>
-                    <span style="font-size: 1.875rem;color:red;font-weight: 500;"><?php echo  $tt =  ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100 )?>đ</span>
+                    <span style="font-size: 1.875rem;color:red;font-weight: 500;"><?php echo  $tt =  ($row['s_gia'] - ($row['s_gia'] * $row['s_giamgia']) / 100) ?>đ</span>
                     <?php
                     if ($row['s_giamgia'] > 0) {
                       echo '<span style="margin-left: 15px;font-size: .75rem;color: #fff;text-transform: uppercase;
@@ -114,9 +118,9 @@ require('./function.php');
                       <span style="color: #827b66;margin-left:20px"><?php echo $row['soluong'] ?> sản phẩm có sẵn</span>
                     </div>
                     <div style="margin-top: 50px;">
-                      <button id="add_cart" s_id = <?php echo $s_id ?> tt = <?php echo $tt ?> class="btn btn-danger" type="button">Thêm vào giỏ hàng</button>
-                     <button name="submit" class="btn btn-success" type="submit" style="margin-left: 30px;">Mua ngay</button>
-                     
+                      <button id="add_cart" s_id=<?php echo $s_id ?> tt=<?php echo $tt ?> class="btn btn-danger" type="button">Thêm vào giỏ hàng</button>
+                      <button name="submit" class="btn btn-success" type="submit" style="margin-left: 30px;">Mua ngay</button>
+
                     </div>
                   </form>
                   <div class="row thongdiep">
@@ -415,21 +419,21 @@ require('./function.php');
 
   //add cart
 
-  $('#add_cart').click(function(){
-      sluong = $('#sluong').val()
-      s_id = $(this).attr('s_id');
-      tt = $(this).attr('tt')
-      $.ajax({
-        url : "process_add_cart.php",
-        method:"POST",
-        data : {
-          sluong : sluong,
-          s_id : s_id,
-          tt : tt
-        },
-        success : function(dt){
-          alert(dt)
-        }
-      })
+  $('#add_cart').click(function() {
+    sluong = $('#sluong').val()
+    s_id = $(this).attr('s_id');
+    tt = $(this).attr('tt')
+    $.ajax({
+      url: "process_add_cart.php",
+      method: "POST",
+      data: {
+        sluong: sluong,
+        s_id: s_id,
+        tt: tt
+      },
+      success: function(dt) {
+        alert(dt)
+      }
+    })
   })
 </script>

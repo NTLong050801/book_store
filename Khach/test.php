@@ -1,313 +1,55 @@
-<title>Giỏ hàng</title>
-<?php
-include('../Parital/header.php');
-include('./function.php');
-?>
-<link rel="stylesheet" href="../CSS/cart.css">
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- Sidebar -->
-<!-- <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-                <h2>Khách</h2>
-            </li>
-            <li id="true" class="nav-item"> <a href="./index.php"><i class="fa fa-home"></i> Home</a> </li>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Document</title>
+</head>
 
-        </ul>
-    </div> -->
-<!-- /#sidebar-wrapper -->
-<div id="wrapper" style="overflow: scroll;height:100%;padding-left: 0;">
-    <div id="page-content-wrapper">
-        <div class="container-fluid" style="background-color: rgb(148 122 126 / 8%);">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="navbar navbar-light">
-                        <div class="container-fluid">
-                            <!-- <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fas fa-bars"></i></a> -->
-                            <form class="d-flex" style="margin-left: 50%;">
-                                <input require id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
-                                <button id="btn_search" class="btn btn-outline-success" type="button">Tìm</button>
-                                <div id="list_sach">
+<body>
 
-                                </div>
-                            </form>
-                            <form class="d-flex">
-                                <a id="profile_tch" href="#" class="navbar-brand">Tài khoản</a>
-                                <a id="profile_tch" href="cart.php" class="navbar-brand">Giỏ hàng</a>
-                                <a href="../Login/logout.php" class="navbar-brand">Đăng xuất</a>
-                            </form>
-                        </div>
-                    </nav>
-                    <div class="container main-content">
-                        <!-- <form action="" method="POST"> -->
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="col-md-1" scope="col"><input name="checkAll" class="checkAll" type="checkbox"></th>
-                                    <th class="col-md-5" scope="col">Sản phẩm</th>
-                                    <th class="col-md-1" scope="col">Đơn giá</th>
-                                    <th class="col-md-1" scope="col">Số lượng</th>
-                                    <th class="col-md-1" scope="col">Số tiền</th>
-                                    <th class="col-md-1" scope="col">Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bodyTable">
-                                <?php
-                                $email_kh = $_SESSION['check_login'];
-                                $sql = "SELECT  giohang.s_id as sachID, khach.k_id as idKhach, anh, s_ten, gh_soluong , tongtien FROM giohang, sach, khach where k_email = '$email_kh'  and giohang.k_id = khach.k_id and giohang.s_id = sach.s_id";
-                                $rs = mysqli_query($conn, $sql);
-                                if (mysqli_num_rows($rs) > 0) {
-                                    while ($row = mysqli_fetch_array($rs)) {
-                                ?>
-                                        <tr class="rowSP<?php echo $row['sachID'] ?>">
-                                            <td><input s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="checkSP" name="checkSP" type="checkbox"></td>
-                                            <td>
-                                                <img height="50" src="../Image/VanHoc/<?php echo $row['anh'] ?>" alt="">
-                                                <?php
-                                                echo $row['s_ten'];
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <p id="tongTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] ?></p>
-                                            </td>
-                                            <td><input s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="soLuong" value="<?php echo $row['gh_soluong'] ?>" type="number" min="0" max="10"></td>
-                                            <td>
-                                                <p id="soTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] * $row['gh_soluong'] ?></p>
-                                            </td>
-                                            <td>
-                                                <button s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" id="liveToastBtn" class="btn btn-danger btnXoa">Xóa</button>
-                                            </td>
-                                        </tr>
-                                <?php
-                                    }
-                                } else {
-                                    echo "Không có kq";
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                        <!-- </form> -->
-                    </div>
-                    <div class="container">
-                        <div class="d-flex mb-3">
-                            <div class="p-2 col-1"><input type="checkbox" name="checkAll" class="checkAll"></div>
-                            <!-- Delete modal -->
-                            <div class="me-auto p-2 col-2">
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    Xóa
-                                </button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Xóa sản phẩm</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Bạn có chắc muốn xóa những sản phẩm nãy không?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-danger btnXoaAll" data-bs-dismiss="modal">Xóa</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Delete modal -->
-                            <div class="p-2 col-2">Tổng tiền : <span id="tongTienAll">0đ</span></div>
-                            <div class="p-2 col-2"><button disabled id="btnBuys" class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></div>
-                        </div>
+    <div class="container">
+        <div class="row card-show">
+            <?php
+            include('../config/db.php');
+            $sql = "SELECT * FROM sach where tl_id = '9'";
+            $rs = mysqli_query($conn, $sql);
+            while ($row = mysqli_fetch_assoc($rs)) {
+                $_SESSION['s_id'] = $row['s_id'];
+            ?>
+                <div class="card" style="width: 18rem;">
+                    <img src="../Image/VanHoc/<?php echo $row['anh']?>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $row['s_ten']?></h5>
+                        <p class="card-text"><?php echo $row['mota']?></p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
-            </div>
+            <?php
+            }
+            ?>
 
         </div>
+        <div s_id = "<?php echo $_SESSION['s_id']?>" class="btn btn-success btnAddSP">Thêm SP</div>
     </div>
-</div>
 
 
-<?php
-include('../Parital/foot.php')
-?>
-<script>
-    $(document).ready(function() {
-        const s_ids = [];
-        $('.btnXoa').click(function() {
-                var btnXoa = this;
-            // $('.checkSP').each(function() {
-            //     {
-            //         if ($(this).is(':checked')) {
-            //             s_id = $(this).attr('s_id');
-            //             s_ids.push(s_id);
-            //         } else {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
-            //         }
-            //     }
-            // })
-        
-            s_id = $(this).attr('s_id');
-            k_id = $(this).attr('k_id');
-            action = "delSP";           
-            $.ajax({
-                url: "./test-action.php",
-                method: "POST",
-                data: {
-                    s_id: s_id,
-                    k_id: k_id,
-                    action: action
-                },
-                success: function(dt) {
-                    // alert(dt);
-                    $(btnXoa).closest('tr').fadeOut(800,function(){
-	                  $(this).remove();
-	    });
-                }
-            })
-            // console.log('Minhhn');
-        })
-
-        $('.btnXoaAll').click(function() {
-            $('.checkSP').each(function() {
-                if ($(this).is(':checked')) {
-                    action = "delAllSP";
-                    s_id = $(this).attr('s_id');
-                    k_id = $(this).attr('k_id');
-                    $.ajax({
-                        url: "./test-action.php",
-                        method: "POST",
-                        data: {
-                            s_id: s_id,
-                            k_id: k_id,
-                            action: action
-                        },
-                        success: function(dt) {
-                            // $('.main-content').html(dt);
-                        }
-                    })
-                    // console.log('MinhHN');
-                } else {
-                    // console.log('Lỗi r');
-                }
-            })
-        });
-
-        $('.soLuong').change(function() {
-            //Tổng tiền SP
-            s_id = $(this).attr('s_id');
-            k_id = $(this).attr('k_id');
-            tongTien = $('#tongTien' + s_id).text();
-            soLuong = $(this).val();
-            $('#soTien' + s_id).html(tongTien * soLuong);
-            action = "updateSL";
-            $.ajax({
-                url: "./test-action.php",
-                method: "POST",
-                data: {
-                    s_id: s_id,
-                    k_id: k_id,
-                    soLuong: soLuong,
-                    action: action
-                },
-                success: function(dt) {
-                    // alert(dt);
-                }
-            })
-            $.ajax({
-                url: "./test-action.php",
-                method: "POST",
-                data: {
-                    s_id: s_id,
-                    k_id: k_id,
-                },
-                success: function(dt) {
-                    // alert(dt);
-                }
-            })
-            tongThanhToan = 0;
-            $('.checkSP').each(function() {
-                if ($(this).is(':checked')) {
-                    s_id = $(this).attr('s_id');
-                    tongTienSP = parseInt($('#soTien' + s_id).html());
-                    tongThanhToan = tongThanhToan + tongTienSP;
-                    // console.log('OK');
-                } else {
-                    // console.log('Lỗi r');
-                }
-                $('#tongTienAll').html(tongThanhToan + "đ");
-
-            })
-        })
-
-        $('.checkSP').change(function() {
-            var countCheck = $('.checkSP').filter(':checked').length;
-            if (countCheck > 0) {
-                $('#btnBuys').prop("disabled", false);
-            } else {
-                $('#btnBuys').prop("disabled", true);
-            }
-        })
-
-
-        $('.checkSP').click(function() {
-            tongThanhToan = 0;
-            $('.checkSP').each(function() {
-                if ($(this).is(':checked')) {
-                    s_id = $(this).attr('s_id');
-                    tongTienSP = parseInt($('#soTien' + s_id).html());
-                    tongThanhToan = tongThanhToan + tongTienSP;
-
-                } else {
-                    // console.log('Lỗi r');
-                }
-
-            })
-            $('#tongTienAll').html(tongThanhToan + "đ");
-
-            if ($(this).is(":checked")) {
-                var isAllChecked = 0;
-                $(".checkSP").each(function() {
-                    if (!this.checked)
-                        isAllChecked = 1;
+    <script>
+        $(document).ready(function() {
+                $('.btnAddSP').click(function(){
+                   s_id = $(this).attr('s_id');
+                   console.log(s_id);
                 })
-                if (isAllChecked == 0) {
-                    $(".checkAll").prop("checked", true);
-                }
-            } else {
-                $(".checkAll").prop("checked", false);
-            }
         })
+    </script>
 
 
-        $('.checkAll').click(function() {
-            if ($(this).is(':checked')) {
-                $('#btnBuys').prop("disabled", false);
+</body>
 
-                $('.checkSP').prop('checked', true);
-                $('.checkAll').prop('checked', true);
-                tongThanhToan = 0;
-                $('.checkSP').each(function() {
-                    if ($(this).is(':checked')) {
-                        s_id = $(this).attr('s_id');
-                        tongTienSP = parseInt($('#soTien' + s_id).html());
-                        tongThanhToan = tongThanhToan + tongTienSP;
-                    } else {
-                        // console.log('Lỗi r');
-                    }
-                    $('#tongTienAll').html(tongThanhToan + "đ");
-                })
-                $('#tongTienAll').html(tongThanhToan + "đ");
-            } else {
-                $('#btnBuys').prop("disabled", true);
-
-                $('.checkSP').prop('checked', false);
-                $('.checkAll').prop('checked', false);
-                $('#tongTienAll').html("0đ");
-
-            }
-        })
-
-    })
-</script>
+</html>
