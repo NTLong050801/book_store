@@ -56,9 +56,10 @@ include('../config/db.php');
 
         <?php
             //Đếm số bản ghi
-            
-            $id_tl = $_GET['idtl'];
-            $sql_dem = "SELECT count(s_id) as total from sach where tl_id ='$id_tl' ";
+            // if(isset($_GET['idtl'])){
+            //     $idtl = $_GET['idtl'];
+            // }
+            $sql_dem = "SELECT count(s_id) as total from sach " ;
             $rs_dem = mysqli_query($conn, $sql_dem);
             $row_dem = mysqli_fetch_assoc($rs_dem);
             $total_record = $row_dem['total'];
@@ -80,10 +81,9 @@ include('../config/db.php');
 
             //Tìm start
             $start = ($current_page - 1 ) * $limit ;
-           
+
             //Truy vấn lấy dữ liệu
-            $sql = "SELECT * FROM sach, tacgia, theloai where sach.tg_id = tacgia.tg_id 
-            and sach.tl_id = theloai.tl_id and tl_id = '$id_tl'
+            $sql = "SELECT * FROM sach, tacgia, theloai where sach.tg_id = tacgia.tg_id and sach.tl_id = theloai.tl_id
                     LIMIT $start , $limit";
             $rs = mysqli_query($conn, $sql);
         ?>
@@ -200,5 +200,24 @@ include('./header_footer/footer.php');
 
      
 
-   
+    // function searchSach() {
+        // var input = document.getElementById('inputSach');
+        // var filter = input.value.toUpperCase();
+        // var table = document.getElementById('sachTable');
+        // var tr = table.getElementsByTagName('tr');
+
+
+        // for (var i = 0; i < tr.length; i++) {
+        //     var td = tr[i].getElementsByTagName('td')[1];
+        //     if (td) {
+        //         var txtValue = td.textContent || td.innerText;
+        //         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        //             tr[i].style.display = "";
+        //         } else {
+        //             tr[i].style.display = "none";
+        //         }
+        //     }
+        // }
+
+    // }
 </script>

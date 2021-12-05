@@ -1,5 +1,5 @@
 <?php 
-//include('../config/db.php');
+// include('../config/db.php');
 global $conn;
 function count_posts($tl_id)
 {
