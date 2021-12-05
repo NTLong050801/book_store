@@ -8,7 +8,6 @@
     }
 
     .totalSP {
-
         width: 80%;
         background-color: #fff;
         position: fixed;
@@ -140,6 +139,47 @@ include('./function.php');
                         <!-- </form> -->
                     </div>
 
+                    <!-- Tính tiền -->
+                    <div class="container">
+                        <!-- totalSP -->
+                        <div class="d-flex mb-3">
+                            <div class="p-2 col-1"><input type="checkbox" name="checkAll" class="checkAll"></div>
+                            <!-- Delete modal -->
+                            <div class="me-auto p-2 col-2">
+                                <!-- Button trigger modal -->
+                                <button disabled type="button" class="btn btn-danger btnDel" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    Xóa
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Xóa sản phẩm</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Bạn có chắc muốn xóa những sản phẩm nãy không?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-danger btnXoaAll" data-bs-dismiss="modal">Xóa</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Delete modal -->
+                            <div class="p-2 col-2">Tổng tiền : <span id="tongTienAll">0đ</span></div>
+                            <div class="p-2 col-2"><a href="./checkout.php"><button disabled id="btnBuys" class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></a></div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <!-- Tính tiền -->
 
                     <!-- SP khác -->
                     <div class="container" style="margin-bottom: 10rem;;">
@@ -170,71 +210,46 @@ include('./function.php');
 
 
                     <!-- SP đã xem -->
-                    <div class="container" style="margin-bottom: 10rem;;">
+                    <div class="container" style="margin-bottom: 10rem;">
                         <div class="row">
                             <h3 class="mt-3 mb-3">Sản phẩm đã xem</h3>
                             <?php
-                            $s_id = $_SESSION['sachID'.$s_id];
-                            $spKhac = mysqli_query($conn, "SELECT * FROM sach where s_id = '$s_id' limit 5");
-                            if (mysqli_num_rows($spKhac) > 0) {
-                                while ($rowSPKhac = mysqli_fetch_assoc($spKhac)) {
+                            if (isset($_SESSION['s_id'])) {
+                                $s_id = $_SESSION['s_id'];
+                                if (sizeof($s_id) > 5) {
+                                    $sizeMax = sizeof($s_id) - 5;
+                                } else {
+                                    $sizeMax = 0;
+                                }
+                                for ($i = sizeof($s_id) - 1; $i >= $sizeMax; $i--) {
+                                    $s_ids = $s_id[$i];
+                                    $spKhac = mysqli_query($conn, "SELECT * FROM sach where s_id = '$s_ids' limit 5");
+                                    if (mysqli_num_rows($spKhac) > 0) {
+                                        while ($rowSPKhac = mysqli_fetch_assoc($spKhac)) {
                             ?>
-                                    <div class="card ms-3" style="width: 18%;">
-                                        <img src="../Image/VanHoc/<?php echo $rowSPKhac['anh'] ?>" class="card-img-top" alt="...">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?php echo $rowSPKhac['s_ten'] ?></h5>
-                                            <p class="card-text"><?php echo $rowSPKhac['s_gia'] - $rowSPKhac['s_gia'] * $rowSPKhac['s_giamgia'] / 100 ?></p>
-                                            <a href="./book.php?s_id=<?php echo $rowSPKhac['s_id'] ?>" class="btn btn-primary">Xem</a>
-                                        </div>
-                                    </div>
+                                            <div class="card ms-3" style="width: 18%;">
+                                                <img src="../Image/VanHoc/<?php echo $rowSPKhac['anh'] ?>" class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><?php echo $rowSPKhac['s_ten'] ?></h5>
+                                                    <p class="card-text"><?php echo $rowSPKhac['s_gia'] - $rowSPKhac['s_gia'] * $rowSPKhac['s_giamgia'] / 100 ?></p>
+                                                    <a href="./book.php?s_id=<?php echo $rowSPKhac['s_id'] ?>" class="btn btn-primary">Xem</a>
+                                                </div>
+                                            </div>
 
 
                             <?php
+                                        }
+                                    }
                                 }
+                            } else {
+                                echo "Bạn chưa xem sản phẩm nào";
                             }
                             ?>
+
                         </div>
                     </div>
                     <!-- SP đã xem -->
 
-
-
-
-                    <!-- Tính tiền -->
-                    <div class="container">
-                        <div class="d-flex mb-3 totalSP">
-                            <div class="p-2 col-1"><input type="checkbox" name="checkAll" class="checkAll"></div>
-                            <!-- Delete modal -->
-                            <div class="me-auto p-2 col-2">
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    Xóa
-                                </button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Xóa sản phẩm</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Bạn có chắc muốn xóa những sản phẩm nãy không?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-danger btnXoaAll" data-bs-dismiss="modal">Xóa</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Delete modal -->
-                            <div class="p-2 col-2">Tổng tiền : <span id="tongTienAll">0đ</span></div>
-                            <div class="p-2 col-2"><a href="./checkout.php"><button disabled id="btnBuys" class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></a></div>
-                        </div>
-                    </div>
-                    <!-- Tính tiền -->
                 </div>
             </div>
 
@@ -292,9 +307,57 @@ include('../Parital/foot.php')
                 },
                 success: function(dt) {
                     $('.modal-body-sptt').html(dt);
+                    $('.page-item' + current_page).addClass('active');
                 }
             })
         })
+
+        $(document).on('click', '.next', function() {
+            current_page = $('.next button').attr('cr_page');
+            current_page = parseInt(current_page) + 1;
+            // alert(current_page);
+            tl_id = $('.next button').attr('tl_id');
+            action = "spTuongTu";
+            $.ajax({
+                url: "./cart_action.php",
+                method: "POST",
+                data: {
+                    tl_id: tl_id,
+                    action: action,
+                    trangHienTai: current_page
+                },
+                success: function(dt) {
+                    $('.modal-body-sptt').html(dt);
+                    $('.page-item' + current_page).addClass('active');
+                }
+            })
+        })
+
+        $(document).on('click', '.previous', function() {
+            current_page = $('.previous button').attr('cr_page');
+            current_page = parseInt(current_page) - 1;
+            // alert(current_page);
+            tl_id = $('.previous button').attr('tl_id');
+            action = "spTuongTu";
+            $.ajax({
+                url: "./cart_action.php",
+                method: "POST",
+                data: {
+                    tl_id: tl_id,
+                    action: action,
+                    trangHienTai: current_page
+                },
+                success: function(dt) {
+                    $('.modal-body-sptt').html(dt);
+                    $('.page-item' + current_page).addClass('active');
+                }
+            })
+        })
+
+
+
+
+
 
         $(document).on('click', '.btnXoa', function() {
             var btnXoa = this;
@@ -416,8 +479,10 @@ include('../Parital/foot.php')
             var countCheck = $('.checkSP').filter(':checked').length;
             if (countCheck > 0) {
                 $('#btnBuys').prop("disabled", false);
+                $('.btnDel').prop("disabled", false);
             } else {
                 $('#btnBuys').prop("disabled", true);
+                $('.btnDel').prop("disabled", true);
             }
         })
 
@@ -455,7 +520,8 @@ include('../Parital/foot.php')
         $('.checkAll').click(function() {
             if ($(this).is(':checked')) {
                 $('#btnBuys').prop("disabled", false);
-
+                $('.btnDel').prop("disabled", false);
+                
                 $('.checkSP').prop('checked', true);
                 $('.checkAll').prop('checked', true);
                 tongThanhToan = 0;
@@ -472,6 +538,7 @@ include('../Parital/foot.php')
                 $('#tongTienAll').html(tongThanhToan + "đ");
             } else {
                 $('#btnBuys').prop("disabled", true);
+                $('.btnDel').prop("disabled", true);
 
                 $('.checkSP').prop('checked', false);
                 $('.checkAll').prop('checked', false);

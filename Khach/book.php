@@ -38,9 +38,10 @@ require('./function.php');
           <div class="container main-content">
             <?php
             $s_id = $_GET['s_id'];
-
-            $_SESSION['sachID'.$s_id] = $s_id;
-
+            if(!isset($_SESSION['s_id'])){
+              $_SESSION['s_id'] = [];
+            }
+            $_SESSION['s_id'][] = $s_id;
 
             $slt = SachById($s_id);
             $row = mysqli_fetch_assoc($slt);

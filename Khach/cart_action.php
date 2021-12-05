@@ -41,18 +41,18 @@ function spTuongTu()
     $total_page = ceil($slSach / $limit);
     $i;
 
-    $spTuongTu = "SELECT DISTINCT s_id, anh , s_ten , s_gia , sach.tl_id as idTL FROM sach where sach.tl_id = '$tl_id' LIMIT $current_pages,$limit";
+    $spTuongTu = "SELECT DISTINCT s_giamgia, s_id, anh , s_ten , s_gia , sach.tl_id as idTL FROM sach where sach.tl_id = '$tl_id' LIMIT $current_pages,$limit";
     $rsSPTuongTu = mysqli_query($conn, $spTuongTu);
     if (mysqli_num_rows($rsSPTuongTu) > 0) {
         while ($rowSPTT = mysqli_fetch_assoc($rsSPTuongTu)) {
+
 ?>
             <div class="card mb-3" style="width: 18%;">
                 <img style="width:100%;" src="../Image/VanHoc/<?php echo $rowSPTT['anh'] ?>" class="card-img-top img-fluid" alt="...">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo $rowSPTT['s_ten'] ?></h5>
-                    <p class="card-text"><?php echo $rowSPTT['s_gia'] - $rowSPTT['s_gia']*$rowSPTT['s_giamgia'] / 100 ?></p>
-
-                    <a href="book.php?s_id=<?php echo $rowSPTT['s_id']?>" class="btn btn-primary">Mua</a>
+                    <p class="card-text"><?php echo $rowSPTT['s_gia'] - $rowSPTT['s_gia'] * $rowSPTT['s_giamgia'] / 100 ?></p>
+                    <a href="book.php?s_id=<?php echo $rowSPTT['s_id'] ?>" class="btn btn-primary">Mua</a>
                 </div>
             </div>
     <?php
@@ -63,20 +63,34 @@ function spTuongTu()
 
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link">Previous</a>
-            </li>
             <?php
-
-            for ($i = 1; $i <= $total_page; $i++) {
+            if ($current_page > 1) {
             ?>
-                <li class="page-item"><a tl_id="<?php echo $_SESSION['tl_id'] ?>" class="page-link page-current" href="#"><?php echo $i; ?></a></li>
+                <li class="page-item previous">
+                    <button cr_page="<?php echo $current_page; ?>" tl_id="<?php echo $_SESSION['tl_id'] ?>" class="page-link previous">Previous</button>
+                </li>
             <?php
             }
             ?>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
+
+            <?php
+            for ($i = 1; $i <= $total_page; $i++) {
+            ?>
+                <li class="page-item page-item<?php echo $i; ?>"><a tl_id="<?php echo $_SESSION['tl_id'] ?>" class="page-link page-current" href="#"><?php echo $i; ?></a></li>
+            <?php
+            }
+            ?>
+            <?php
+            if ($current_page < $total_page) {
+            ?>
+                <li class="page-item next">
+                    <button cr_page="<?php echo $current_page; ?>" tl_id="<?php echo $_SESSION['tl_id'] ?>" class="page-link" href="#">Next</button>
+                </li>
+
+            <?php
+            }
+            ?>
+
         </ul>
     </nav>
     <!-- Phân trang -->
