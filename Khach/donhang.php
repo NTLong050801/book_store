@@ -87,7 +87,9 @@ require('./function.php')
         margin-bottom: 200px;
         border-top: #ee4d2d solid;
     }
-
+    .sluongdh{
+        color: #ee4d2d;
+    }
     .sluongdh_xn {
         color: #ee4d2d;
     }
@@ -119,7 +121,7 @@ $email = $_SESSION['check_login'];
 $k_id = Khach($email);
 ?>
 <link rel="stylesheet" href="../CSS/banking.css">
-<div id="wrapper" style="overflow: scroll;height:100%;padding-left: 0;">
+<div id="wrapper" style="height:100%;padding-left: 0;">
     <div id="page-content-wrapper">
         <div class="container-fluid" style="background-color: rgb(148 122 126 / 8%);">
             <div class="row">
@@ -147,17 +149,22 @@ $k_id = Khach($email);
                         <div class="row" style="margin-top: 40px;">
                             <div class="col-2 view maucam"><span>Tất cả</span></div>
                             <div class="col-2 view"><span>Chờ xác nhận</span>
-                                <p class='sluongdh_xn'><?php echo count_status0($k_id) ?></p>
+                                <p class='sluongdh dh_xn'><?php echo count_status0($k_id, 0) ?></p>
                             </div>
-                            <div class="col-2 view"><span>Chờ lấy hàng</span></div>
-                            <div class="col-2 view"><span>Đang giao</span></div>
-                            <div class="col-2 view"><span>Đã giao</span></div>
+                            <div class="col-2 view"><span>Chờ lấy hàng</span>
+                                <p class='sluongdh dh_lh'><?php echo count_status0($k_id, 1) ?></p>
+                            </div>
+                            <div class="col-2 view"><span>Đang giao</span>
+                                <p class='sluongdh dh_dn'><?php echo count_status0($k_id, 2) ?></p>
+                            </div>
+                            <div class="col-2 view"><span>Đã giao</span>
+
+                            </div>
                             <div class="col-2 view"><span>Đã hủy</span></div>
                         </div>
                         <div class="search">
                             <input require id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
                         </div>
-
                         <div class="data">
 
                         </div>
@@ -169,7 +176,6 @@ $k_id = Khach($email);
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -204,6 +210,18 @@ $k_id = Khach($email);
     </div>
 </div>
 
+<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="background-color: #ee4d2d;color:#fff; border-radius: 25px;">
+            <br>
+            <div class="modal-body3" style="text-align: center;">
+                <h4></h4>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+
 <?php
 include('../Parital/foot.php')
 ?>
@@ -224,9 +242,9 @@ include('../Parital/foot.php')
                 },
                 success: function(dt) {
                     $('.data').html(dt)
-                    $('.danhgia').each(function(){
-                        if($(this).html() == "Đã đánh giá"){
-                            $(this).prop("disabled",true)
+                    $('.danhgia').each(function() {
+                        if ($(this).html() == "Đã đánh giá") {
+                            $(this).prop("disabled", true)
                         }
                     })
                     // alert(dt)
@@ -257,11 +275,15 @@ include('../Parital/foot.php')
                         method: "POST",
                         data: {
                             action: action,
-                            val: val
+                            val: val,
                         },
                         success: function(dt) {
                             $('.data').html(dt)
-                            // alert(dt)
+                            $('.danhgia').each(function() {
+                                if ($(this).html() == "Đã đánh giá") {
+                                    $(this).prop("disabled", true)
+                                }
+                            })
                         }
                     })
                 }
@@ -272,23 +294,26 @@ include('../Parital/foot.php')
         $(document).on('click', '.huydh', function() {
             $('#exampleModal').modal('show')
             hd_id = $(this).attr('hd_id')
+            status = 4;
             $('#xnhuy').click(function() {
                 $.ajax({
                     url: "process_dh.php",
                     method: "POST",
                     data: {
                         action: action,
-                        hd_id: hd_id
+                        hd_id: hd_id,
+                        status : status
                     },
                     success: function(dt) {
                         $('.data').html(dt)
                         $('#exampleModal').modal('hide')
 
                         sluong_st0 = $('.mualai').attr('sluong_st0');
+                        // alert(sluong_st0)
                         if (sluong_st0 != '(undefined)' && sluong_st0 != '0') {
-                            $('.sluongdh_xn').html(sluong_st0)
+                            $('.dh_xn').html(sluong_st0)
                         } else {
-                            $('.sluongdh_xn').html('')
+                            $('.dh_xn').html('')
                         }
 
                     }
@@ -409,10 +434,44 @@ include('../Parital/foot.php')
                 },
                 success: function(dt) {
                     $('#exampleModal1').modal('hide')
+                    $('#exampleModal3').modal('show');
+                    $('.modal-body3 h4').html("Đánh giá thành công !")
+                    setTimeout(function() {
+                        $("#exampleModal3").modal('hide')
+                    }, 2000)
                     action = "Đã giao";
                     load_data()
                 }
             })
+
+        })
+
+        $(document).on('click', '.nhanhang', function() {
+            hd_id = $(this).attr('hd_id')
+            // alert(hd_id);
+            status = 3;
+                $.ajax({
+                    url: "process_dh.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        hd_id: hd_id,
+                        status : status
+                    },
+                    success: function(dt) {
+                        $('.data').html(dt)
+                        // $('#exampleModal').modal('hide')
+
+                        sluong_st0 = $('.mualai').attr('sluong_st0');
+                        // alert(sluong_st0)
+                        if (sluong_st0 != '(undefined)' && sluong_st0 != '0') {
+                            $('.dh_dn').html(sluong_st0)
+                        } else {
+                            $('.dh_dn').html('')
+                        }
+
+                    }
+                })
 
         })
 

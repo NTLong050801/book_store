@@ -46,7 +46,7 @@ if (mysqli_num_rows($qr) > 0) {
                         <?php echo $row['cmt'] ?>
                     </div>
                     <div class="date_cmt" >
-                        <?php echo date("d/m/Y",strtotime($row['date_cmt'])) ?>
+                        <?php echo date("d/m/Y H:i",strtotime($row['date_cmt'])) ?>
                     </div>
 
                 </div>
@@ -56,10 +56,12 @@ if (mysqli_num_rows($qr) > 0) {
     <?php
     }
     ?>
-    <nav aria-label="Page navigation example" style="float: right;">
+    <nav aria-label="Page navigation example" style="float: right;margin-top:20px">
         <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
+            <li class="page-item <?php if($tranghientai == 1){
+                echo 'disabled';
+            } ?>" trang = '<?php echo $tranghientai-1 ?>'> 
+                <a class="page-link" href="#" aria-label="Previous" >
                     <span aria-hidden="true">&laquo;</span>
                     <span class="sr-only">Previous</span>
                 </a>
@@ -73,7 +75,9 @@ if (mysqli_num_rows($qr) > 0) {
                 }
             ?>
             
-            <li class="page-item">
+            <li class="page-item <?php if($tranghientai == $tongtrang){
+                echo 'disabled';
+            } ?>" trang = '<?php echo $tranghientai+1 ?>'> 
                 <a class="page-link" href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                     <span class="sr-only">Next</span>

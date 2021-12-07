@@ -94,13 +94,11 @@ require('./function.php')
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        margin-left: 20px;
+        /* margin-left: 20px; */
+        margin-top: 10px;
     }
 
-    .star {
-        background: yellow;
 
-    }
 </style>
 <?php
 if (isset($_POST['action'])) {
@@ -155,10 +153,6 @@ if (isset($_SESSION['action'])) {
             $slt_sach = search_id($_POST['get_search']);
             unset($_SESSION['action']);
         }
-        // else{
-        //     echo '<script>alert("Không tìm thấy sách này !")>/script>';
-        // }
-       
     }
     if (mysqli_num_rows($slt_sach) > 0) {
         while ($row = mysqli_fetch_assoc($slt_sach)) { ?>
@@ -177,7 +171,6 @@ if (isset($_SESSION['action'])) {
                         <?php
                         }
                         ?>
-
                         <div>
                             <img src="../Image/VanHoc/<?php echo $row['anh'] ?>" class="container img-fluid" alt="">
                         </div>
@@ -198,7 +191,8 @@ if (isset($_SESSION['action'])) {
                             </span>
                         </div>
                         <div class="container star_sold ">
-                            <span class="star"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+                            <span class="star" style="color: #ee4d2d;"><?php $a = ceil(avg_sao($row['s_id'])) ;for($i=1;$i<=$a;$i++){echo '<i class="fas fa-star"></i>';} ?>
+                            <br>
                             <span class="sold">Đã bán : <?php echo $row['luotmua'] ?></span>
 
                         </div>
