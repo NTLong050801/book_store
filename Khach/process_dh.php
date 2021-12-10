@@ -23,7 +23,7 @@ if ($action == 'insert_dh') {
 if ($action == 'Tất cả') {
     if (isset($_POST['hd_id'])) {
         $hd_id = $_POST['hd_id'];
-        update_status($hd_id);
+        update_status($hd_id,$_POST['status']);
         $show = show_allDh($k_id);
     } else {
         $show = show_allDh($k_id);
@@ -38,7 +38,7 @@ if ($action == 'Tất cả') {
 if ($action == 'Chờ xác nhận') {
     if (isset($_POST['hd_id'])) {
         $hd_id = $_POST['hd_id'];
-        update_status($hd_id);
+        update_status($hd_id,$_POST['status']);
         $show = show_allDh_status($k_id, '0');
     } else {
         $show = show_allDh_status($k_id, '0');
@@ -48,7 +48,14 @@ if ($action == 'Chờ lấy hàng') {
     $show = show_allDh_status($k_id, '1');
 }
 if ($action == 'Đang giao') {
-    $show = show_allDh_status($k_id, '2');
+    if (isset($_POST['hd_id'])) {
+        $hd_id = $_POST['hd_id'];
+        update_status($hd_id,$_POST['status']);
+        $show = show_allDh_status($k_id, '2');
+    } else {
+        $show = show_allDh_status($k_id, '2');
+    }
+    // $show = show_allDh_status($k_id, '2');
 }
 if ($action == 'Đã giao') {
     $show = show_allDh_status($k_id, '3');
@@ -119,20 +126,23 @@ if (isset($show)) {
                 <br>
                 <br>
 
-                <div class='mualai' sluong_st0=<?php echo count_status0($k_id) ?>>
+                <div class='mualai' sluong_st0=<?php echo count_status0($k_id,$row['status']) ?>>
                     <a href="cart.php"><button class="btn btn-primary btn_mualai" hd_id=<?php echo $row['hd_id'] ?>>Mua lại</button></a>
                     <?php if ($row['status'] == '0') { ?>
                         <button class="btn btn-danger huydh" hd_id=<?php echo $row['hd_id'] ?>>Hủy đơn</button>
                     <?php  } ?>
                     <?php if ($row['status'] == '3') { ?>
                         <button class="btn btn-danger danhgia" hd_id=<?php echo $row['hd_id'] ?>><?php
-                            $qr = Slt_Danhgia($k_id, $hd_id);
+                            $qr = Slt_Danhgia($k_id, $row['hd_id']);
                             if (mysqli_num_rows($qr) > 0) {
                                 echo "Đã đánh giá";
                             } else {
                                 echo "Đánh giá sản phẩm";
                             }
                             ?></button>
+                    <?php  } ?>
+                    <?php if ($row['status'] == '2') { ?>
+                        <button class="btn btn-danger nhanhang" hd_id=<?php echo $row['hd_id'] ?>>Đã nhận hàng</button>
                     <?php  } ?>
 
                 </div>

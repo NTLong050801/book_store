@@ -49,7 +49,7 @@ require('./function.php')
                                 </table>
                                 <div class="" id="thanhtoan">
                                     <span class="checkbox_all">
-                                        <input id="checkbox_all" type="checkbox" style="margin-right: 3%;">Chọn tất cả</span>
+                                        <input id="checkbox_all" type="checkbox" style="margin-right: 3%;">Chọn tất cả</span><span id="sluong_all"></span>
                                     <span id="delete_all"><i class="fas fa-trash-alt"></i></span>
                                     <label for="">Tổng thanh toán :<span id="ttt">0</span>đ </label>
                                     <button id="buying" name="banking" type="submit" class="btn btn-danger" <?php if (!isset($_SESSION['cb_mualai'])) {
@@ -136,10 +136,7 @@ require('./function.php')
 <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <!-- <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Xác nhận</h5>
-                
-            </div> -->
+
             <div class="modal-body">
 
             </div>
@@ -160,16 +157,6 @@ include('../Parital/foot.php')
     $(document).ready(function() {
         fetch_data()
         ttt = 0
-        // $('.check').each(function(){
-        //     a = $(this).attr('s_id')
-        //     console.log(a)
-        // })
-        // $(document).on('click', '#ttt', function() {
-
-
-        // })
-        // $('#ttt').html(ttt);
-
         function fetch_data() {
             $.ajax({
                 url: "data_cart.php",
@@ -181,17 +168,20 @@ include('../Parital/foot.php')
                     if (dt != '') {
                         $('#data').html(dt)
                         //alert(dt)
+                        dem = 0;
                         $('.check').each(function() {
                             if ($(this).prop("checked") == true) {
                                 s_id = $(this).attr('s_id');
-                                // dem = dem + 1;
+                                
                                 tiensp = parseInt($('#tongtien' + s_id).html())
                                 ttt = ttt + tiensp;
 
                             }
+                            dem = dem + 1;
 
                         })
                         $('#ttt').html(ttt)
+                        $('#sluong_all').html('('+dem+')')
                     }
                     if (dt == '') {
                         $('#tbl_data').html('<div><label for="">Giỏ hàng của bạn còn trống</label><br><a href="index.php"><button class="btn btn-success">Mua ngay</button></a></div>')

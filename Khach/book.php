@@ -1,9 +1,9 @@
 <title>Sản phẩm</title>
+<link rel="stylesheet" href="../CSS/book.css">
 <?php
 include('../Parital/header.php');
 require('./function.php')
 ?>
-<link rel="stylesheet" href="../CSS/book.css">
 <div id="wrapper" style="overflow: scroll;height:100%;padding-left: 0;">
   <!-- Page Content -->
   <div id="page-content-wrapper">
@@ -95,10 +95,15 @@ require('./function.php')
                   </div>
                   <div class="sold">
                     <div class="star">
-                      <span>5.0</span> <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                      <span class="star_dg" style="color: red;"><?php echo avg_sao($s_id) ?></span>
+                      <span class="star_s1"><i class="fas fa-star"></i></span>
+                      <span class="star_s2"><i class="fas fa-star"></i></span>
+                      <span class="star_s3"><i class="fas fa-star"></i></span>
+                      <span class="star_s4"><i class="fas fa-star"></i></span>
+                      <span class="star_s5"><i class="fas fa-star"></i></span>
                     </div>
                     <div class="danhgia">
-                      <span style="text-decoration: underline;">120</span> <span style="color: #827b66;">Đánh giá</span>
+                      <span style="text-decoration: underline;"><?php echo count_danhgia($s_id) ?></span> <span style="color: #827b66;">Đánh giá</span>
                     </div>
                     <div class="solder">
                       <?php echo $row['luotmua'] ?> <span style="color: #827b66;">Đã bán</span>
@@ -116,7 +121,6 @@ require('./function.php')
                       ' . $row['s_giamgia'] . ' % Giảm</span>';
                     }
                     ?>
-
                   </div>
                   <form action="" method="POST">
                     <div class="soluong">
@@ -225,7 +229,7 @@ require('./function.php')
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-2 star_cmt" sao='5'><span>5 Sao(<?php echo count_sao_sach($s_id, 5) ?>)</span></div>
+                      <div class="col-2 star_cmt color_star_k" sao='5'><span>5 Sao(<?php echo count_sao_sach($s_id, 5) ?>)</span></div>
                       <div class="col-2 star_cmt" sao='4'><span>4 Sao(<?php echo count_sao_sach($s_id, 4) ?>)</span></div>
                       <div class="col-2 star_cmt" sao='3'><span>3 Sao(<?php echo count_sao_sach($s_id, 3) ?>)</span></div>
                       <div class="col-2 star_cmt" sao='2'><span>2 Sao(<?php echo count_sao_sach($s_id, 2) ?>)</span></div>
@@ -243,9 +247,9 @@ require('./function.php')
                 <div class="container spkhac">
                   <h6>CÁC SẢN PHẨM KHÁC</h6>
                   <span class="tiep" id="back" style="float:left;z-index:2;margin-top: inherit;">
-                    <i class="fas fa-chevron-left fa-4x"></i></span>
+                    <i class="fas fa-chevron-left fa-3x"></i></span>
                   <span class="tiep" id="next" style="float:right;z-index: 2;margin-top: inherit;">
-                    <i class="fas fa-chevron-right fa-4x"></i></span>
+                    <i class="fas fa-chevron-right fa-3x"></i></span>
                   <div class="row sp_new">
                     <div id="sp_new_tl" style="z-index: 1;">
 
@@ -256,9 +260,9 @@ require('./function.php')
                 <div class="container sptt" style="margin-top: 40px;">
                   <h6>CÁC SẢN PHẨM TƯƠNG TỰ</h6>
                   <span class="tiep_tt" id="back_tt" style="float:left;z-index:2;margin-top: inherit;">
-                    <i class="fas fa-chevron-left fa-4x"></i></span>
+                    <i class="fas fa-chevron-left fa-3x"></i></span>
                   <span class="tiep_tt" id="next_tt" style="float:right;z-index: 2;margin-top: inherit;">
-                    <i class="fas fa-chevron-right fa-4x"></i></span>
+                    <i class="fas fa-chevron-right fa-3x"></i></span>
                   <div class="row sp_tt">
                     <div id="sp_tt_tl" style="z-index: 1;">
 
@@ -320,6 +324,7 @@ require('./function.php')
       </div>
     </div>
   </div>
+
   <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content" style="background-color: #ee4d2d;color:#fff; border-radius: 25px;">
@@ -347,11 +352,11 @@ require('./function.php')
     load_cmt()
 
     $(document).on('click', '.page-item', function() {
-      tranghientai = $(this).attr('trang');
-      //$('.page-item').removeClass('active')
-     
-      load_cmt(sao, tranghientai)
-      // $(this).addClass('active')
+      if ($(this).hasClass('disabled')) {
+      } else {
+        tranghientai = $(this).attr('trang');
+        load_cmt(sao, tranghientai)
+      }
     })
 
     $('.star_cmt').click(function() {

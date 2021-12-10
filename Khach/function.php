@@ -105,7 +105,7 @@ function Khach($k_email){
 function GioHang_Sach($k_id){
     global $conn;
     $qr = "SELECT * from giohang,sach where giohang.s_id = sach.s_id
-     and giohang.k_id = $k_id and trangthai = 0 ";
+     and giohang.k_id = $k_id and trangthai = 0 order by giohang.s_id DESC";
      return mysqli_query($conn,$qr);
 
 }
@@ -183,15 +183,15 @@ function search_dh($k_id,$val){
 
 }
 
-function update_status($hd_id){
+function update_status($hd_id,$status){
     global $conn;
-    $sql = "Update donhang set status = 4 where hd_id = '$hd_id' ";
+    $sql = "Update donhang set status = $status where hd_id = '$hd_id' ";
     return mysqli_query($conn , $sql);
 }
 
-function count_status0($k_id){
+function count_status0($k_id,$status){
     global $conn;
-    $sql = "SELECT count(hd_id) from donhang where k_id = '$k_id' and donhang.status = '0'";
+    $sql = "SELECT count(hd_id) from donhang where k_id = '$k_id' and donhang.status = $status ";
     $qr = mysqli_query($conn , $sql);
     $row = mysqli_fetch_assoc($qr);
     if($row['count(hd_id)'] > 0){
@@ -200,8 +200,9 @@ function count_status0($k_id){
    
 }
 function InsertDanhGia($k_id,$hd_id,$s_id,$sao,$cmt){
+    
     global $conn;
-    $date = date("Y-m-d");
+    $date = date("Y-m-d H:i:s");
     $sql = "INSERT into danhgia values ('$k_id','$hd_id','$s_id','$sao','$date','$cmt') ";
     return mysqli_query($conn,$sql);
 }
@@ -236,6 +237,18 @@ function count_cmt($s_id){
     }
 }
 
+function count_danhgia($s_id){
+    global $conn;
+    $sql = "SELECT count(s_id) as sl_danhgia from danhgia where s_id = '$s_id'";
+    $qr = mysqli_query($conn,$sql);
+    $row = mysqli_fetch_assoc($qr);
+    $sluong = $row['sl_danhgia'];
+    if( $sluong == 0){
+        return 100;
+    }else{
+        return $sluong;
+    }
+}
 function slt_cmt($s_id,$limit){
     global $conn;
     $sql = "SELECT * from danhgia,khach where danhgia.k_id = khach.k_id 
