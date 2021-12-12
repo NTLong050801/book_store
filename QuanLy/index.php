@@ -4,7 +4,21 @@ include('../Parital/header.php');
 include('./ham.php')
 ?>
 <style>
-    .cl {}
+    #list_sach {
+        position: absolute;
+        top: calc(100% - 1 px);
+        left: 0 px;
+        width: calc(100% - 120 px);
+        list-style: none;
+        margin-top: 50px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 0 px 0 px 3 px 3 px;
+        border-top: 1 px solid rgb(225, 225, 225);
+        box-shadow: rgb(0 0 0 / 28%) 0px 6px 12px 0px;
+        z-index: 1;
+        /* display: none; */
+        min-width: 250px;
+    }
 </style>
 <div id="wrapper" style="overflow: scroll;height:100%">
 
@@ -14,7 +28,8 @@ include('./ham.php')
             <li class="sidebar-brand">
                 <h2>Khách</h2>
             </li>
-            <li id="true" class="nav-item"> <a href="#"><i class="fa fa-home"></i>Sách</a> </li>
+            <li id="true" class="nav-item"> <a href="index.php"><i class="fa fa-home"></i>Sách</a> </li>
+            <li id="true" class="nav-item"> <a href="donhang.php"><i class="fa fa-home"></i>Đơn hàng</a> </li>
 
         </ul>
     </div>
@@ -27,9 +42,11 @@ include('./ham.php')
                     <nav class="navbar navbar-light">
                         <div class="container-fluid">
                             <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fas fa-bars"></i></a>
-                            <form class="d-flex" style="margin-left: 30%;">
-                                <input require id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
+                            <form class="d-flex" style="margin-left: 30%;" onsubmit="return false;">
+                                <input require id="search_ip" class="form-control me-2" type="text" placeholder="Nhập tên sách" aria-label="Search">
+                                <!-- <input type="text" id="search_ip"> -->
                                 <button id="btn_search" class="btn btn-outline-success" type="button">Tìm</button>
+                                <!-- <button type="submit" hidden></button> -->
                                 <div id="list_sach" style="z-index: 4;">
 
                                 </div>
@@ -44,12 +61,10 @@ include('./ham.php')
                     <div class="container main-content">
                         <!-- dropdown thể loại -->
                         <div class="row" style="text-align: center;">
-
-
                             <div class="col-4 btn_theloai">
                                 <div class="dropdown" style="margin-top: 50px;">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Văn học
+                                    <button class="view btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Sách (theo thể loại)
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <?php
@@ -66,13 +81,14 @@ include('./ham.php')
                                 </div>
                             </div>
                             <div class="col-4 ql_tl">
-                                <button class="btn btn-secondary btn_ql_tl" style="margin-top: 50px;">Quản lý thể loại</button>
+                                <button class="view btn btn-secondary btn_ql_tl" style="margin-top: 50px;">Quản lý thể loại</button>
                             </div>
                             <div class="col-4 ql_tg">
-                                <button class="btn btn-secondary btn_ql_tg" style="margin-top: 50px;">Quản lý tác giả</button>
+                                <button class="view btn btn-secondary btn_ql_tg" style="margin-top: 50px;">Quản lý tác giả</button>
                             </div>
                         </div>
-                        <div class="data_sach">
+                        <!-- <div id="loadpage"></div> -->
+                        <div class="data_sach" id="data_sach">
 
                         </div>
 
@@ -108,45 +124,44 @@ include('./ham.php')
 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-            <form action="" id="form_update_s">
+            <form action="" id="form_update_s" name="form_update_s">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel2">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body2">
                     <div class="data">
-
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Tên sách</span>
-                            <input type="text" class="form-control s_ten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input type="text" name="s_ten" class="form-control s_ten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Giá</span>
-                            <input type="number" class="form-control s_gia " aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input type="number" name="s_gia" class="form-control s_gia " aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Giảm giá</span>
-                            <input type="number" name="s_gia" class="form-control s_giamgia" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input type="number" name="s_giamgia" class="form-control s_giamgia" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Nhà xuất bản</span>
-                            <input type="text" class="form-control nxb" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input type="text" name="nxb" class="form-control nxb" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Năm xuất bản</span>
-                            <input type="number" class="form-control namxuatban" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input type="number" name="namxuatban" class="form-control namxuatban" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Số trang</span>
-                            <input type="number" class="form-control sotrang" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input type="number" name="sotrang" class="form-control sotrang" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text">Mô tả</span>
-                            <textarea class="form-control mota" aria-label="With textarea"></textarea>
+                            <textarea name="mota" class="form-control mota" aria-label="With textarea"></textarea>
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Số lượng trong kho</span>
-                            <input type="number" class="form-control soluong" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input name="soluong" type="number" class="form-control soluong" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Số sách đã bán</span>
@@ -154,11 +169,11 @@ include('./ham.php')
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Ngôn ngữ</span>
-                            <input type="text" class="form-control ngonngu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input name="ngonngu" type="text" class="form-control ngonngu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Thể loại</span>
-                            <select id="sl_tl_id" class="form-select" aria-label="Default select example">
+                            <select name="sl_tl_id" id="sl_tl_id" class="form-select" aria-label="Default select example">
                                 <!-- <option selected>Open this select menu</option> -->
                                 <?php
                                 $qr = slt_theloai();
@@ -174,7 +189,7 @@ include('./ham.php')
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Tác giả</span>
-                            <select id="sl_tg_id" class="form-select" aria-label="Default select example">
+                            <select name="sl_tg_id" id="sl_tg_id" class="form-select" aria-label="Default select example">
                                 <!-- <option selected>Open this select menu</option> -->
                                 <?php
                                 $qr = slt_tacgia();
@@ -191,15 +206,16 @@ include('./ham.php')
 
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Ảnh chính</span>
-                            <input type="file" class="form-control anh" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input name="anhchinh" type="file" class="form-control anh" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                         </div>
 
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Ảnh phụ</span>
-                            <input type="file" class="form-control anh1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input name="anhphu" type="file" class="form-control anh1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                         </div>
 
-
+                        <input type="text" name="action" value="xn sửa" hidden>
+                        <input type="text" id="update_s_id" name="s_id" value="" hidden>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -215,7 +231,7 @@ include('./ham.php')
 <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg ">
         <div class="modal-content">
-            <form action="" method="POST" enctype="multipart/form-data" id="myform" name="myform">
+            <form action="" method="POST" enctype="multipart/form-data" id="myform_adds" name="myform_adds">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Thêm sách</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -226,7 +242,7 @@ include('./ham.php')
                             <div class="col-md-12">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Tên sách</span>
-                                    <input type="text" name="s_ten" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    <input require type="text" name="s_ten" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
                         </div>
@@ -234,19 +250,19 @@ include('./ham.php')
                             <div class="col-md-4">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Giá</span>
-                                    <input type="number" name="s_gia" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    <input require type="number" name="s_gia" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">% Giảm giá</span>
-                                    <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    <input require type="number" name="s_giamgia" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Nhà xuất bản</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    <input require type="text" name="nxb" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
                         </div>
@@ -254,19 +270,19 @@ include('./ham.php')
                             <div class="col-md-4">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Năm xuất bản</span>
-                                    <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    <input require type="number" name="namxuatban" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Số trang</span>
-                                    <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    <input require type="number" name="sotrang" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Số lượng</span>
-                                    <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    <input require type="number" name="soluong" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
                         </div>
@@ -274,7 +290,7 @@ include('./ham.php')
                             <div class="col-md-12">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Mô tả</span>
-                                    <textarea class="form-control" id="message-text"></textarea>
+                                    <textarea require name="mota" class="form-control" id="message-text"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -282,13 +298,13 @@ include('./ham.php')
                             <div class="col-md-4">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Ngôn ngữ</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    <input require type="text" name="ngonngu" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Thể loại</span>
-                                    <select id="sl_tl_id" class="form-select" aria-label="Default select example">
+                                    <select require id="sl_tl_id" name="slt_tl_id" class="form-select" aria-label="Default select example">
                                         <!-- <option selected>Open this select menu</option> -->
                                         <?php
                                         $qr = slt_theloai();
@@ -306,7 +322,7 @@ include('./ham.php')
                             <div class="col-md-4">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Tác giả</span>
-                                    <select id="sl_tg_id" class="form-select" aria-label="Default select example">
+                                    <select require id="sl_tg_id" name="slt_tg_id" class="form-select" aria-label="Default select example">
                                         <!-- <option selected>Open this select menu</option> -->
                                         <?php
                                         $qr = slt_tacgia();
@@ -326,13 +342,13 @@ include('./ham.php')
                             <div class="col-md-6">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Ảnh chính</span>
-                                    <input id="file" type="file" name="anhchinh" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    <input require id="file" require type="file" name="anhchinh" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Ảnh phụ (nếu có)</span>
-                                    <input type="file" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="file" name="anhphu" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
                         </div>
@@ -341,7 +357,7 @@ include('./ham.php')
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="submit_add_s">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="submit_add_s">Thêm sách</button>
                 </div>
             </form>
         </div>
@@ -512,7 +528,173 @@ include('../Parital/foot.php')
             $("#wrapper").toggleClass("toggled");
         });
         //tl_id = 1;
-        load_data();
+        //load_data();
+
+        //search 
+        $('#search_ip').keyup(function(e) {
+            if (e.which != '40' && e.which != '38' && e.which != '13') {
+                val_search = $(this).val()
+                if (val_search == '') {
+                    $('#list_sach').css("display", "none")
+                } else {
+                    $('#list_sach').css("display", "")
+
+                }
+                action = "search";
+                $.ajax({
+                    url: "process_sach.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        val_search: val_search
+                    },
+                    success: function(dt) {
+                        $('#list_sach').html(dt);
+                    }
+                })
+
+            }
+        })
+
+        stt = 0;
+        $(document).on('keyup', '#search_ip', function(e) {
+            val_search = $(this).val()
+            dem = 0;
+            if (val_search != '') {
+                $('.alert').each(function() {
+                    dem++;
+                })
+                if (e.which == '40') {
+                    if (stt == dem) {
+                        if ($('.output_search' + dem).hasClass('alert-info')) {
+                            $('.output_search' + dem).removeClass('alert-info')
+                            $('.output_search' + dem).addClass('alert-dark')
+
+                        }
+                        stt = 0;
+                    }
+                    $('.output_search' + stt).addClass('alert-dark')
+                    stt = stt + 1;
+                    // console.log(stt)
+                    if ($('.output_search' + stt).hasClass('alert-dark')) {
+                        $('.output_search' + stt).removeClass('alert-dark')
+                        $('.output_search' + stt).addClass('alert-info')
+                        vals = $('.output_search' + stt).text();
+                        $('#search_ip').val(vals)
+                    }
+
+                }
+
+
+                if (e.which == '38') {
+                    $('.alert').each(function() {
+                        dem++;
+                    })
+                    if (stt == 0) {
+                        if ($('.output_search' + dem).hasClass('alert-info')) {
+                            $('.output_search' + dem).removeClass('alert-info')
+                            $('.output_search' + dem).addClass('alert-dark')
+
+                        }
+                        stt = dem;
+                    }
+                    $('.output_search' + stt).addClass('alert-dark')
+                    stt = stt - 1;
+                    console.log(stt)
+                    if ($('.output_search' + stt).hasClass('alert-dark')) {
+                        $('.output_search' + stt).removeClass('alert-dark')
+                        $('.output_search' + stt).addClass('alert-info')
+                        vals = $('.output_search' + stt).text();
+                        $('#search_ip').val(vals)
+                    }
+                }
+            } else {
+                stt = 0
+            }
+
+        })
+
+        $(document).on('mouseover', '.alert', function() {
+            if ($(this).hasClass('alert-dark')) {
+                $(this).removeClass('alert-dark')
+                $(this).addClass('alert-info')
+            }
+            $(this).click(function() {
+                vals = $(this).text()
+                action = "get_data_search"
+                $.ajax({
+                    url: "process_sach.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        vals: vals
+                    },
+                    success: function(dt) {
+                        // alert(dt)
+                        $('.data_sach').html(dt);
+                        $('#list_sach').css("display", "none")
+                        $('#search_ip').val(vals)
+                    }
+                })
+            })
+
+        })
+        $(window).click(function(){
+            $('#list_sach').css("display", "none")
+        })
+        $(document).on('mouseleave', '.alert', function() {
+            $('.alert').each(function() {
+                if ($(this).hasClass('alert-info')) {
+                    $(this).removeClass('alert-info')
+                    $(this).addClass('alert-dark')
+                }
+            })
+        })
+
+        $('#search_ip').keypress(function(e) {
+            if (e.which == '13') {
+                vals = $(this).val()
+                if (vals != '') {
+                    action = "get_data_search"
+                    $.ajax({
+                        url: "process_sach.php",
+                        method: "POST",
+                        data: {
+                            action: action,
+                            vals: vals
+                        },
+                        success: function(dt) {
+                            // alert(dt)
+                            $('.data_sach').html(dt);
+                            $('#list_sach').css("display", "none")
+                        }
+                    })
+                }
+            }
+        })
+
+        $('#btn_search').click(function(e) {
+            vals = $('#search_ip').val()
+            if (vals != '') {
+                action = "get_data_search"
+                $.ajax({
+                    url: "process_sach.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        vals: vals
+                    },
+                    success: function(dt) {
+                        // alert(dt)
+                        $('.data_sach').html(dt);
+                        $('#list_sach').css("display", "none")
+                    }
+                })
+            }
+
+        })
+
+
         // click nút btn thể loại
         $('.dropdown-menu .theloai').click(function() {
             tranghientai = 1
@@ -524,6 +706,29 @@ include('../Parital/foot.php')
             load_data(tl_id, tranghientai)
         })
 
+        $(document).on('mouseover', 'tr', function() {
+            $(this).css("background-color", '#d8ff00a8')
+        })
+        $(document).on('mouseleave', 'tr', function() {
+            $(this).css("background-color", '')
+        })
+
+        //click vào view để lấy màu xanh
+        $('.view').click(function() {
+            $('.view').each(function() {
+                if ($(this).hasClass("btn-info")) {
+                    $(this).removeClass('btn-info');
+                }
+                $(this).addClass('btn-secondary');
+            })
+
+            if ($(this).hasClass('btn-secondary')) {
+                $(this).removeClass('btn-secondary')
+            }
+            $(this).addClass('btn-info');
+        })
+
+
         //click vào trang
         $(document).on('click', '.page-item', function() {
             tranghientai = $(this).attr('tranghientai');
@@ -531,6 +736,7 @@ include('../Parital/foot.php')
 
             tl_id = $(this).attr('tl_id');
             load_data(tl_id, tranghientai)
+           
 
         })
 
@@ -605,46 +811,21 @@ include('../Parital/foot.php')
                             $(this).attr('selected', true);
                         }
                     })
-
+                    // console.log(dt[14]);
+                    $('#update_s_id').val(dt[14]);
                 }
             })
 
             $('.xn_sua').click(function() {
-                action = "xn sửa";
-                s_ten = $('.s_ten').val()
-                s_gia = $('.s_gia').val()
-                s_giamgia = $('.s_giamgia').val()
-                nxb = $('.nxb').val()
-                namxuatban = $('.namxuatban').val()
-                sotrang = $('.sotrang').val()
-                mota = $('.mota').val()
-                soluong = $('.soluong').val()
-                ngonngu = $('.ngonngu').val()
-                tl_id = $('#sl_tl_id').val();
-                tg_id = $('#sl_tg_id').val();
-                anh = $('.anh').val()
-                anh1 = $('.anh1').val()
+                form = new FormData(form_update_s)
 
                 $.ajax({
                     url: "process_sach.php",
                     method: "POST",
-                    data: {
-                        action: action,
-                        s_id: s_id,
-                        s_ten: s_ten,
-                        s_gia: s_gia,
-                        s_giamgia: s_giamgia,
-                        nxb: nxb,
-                        namxuatban: namxuatban,
-                        sotrang: sotrang,
-                        mota: mota,
-                        soluong: soluong,
-                        ngonngu: ngonngu,
-                        tl_id: tl_id,
-                        tg_id: tg_id,
-                        anh: anh,
-                        anh1: anh1
-                    },
+                    data: form,
+                    mimeType: "multipart/form-data",
+                    processData: false,
+                    contentType: false,
                     success: function(dt) {
                         console.log(dt)
                         load_data(tl_id, tranghientai)
@@ -658,38 +839,30 @@ include('../Parital/foot.php')
                 })
             })
         })
-
+        //click thêm sách
         $(document).on('click', '.add_s', function() {
             $('#exampleModal4').modal('show')
             action = "Thêm sách"
-
             $('#submit_add_s').click(function() {
                 event.preventDefault();
-                form = []
-                form.append($('#myform').serialize());
-                var file_data = $('#file').prop('files')[0];
-                console.log(file_data);
-                form.append('file', file_data);
-                console.log(form)
+                form = new FormData(myform_adds)
                 $.ajax({
                     url: "process_sach.php",
                     method: "POST",
-                    data: form
-
-                        // action : action
-                        ,
-                    dataType: "text",
+                    data: form,
                     mimeType: "multipart/form-data",
                     processData: false,
                     contentType: false,
-                    cache: false,
                     success: function(dt) {
-                        alert(dt)
+                        $('#exampleModal4').modal('hide')
+                        $('#exampleModal3').modal('show');
+                        $('.modal-body3 h4').html(dt)
+                        setTimeout(function() {
+                            $("#exampleModal3").modal('hide')
+                        }, 2000)
+                        console.log(dt)
+                        load_data()
                     }
-
-
-
-
                 })
             })
         })
@@ -939,6 +1112,43 @@ include('../Parital/foot.php')
             })
 
         })
+        //click lượt mua
+        $(document).on('click', '.luotmua .dropdown-item', function() {
+            luotmua = $(this).html();
+            //alert(luotmua)
+            action_s = luotmua;
+            tl_id
+            tranghientai
+            // tl_id = 1;
+            // tranghientai = 1;
+            load_action_s(action_s, tl_id, tranghientai)
+            $(document).on('click', '.page-item', function() {
+                tranghientai = $(this).attr('tranghientai');
+                // alert(tranghientai);
+                tl_id = $(this).attr('tl_id');
+                load_action_s(action_s, tl_id, tranghientai)
+
+            })
+
+        })
+
+        $(document).on('click', '.sluongkho .dropdown-item', function() {
+            sluongkho = $(this).html();
+            action_ss = sluongkho;
+            tl_id
+            tranghientai
+            // tl_id = 1;
+            // tranghientai = 1;
+            load_action_ss(action_ss, tl_id, tranghientai)
+            $(document).on('click', '.page-item', function() {
+                tranghientai = $(this).attr('tranghientai');
+                // alert(tranghientai);
+                tl_id = $(this).attr('tl_id');
+                load_action_ss(action_ss, tl_id, tranghientai)
+
+            })
+
+        })
 
         function data_tg() {
             action = 'ql_tg'
@@ -974,6 +1184,39 @@ include('../Parital/foot.php')
                 url: "process_sach.php",
                 method: "POST",
                 data: {
+                    tl_id: tl_id,
+                    tranghientai: tranghientai
+                },
+                success: function(dt) {
+                     $('.data_sach').html(dt);
+                    
+                }
+
+            })
+        }
+
+        function load_action_s(action_s, tl_id, tranghientai) {
+            $.ajax({
+                url: "process_sach.php",
+                method: "POST",
+                data: {
+                    action_s: action_s,
+                    tl_id: tl_id,
+                    tranghientai: tranghientai
+                },
+                success: function(dt) {
+                    $('.data_sach').html(dt);
+                }
+
+            })
+        }
+
+        function load_action_ss(action_ss, tl_id, tranghientai) {
+            $.ajax({
+                url: "process_sach.php",
+                method: "POST",
+                data: {
+                    action_ss: action_ss,
                     tl_id: tl_id,
                     tranghientai: tranghientai
                 },
