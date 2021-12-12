@@ -77,6 +77,35 @@ function slt_sach_tl($tl_id,$dem,$sosach1trang){
     return mysqli_query($conn,$sql);
 }
 
+//sắp xếp theo lượt mua cáp đến thấp
+
+function slt_sach_luotmua_desc($tl_id,$dem,$sosach1trang){
+    global $conn;
+    $sql = "SELECT * from sach where tl_id = '$tl_id'order by luotmua DESC limit $dem,$sosach1trang";
+    return mysqli_query($conn,$sql);
+}
+// thấp đến cao
+function slt_sach_luotmua_asc($tl_id,$dem,$sosach1trang){
+    global $conn;
+    $sql = "SELECT * from sach where tl_id = '$tl_id' order by luotmua asc limit $dem,$sosach1trang";
+    return mysqli_query($conn,$sql);
+}
+
+//sắp xếp theo số lượng kho mua cáp đến thấp
+
+function slt_sach_soluong_desc($tl_id,$dem,$sosach1trang){
+    global $conn;
+    $sql = "SELECT * from sach where tl_id = '$tl_id'order by soluong DESC limit $dem,$sosach1trang";
+    return mysqli_query($conn,$sql);
+}
+// thấp đến cao
+function slt_sach_soluong_asc($tl_id,$dem,$sosach1trang){
+    global $conn;
+    $sql = "SELECT * from sach where tl_id = '$tl_id' order by soluong asc limit $dem,$sosach1trang";
+    return mysqli_query($conn,$sql);
+}
+
+
 //đếm tất cả sách
 function count_sach(){
     global $conn;
@@ -127,6 +156,8 @@ function slt_sach_tl_tg($s_id){
     return mysqli_query($conn,$sql);
 }
 
-
-
-?>
+function search_sach($val_search){
+    global $conn;
+    $sql = "SELECT * from sach where s_ten like '%$val_search%' order by luotmua limit 0,5";
+    return mysqli_query($conn,$sql);
+}
