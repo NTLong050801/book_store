@@ -53,18 +53,20 @@ require('./function.php')
                 <h2>Khách</h2>
             </li>
             <li id="true" class="nav-item"> <a href="#"><i class="fa fa-home"></i> Home</a> </li>
-            <?php
-            $slt_tl = allTheLoai();
-            while ($row_tl = mysqli_fetch_assoc($slt_tl)) {
-            ?>
-                <li id="<?php echo $row_tl['tl_id'] ?>" class="nav-item">
-                    <a href="#"><?php echo $row_tl['tl_ten'] ?></a>
-                </li>
-            <?php
-            }
-            ?>
+           <?php
+           $slt_tl = allTheLoai();
+           while($row_tl = mysqli_fetch_assoc($slt_tl))
+           {
+                ?>
+            <li id= "<?php echo $row_tl['tl_id']?>" class="nav-item">
+            <a href="#"><?php echo $row_tl['tl_ten']?></a>  
+            </li>
+                <?php
+           }
+           ?>
         </ul>
     </div>
+  
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
