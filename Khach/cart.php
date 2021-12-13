@@ -25,6 +25,27 @@ include('./function.php');
 ?>
 <link rel="stylesheet" href="../CSS/cart.css">
 
+<?php
+if (isset($_POST['btnBuys'])) {
+    $_SESSION['idSach'] = [];
+    if (isset($_POST['checkSP'])) {
+        // echo "Đã check";
+        // foreach ($_POST['checkSP'] as $sach_id) {
+        $sach_id =  $_POST['checkSP'];
+        // echo $sach_id;
+        if (!isset($_SESSION['idSach'])) {
+            $_SESSION['idSach'] = [];
+        } else {
+            $_SESSION['idSach'] =  $sach_id;
+        }
+        // }
+    } else {
+        echo "Chưa check";
+    }
+    header("location: checkout.php");
+}
+
+?>
 <!-- Sidebar -->
 <!-- <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
@@ -59,128 +80,124 @@ include('./function.php');
                         </div>
                     </nav>
                     <div class="container main-content">
-                        <!-- <form action="" method="POST"> -->
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="col-md-1" scope="col"><input name="checkAll" class="checkAll" type="checkbox"></th>
-                                    <th class="col-md-5" scope="col">Sản phẩm</th>
-                                    <th class="col-md-1" scope="col">Đơn giá</th>
-                                    <th class="col-md-1" scope="col">Số lượng</th>
-                                    <th class="col-md-1" scope="col">Số tiền</th>
-                                    <th class="col-md-1" scope="col">Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bodySP">
-                                <?php
-                                $email_kh = $_SESSION['check_login'];
-                                $sql = "SELECT  giohang.s_id as sachID, khach.k_id as idKhach, anh, s_ten, gh_soluong , tongtien, tl_id FROM giohang, sach, khach where k_email = '$email_kh'  and giohang.k_id = khach.k_id and giohang.s_id = sach.s_id";
-                                $rs = mysqli_query($conn, $sql);
-                                if (mysqli_num_rows($rs) > 0) {
-                                    while ($row = mysqli_fetch_array($rs)) {
-                                ?>
-                                        <tr>
-                                            <td><input s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="checkSP" name="checkSP" type="checkbox"></td>
-                                            <td>
-                                                <img height="50" src="../Image/VanHoc/<?php echo $row['anh'] ?>" alt="">
-                                                <?php
-                                                echo $row['s_ten'];
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <p id="tongTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] ?></p>
-                                            </td>
-                                            <td><input s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="soLuong" value="<?php echo $row['gh_soluong'] ?>" type="number" min="0" max="10"></td>
-                                            <td>
-                                                <p id="soTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] * $row['gh_soluong'] ?></p>
-                                            </td>
-                                            <td>
-                                                <button s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" id="liveToastBtn" class="btn btn-danger btnXoa" style="background-color: #EE4D2D">Xóa</button>
+                        <form action="" method="POST">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-1" scope="col"><input name="checkAll" class="checkAll" type="checkbox"></th>
+                                        <th class="col-md-5" scope="col">Sản phẩm</th>
+                                        <th class="col-md-1" scope="col">Đơn giá</th>
+                                        <th class="col-md-1" scope="col">Số lượng</th>
+                                        <th class="col-md-1" scope="col">Số tiền</th>
+                                        <th class="col-md-1" scope="col">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bodySP">
+                                    <?php
+                                    $email_kh = $_SESSION['check_login'];
+                                    $sql = "SELECT  giohang.s_id as sachID, khach.k_id as idKhach, anh, s_ten, gh_soluong , tongtien, tl_id FROM giohang, sach, khach where k_email = '$email_kh'  and giohang.k_id = khach.k_id and giohang.s_id = sach.s_id";
+                                    $rs = mysqli_query($conn, $sql);
+                                    if (mysqli_num_rows($rs) > 0) {
+                                        while ($row = mysqli_fetch_array($rs)) {
+                                    ?>
+                                            <tr>
+                                                <td><input s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="checkSP" name="checkSP[]" value="<?php echo $row['sachID'] ?>" type="checkbox"></td>
+                                                <td>
+                                                    <img height="50" src="../Image/VanHoc/<?php echo $row['anh'] ?>" alt="">
+                                                    <?php
+                                                    echo $row['s_ten'];
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <p id="tongTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] ?></p>
+                                                </td>
+                                                <td><input s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" class="soLuong" value="<?php echo $row['gh_soluong'] ?>" type="number" min="0" max="10"></td>
+                                                <td>
+                                                    <p id="soTien<?php echo $row['sachID'] ?>"><?php echo $row['tongtien'] * $row['gh_soluong'] ?></p>
+                                                </td>
+                                                <td>
+                                                    <button s_id="<?php echo $row['sachID'] ?>" k_id="<?php echo $row['idKhach'] ?>" id="liveToastBtn" class="btn btn-danger btnXoa" style="background-color: #EE4D2D">Xóa</button>
 
-                                                <!-- Start modal SP tương tự-->
-                                                <div class="row">
-                                                    <!-- Button trigger modal -->
-                                                    <span class="spTuongTu" tl_id="<?php echo $row['tl_id'] ?>" style="color: #EE4D2D" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                        Sản phẩm tương tự
-                                                    </span>
+                                                    <!-- Start modal SP tương tự-->
+                                                    <div class="row">
+                                                        <!-- Button trigger modal -->
+                                                        <span class="spTuongTu" tl_id="<?php echo $row['tl_id'] ?>" style="color: #EE4D2D" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                            Sản phẩm tương tự
+                                                        </span>
 
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-xl">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Sản phẩm tương tự</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body modal-body-sptt row d-flex justify-content-around">
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-xl">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Sản phẩm tương tự</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body modal-body-sptt row d-flex justify-content-around">
 
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
+                                                    <!-- End modal SP tương tự -->
 
-                                                </div>
-                                                <!-- End modal SP tương tự -->
-
-                                            </td>
-                                        </tr>
-                                <?php
+                                                </td>
+                                            </tr>
+                                    <?php
+                                        }
+                                    } else {
+                                        echo "Không có kq";
                                     }
-                                } else {
-                                    echo "Không có kq";
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                        <!-- </form> -->
-                    </div>
-
-                    <!-- Tính tiền -->
-                    <div class="container">
-                        <!-- totalSP -->
-                        <div class="d-flex mb-3">
-                            <div class="p-2 col-1"><input type="checkbox" name="checkAll" class="checkAll"></div>
-                            <!-- Delete modal -->
-                            <div class="me-auto p-2 col-2">
-                                <!-- Button trigger modal -->
-                                <button disabled type="button" class="btn btn-danger btnDel" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    Xóa
-                                </button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Xóa sản phẩm</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Bạn có chắc muốn xóa những sản phẩm nãy không?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-danger btnXoaAll" data-bs-dismiss="modal">Xóa</button>
+                                    ?>
+                                </tbody>
+                            </table>
+                            <!-- Tính tiền -->
+                            <div class="container">
+                                <!-- totalSP -->
+                                <div class="d-flex mb-3">
+                                    <div class="p-2 col-1"><input type="checkbox" name="checkAll" class="checkAll"></div>
+                                    <!-- Delete modal -->
+                                    <div class="me-auto p-2 col-2">
+                                        <!-- Button trigger modal -->
+                                        <button disabled type="button" class="btn btn-danger btnDel" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                            Xóa
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="staticBackdropLabel">Xóa sản phẩm</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Bạn có chắc muốn xóa những sản phẩm nãy không?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-danger btnXoaAll" data-bs-dismiss="modal">Xóa</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Delete modal -->
+                                    <div class="p-2 col-2">Tổng tiền : <span name="tongTienAll" id="tongTienAll">0đ</span></div>
+                                    <!-- <form action="" method="POST"> -->
+                                    <div class="p-2 col-2"><button type="submit" disabled name="btnBuys" id="btnBuys" class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></div>
+                                    <!-- </form> -->
                                 </div>
                             </div>
-                            <!-- Delete modal -->
-                            <div class="p-2 col-2">Tổng tiền : <span id="tongTienAll">0đ</span></div>
-                            <div class="p-2 col-2"><a href="./checkout.php"><button disabled id="btnBuys" class="btn text-white" style="background-color: #EE4D2D;">Mua hàng</button></a></div>
-                        </div>
+
+                            <!-- Tính tiền -->
+                        </form>
                     </div>
-
-
-
-
-
-                    <!-- Tính tiền -->
-
                     <!-- SP khác -->
                     <div class="container" style="margin-bottom: 10rem;;">
                         <div class="row">
@@ -198,8 +215,6 @@ include('./function.php');
                                             <a href="./book.php?s_id=<?php echo $rowSPKhac['s_id'] ?>" class="btn btn-primary">Xem</a>
                                         </div>
                                     </div>
-
-
                             <?php
                                 }
                             }
@@ -353,11 +368,6 @@ include('../Parital/foot.php')
                 }
             })
         })
-
-
-
-
-
 
         $(document).on('click', '.btnXoa', function() {
             var btnXoa = this;
@@ -516,12 +526,11 @@ include('../Parital/foot.php')
             }
         })
 
-
         $('.checkAll').click(function() {
             if ($(this).is(':checked')) {
                 $('#btnBuys').prop("disabled", false);
                 $('.btnDel').prop("disabled", false);
-                
+
                 $('.checkSP').prop('checked', true);
                 $('.checkAll').prop('checked', true);
                 tongThanhToan = 0;

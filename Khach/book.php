@@ -40,7 +40,7 @@ require('./function.php');
             $s_id = $_GET['s_id'];
             if(!isset($_SESSION['s_id'])){
               $_SESSION['s_id'] = [];
-            }
+            } 
             $_SESSION['s_id'][] = $s_id;
 
             $slt = SachById($s_id);
