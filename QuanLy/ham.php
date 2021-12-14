@@ -161,3 +161,86 @@ function search_sach($val_search){
     $sql = "SELECT * from sach where s_ten like '%$val_search%' order by luotmua limit 0,5";
     return mysqli_query($conn,$sql);
 }
+
+function show_all_dh($status){
+    global $conn;
+    $sql = "SELECT * from donhang,khach 
+    where khach.k_id = donhang.k_id 
+    and donhang.status = '$status' order by hd_id DESC";
+     return mysqli_query($conn,$sql);
+}
+
+function sum_sluong($hd_id){
+    global $conn;
+    $sql = "SELECT sum(sluong) as tongs from chitiethd where hd_id = '$hd_id'";
+    $qr = mysqli_query($conn,$sql);
+    return mysqli_fetch_assoc($qr)['tongs'] ;
+}
+
+function count_status_ql($status){
+    global $conn;
+    $sql = "SELECT count(hd_id) from donhang where donhang.status = $status ";
+    $qr = mysqli_query($conn , $sql);
+    $row = mysqli_fetch_assoc($qr);
+    if($row['count(hd_id)'] > 0){
+        return '('.$row['count(hd_id)'].')' ;
+    }
+}
+
+function dh_date($date_s,$date_e){
+    global $conn;
+    $sql = "SELECT * from donhang where hd_date between '$date_s' and '$date_e'";
+    return mysqli_query($conn,$sql);
+}
+
+function dh_date_search($val){
+    global $conn;
+    $sql = "SELECT * from donhang,khach
+    where donhang.k_id = khach.k_id and k_sdt like '$val%'";
+    return mysqli_query($conn,$sql);
+}
+
+function sum_dh($date_s,$date_e){
+    global $conn;
+    $sql = "SELECT count(hd_id) as tonghoadon from donhang 
+    where hd_date between '$date_s' and '$date_e'";
+    $qr = mysqli_query($conn,$sql);
+    return mysqli_fetch_assoc($qr)['tonghoadon'];
+}
+function sum_dh_search($val){
+    global $conn;
+    $sql = "SELECT count(hd_id) as tonghoadon from donhang,khach
+    where donhang.k_id = khach.k_id and k_sdt like '$val%'";
+    $qr = mysqli_query($conn,$sql);
+    return mysqli_fetch_assoc($qr)['tonghoadon'];
+}
+
+function sum_tien($date_s,$date_e){
+    global $conn;
+    $sql = "SELECT sum(tongtien) as tongall from donhang 
+    where hd_date between '$date_s' and '$date_e'";
+    $qr = mysqli_query($conn,$sql);
+    return mysqli_fetch_assoc($qr)['tongall'];
+}
+
+function sum_sach($date_s,$date_e){
+    global $conn;
+    $sql = "SELECT sum(sluong) as tongsach from donhang,chitiethd 
+    where donhang.hd_id = chitiethd.hd_id and hd_date between '$date_s' and '$date_e'";
+    $qr = mysqli_query($conn,$sql);
+    return mysqli_fetch_assoc($qr)['tongsach'];
+}
+
+function chitiet_hd_date($date_s,$date_e, $limit,$sohd1trang){
+    global $conn;
+    $sql = "SELECT * from donhang,khach
+    where donhang.k_id = khach.k_id and hd_date between '$date_s' and '$date_e' order by hd_id DESC limit $limit,$sohd1trang";
+    return mysqli_query($conn,$sql);
+}
+
+function chitiet_hd_date_search($val, $limit,$sohd1trang){
+    global $conn;
+    $sql = "SELECT * from donhang,khach
+    where donhang.k_id = khach.k_id and k_sdt like '$val%' order by hd_id DESC limit $limit,$sohd1trang";
+    return mysqli_query($conn,$sql);
+}

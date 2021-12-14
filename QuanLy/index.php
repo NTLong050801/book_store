@@ -30,6 +30,7 @@ include('./ham.php')
             </li>
             <li id="true" class="nav-item"> <a href="index.php"><i class="fa fa-home"></i>Sách</a> </li>
             <li id="true" class="nav-item"> <a href="donhang.php"><i class="fa fa-home"></i>Đơn hàng</a> </li>
+            <li id="true" class="nav-item"> <a href="thongke.php"><i class="fa fa-home"></i>Thống kê</a> </li>
 
         </ul>
     </div>

@@ -488,7 +488,7 @@ if (isset($_POST['action'])) {
                                                                                 } else {
                                                                                     echo '1';
                                                                                 }  ?>>
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    <a class="page-link" href="#data_sach" tabindex="-1" aria-disabled="true">Previous</a>
                 </li>
                 <?php
                 for ($i = 1; $i <= $tongsotrang; $i++) { ?>
@@ -505,7 +505,7 @@ if (isset($_POST['action'])) {
                                                                                 } else {
                                                                                     echo $tongsotrang;
                                                                                 }  ?>>
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" href="#data_sach">Next</a>
                 </li>
             </ul>
         </nav>
