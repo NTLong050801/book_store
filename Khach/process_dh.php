@@ -7,6 +7,13 @@ $email = $_SESSION['check_login'];
 $k_id = Khach($email);
 // $_SESSION['action'] = $_POST['action'];
 $action = $_POST['action'];
+if (isset($_POST['tranghientai'])) {
+    $tranghientai = $_POST['tranghientai'];
+} else {
+    $tranghientai = 1;
+}
+$donhang1trang = 5;
+
 if ($action == 'delete_giohang') {
     $hd_id = slt_Donhang();
     $s_id = $_POST['s_id'];
@@ -21,47 +28,83 @@ if ($action == 'insert_dh') {
 }
 
 if ($action == 'Tất cả') {
+    $tongtrang = ceil(count_all_dh($k_id) / $donhang1trang);
+    $start = ($tranghientai - 1) * $donhang1trang;
     if (isset($_POST['hd_id'])) {
         $hd_id = $_POST['hd_id'];
-        update_status($hd_id,$_POST['status']);
-        $show = show_allDh($k_id);
+        if ($_POST['status'] == '3') {
+            $qr = Chitiethd($hd_id, $k_id);
+            while ($row_update = mysqli_fetch_assoc($qr)) {
+                $s_id = $row_update['s_id'];
+                $sluong = $row_update['sluong'];
+                $soluong = ($row_update['soluong']) - $sluong;
+                $luotmua = ($row_update['luotmua']) +  $sluong;
+                update_soluongs($s_id, $soluong, $luotmua);
+            }
+        }
+        update_status($hd_id, $_POST['status']);
+        $show = show_allDh($k_id, $start, $donhang1trang);
     } else {
-        $show = show_allDh($k_id);
+        $show = show_allDh($k_id, $start, $donhang1trang);
     }
     if (isset($_POST['val'])) {
         $val = $_POST['val'];
-        $show = search_dh($k_id, $val);
+        $tongtrang = ceil(count_search_dh($k_id, $val) / $donhang1trang);
+        $start = ($tranghientai - 1) * $donhang1trang;
+      
+        $show = search_dh($k_id, $val, $start, $donhang1trang);
     } else {
-        $show = show_allDh($k_id);
+        $show = show_allDh($k_id, $start, $donhang1trang);
     }
 }
 if ($action == 'Chờ xác nhận') {
+    $tongtrang = ceil(count_show_allDh_status($k_id, '0') / $donhang1trang);
+    $start = ($tranghientai - 1) * $donhang1trang;
     if (isset($_POST['hd_id'])) {
         $hd_id = $_POST['hd_id'];
-        update_status($hd_id,$_POST['status']);
-        $show = show_allDh_status($k_id, '0');
+        update_status($hd_id, $_POST['status']);
+        $show = show_allDh_status($k_id, '0', $start, $donhang1trang);
     } else {
-        $show = show_allDh_status($k_id, '0');
+        $show = show_allDh_status($k_id, '0', $start, $donhang1trang);
     }
 }
 if ($action == 'Chờ lấy hàng') {
-    $show = show_allDh_status($k_id, '1');
+    $tongtrang = ceil(count_show_allDh_status($k_id, '1') / $donhang1trang);
+    $start = ($tranghientai - 1) * $donhang1trang;
+    $show = show_allDh_status($k_id, '1', $start, $donhang1trang);
 }
 if ($action == 'Đang giao') {
+    $tongtrang = ceil(count_show_allDh_status($k_id, '2') / $donhang1trang);
+    $start = ($tranghientai - 1) * $donhang1trang;
     if (isset($_POST['hd_id'])) {
         $hd_id = $_POST['hd_id'];
-        update_status($hd_id,$_POST['status']);
-        $show = show_allDh_status($k_id, '2');
+        if ($_POST['status'] == '3') {
+            $qr = Chitiethd($hd_id, $k_id);
+            while ($row_update = mysqli_fetch_assoc($qr)) {
+                $s_id = $row_update['s_id'];
+                $sluong = $row_update['sluong'];
+                $soluong = ($row_update['soluong']) - $sluong;
+                $luotmua = ($row_update['luotmua']) +  $sluong;
+                update_soluongs($s_id, $soluong, $luotmua);
+            }
+        }
+
+        update_status($hd_id, $_POST['status']);
+        $show = show_allDh_status($k_id, '2', $start, $donhang1trang);
     } else {
-        $show = show_allDh_status($k_id, '2');
+        $show = show_allDh_status($k_id, '2', $start, $donhang1trang);
     }
     // $show = show_allDh_status($k_id, '2');
 }
 if ($action == 'Đã giao') {
-    $show = show_allDh_status($k_id, '3');
+    $tongtrang = ceil(count_show_allDh_status($k_id, '3') / $donhang1trang);
+    $start = ($tranghientai - 1) * $donhang1trang;
+    $show = show_allDh_status($k_id, '3', $start, $donhang1trang);
 }
 if ($action == 'Đã hủy') {
-    $show = show_allDh_status($k_id, '4');
+    $tongtrang = ceil(count_show_allDh_status($k_id, '4') / $donhang1trang);
+    $start = ($tranghientai - 1) * $donhang1trang;
+    $show = show_allDh_status($k_id, '4', $start, $donhang1trang);
 }
 if (isset($show)) {
     if (mysqli_num_rows($show) > 0) {
@@ -126,20 +169,25 @@ if (isset($show)) {
                 <br>
                 <br>
 
-                <div class='mualai' sluong_st0=<?php echo count_status0($k_id,$row['status']) ?>>
+                <div class='mualai' sluong_st0=<?php
+                                                if ($action == 'Tất cả') {
+                                                    echo count_status0($k_id, 1);
+                                                } else {
+                                                    echo count_status0($k_id, $row['status']);
+                                                } ?>>
                     <a href="cart.php"><button class="btn btn-primary btn_mualai" hd_id=<?php echo $row['hd_id'] ?>>Mua lại</button></a>
                     <?php if ($row['status'] == '0') { ?>
                         <button class="btn btn-danger huydh" hd_id=<?php echo $row['hd_id'] ?>>Hủy đơn</button>
                     <?php  } ?>
                     <?php if ($row['status'] == '3') { ?>
                         <button class="btn btn-danger danhgia" hd_id=<?php echo $row['hd_id'] ?>><?php
-                            $qr = Slt_Danhgia($k_id, $row['hd_id']);
-                            if (mysqli_num_rows($qr) > 0) {
-                                echo "Đã đánh giá";
-                            } else {
-                                echo "Đánh giá sản phẩm";
-                            }
-                            ?></button>
+                                                                                                    $qr = Slt_Danhgia($k_id, $row['hd_id']);
+                                                                                                    if (mysqli_num_rows($qr) > 0) {
+                                                                                                        echo "Đã đánh giá";
+                                                                                                    } else {
+                                                                                                        echo "Đánh giá sản phẩm";
+                                                                                                    }
+                                                                                                    ?></button>
                     <?php  } ?>
                     <?php if ($row['status'] == '2') { ?>
                         <button class="btn btn-danger nhanhang" hd_id=<?php echo $row['hd_id'] ?>>Đã nhận hàng</button>
@@ -148,11 +196,16 @@ if (isset($show)) {
                 </div>
             </div>
 
-
-
         <?php
 
-        }
+        } ?>
+        <div style="  text-align: center;margin-bottom:40px">
+            <span id="see_too" action="<?php echo $action ?>" tranghientai='<?php echo ($tranghientai + 1) ?>' style=" color: red;cursor: pointer;
+      display:<?php if ($tranghientai == $tongtrang) {
+                    echo 'none';
+                } ?> ;">Xem thêm</span>
+        </div>
+    <?php
     } else {
         echo '<div class = "kodh" >
     Chưa có đơn hàng <span class="mualai" sluong_st0 ="0"></span>
@@ -281,7 +334,6 @@ if ($action == 'update đánh giá') {
         //     echo $s_id;
         // }
     }
-    
 }
 
 

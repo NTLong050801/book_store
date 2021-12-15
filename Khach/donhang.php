@@ -12,6 +12,14 @@ require('./function.php')
 
     }
 
+    #see_too {
+        color: red;
+        cursor: pointer;
+        text-align: center;
+        margin-top: 20px;
+        /* margin-right: 40%; */
+    }
+
     .view {
         text-align: center;
     }
@@ -87,9 +95,11 @@ require('./function.php')
         margin-bottom: 200px;
         border-top: #ee4d2d solid;
     }
-    .sluongdh{
+
+    .sluongdh {
         color: #ee4d2d;
     }
+
     .sluongdh_xn {
         color: #ee4d2d;
     }
@@ -233,7 +243,6 @@ include('../Parital/foot.php')
         load_data()
 
         function load_data() {
-
             $.ajax({
                 url: "process_dh.php",
                 method: "POST",
@@ -257,6 +266,8 @@ include('../Parital/foot.php')
         })
         $('.view span').click(function() {
             view = $(this).html()
+            hd_id = $(this).attr('hd_id')
+
             if (view == 'Tất cả') {
                 $('.search').css("display", 'block')
             } else {
@@ -264,6 +275,35 @@ include('../Parital/foot.php')
             }
             action = view;
             load_data()
+
+            $('.nhanhang').click(function() {
+                hd_id = $(this).attr('hd_id')
+                // alert(hd_id);
+                status = 3;
+                $.ajax({
+                    url: "process_dh.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        hd_id: hd_id,
+                        status: status
+                    },
+                    success: function(dt) {
+                        $('.data').html(dt)
+                        // $('#exampleModal').modal('hide')
+
+                        sluong_st0 = $('.mualai').attr('sluong_st0');
+                        // alert(sluong_st0)
+                        if (sluong_st0 != '(undefined)' && sluong_st0 != '0') {
+                            $('.dh_dn').html(sluong_st0)
+                        } else {
+                            $('.dh_dn').html('')
+                        }
+
+                    }
+                })
+
+            })
         })
 
         $(document).on('keypress', '#search_ip', function(e) {
@@ -302,7 +342,7 @@ include('../Parital/foot.php')
                     data: {
                         action: action,
                         hd_id: hd_id,
-                        status : status
+                        status: status
                     },
                     success: function(dt) {
                         $('.data').html(dt)
@@ -450,32 +490,94 @@ include('../Parital/foot.php')
             hd_id = $(this).attr('hd_id')
             // alert(hd_id);
             status = 3;
+            $.ajax({
+                url: "process_dh.php",
+                method: "POST",
+                data: {
+                    action: action,
+                    hd_id: hd_id,
+                    status: status
+                },
+                success: function(dt) {
+                    $('.data').html(dt)
+                    // $('#exampleModal').modal('hide')
+
+                    sluong_st0 = $('.mualai').attr('sluong_st0');
+                    // alert(sluong_st0)
+                    if (sluong_st0 != '(undefined)' && sluong_st0 != '0') {
+                        $('.dh_dn').html(sluong_st0)
+                    } else {
+                        $('.dh_dn').html('')
+                    }
+
+                }
+            })
+
+        })
+
+        $(document).on('click', '#see_too', function() {
+            action = $(this).attr('action');
+            tranghientai = $(this).attr('tranghientai')
+            $(this).css("display", "none")
+            val = $(document).val('#search_ip')
+            console.log(val)
+            if (val != ' ') {
                 $.ajax({
                     url: "process_dh.php",
                     method: "POST",
                     data: {
                         action: action,
-                        hd_id: hd_id,
-                        status : status
+                        tranghientai: tranghientai,
+                        val: val
                     },
                     success: function(dt) {
-                        $('.data').html(dt)
-                        // $('#exampleModal').modal('hide')
-
-                        sluong_st0 = $('.mualai').attr('sluong_st0');
-                        // alert(sluong_st0)
-                        if (sluong_st0 != '(undefined)' && sluong_st0 != '0') {
-                            $('.dh_dn').html(sluong_st0)
-                        } else {
-                            $('.dh_dn').html('')
-                        }
+                        $('.data').append(dt);
 
                     }
                 })
+            } else {
+                $.ajax({
+                    url: "process_dh.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        tranghientai: tranghientai,
+                    },
+                    success: function(dt) {
+                        $('.data').append(dt);
+
+                    }
+                })
+            }
 
         })
 
 
+        // $(window).scroll(function() {
+        //     x = 1500
+        //     action = 'Tất cả'
+        //     tranghientai = 1;
+        //     if ($(document).scrollTop() > x) {
+        //         // action = $(this).attr('action');
+        //         // tranghientai = $(this).attr('tranghientai')
+        //         // $(this).css("display", "none")
+        //         $.ajax({
+        //             url: "process_dh.php",
+        //             method: "POST",
+        //             data: {
+        //                 action: action,
+        //                 tranghientai: tranghientai,
+        //             },
+        //             success: function(dt) {
+        //                 $('.data').append(dt);
+        //             }
+        //         })
+        //         x = x + 2000
+        //         console.log(x);
+        //         tranghientai += 1;
+
+        //     }
+        // })
 
     })
 </script>

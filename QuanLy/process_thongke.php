@@ -186,7 +186,7 @@ if (isset($_POST['action'])) {
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="Page navigation example" style="text-align: center;">
+            <nav aria-label="Page navigation example" style="float:right">
                 <ul class="pagination">
                     <li class="page-item <?php if ($tranghientai == '1') {
                                                 echo 'disabled';
