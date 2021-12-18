@@ -98,7 +98,7 @@ require './Email/SMTP.php';
                                         // Mail body content 
                                         $bodyContent = '<p>Thân gửi người dùng . </h1>';
                                         $bodyContent .= '<p>Vui lòng nhấn vào linh sau để kích hoạt tài khoản :"</p>';
-                                        $bodyContent .= '<p>Nhấn vào đây để kích hoạt <a href="http://localhost/finsh/book_store/Login//process_dk.php?email=' . $k_email . '&code=' . $code . '">Xác nhận</a></p>';
+                                        $bodyContent .= '<p>Nhấn vào đây để kích hoạt <a href="http://localhost/finsh/book_store/Login/process_dk.php?email=' . $k_email . '&code=' . $code . '">Xác nhận</a></p>';
                                         $bodyContent .= '<p>Note: Mã xác nhận tồn tại trong 5 phút .</p>';
                                         $bodyContent .= '<p>Chú ý: Không trả lời thư này.Xin trân trọng cảm ơn !</p>';
                                         $bodyContent .= '<p><b>Thân mến!</b></p>';
