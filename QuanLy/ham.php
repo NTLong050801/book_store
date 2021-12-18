@@ -244,3 +244,9 @@ function chitiet_hd_date_search($val, $limit,$sohd1trang){
     where donhang.k_id = khach.k_id and k_sdt like '$val%' order by hd_id DESC limit $limit,$sohd1trang";
     return mysqli_query($conn,$sql);
 }
+
+function slt_email($val){
+    global $conn;
+    $sql = "SELECT * from users,khach where users.u_email = khach.k_email and users.u_email = '$val' ";
+    return mysqli_query($conn,$sql);
+}

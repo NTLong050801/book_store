@@ -51,7 +51,6 @@ if ($action == 'Tất cả') {
         $val = $_POST['val'];
         $tongtrang = ceil(count_search_dh($k_id, $val) / $donhang1trang);
         $start = ($tranghientai - 1) * $donhang1trang;
-      
         $show = search_dh($k_id, $val, $start, $donhang1trang);
     } else {
         $show = show_allDh($k_id, $start, $donhang1trang);
@@ -88,7 +87,6 @@ if ($action == 'Đang giao') {
                 update_soluongs($s_id, $soluong, $luotmua);
             }
         }
-
         update_status($hd_id, $_POST['status']);
         $show = show_allDh_status($k_id, '2', $start, $donhang1trang);
     } else {
@@ -200,7 +198,9 @@ if (isset($show)) {
 
         } ?>
         <div style="  text-align: center;margin-bottom:40px">
-            <span id="see_too" action="<?php echo $action ?>" tranghientai='<?php echo ($tranghientai + 1) ?>' style=" color: red;cursor: pointer;
+            <span id="see_too" val="<?php if (isset($val)) {
+                                        echo $val;
+                                    } ?>" action="<?php echo $action ?>" tranghientai='<?php echo ($tranghientai + 1) ?>' style=" color: red;cursor: pointer;
       display:<?php if ($tranghientai == $tongtrang) {
                     echo 'none';
                 } ?> ;">Xem thêm</span>

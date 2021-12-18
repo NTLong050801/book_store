@@ -519,9 +519,9 @@ include('../Parital/foot.php')
             action = $(this).attr('action');
             tranghientai = $(this).attr('tranghientai')
             $(this).css("display", "none")
-            val = $(document).val('#search_ip')
+            val = $(this).attr('val')
             console.log(val)
-            if (val != ' ') {
+            if (val != '') {
                 $.ajax({
                     url: "process_dh.php",
                     method: "POST",
@@ -532,7 +532,6 @@ include('../Parital/foot.php')
                     },
                     success: function(dt) {
                         $('.data').append(dt);
-
                     }
                 })
             } else {
