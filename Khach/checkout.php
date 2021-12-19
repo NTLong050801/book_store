@@ -59,7 +59,6 @@ include('./function.php');
                     $rs_ttkh = mysqli_query($conn, "SELECT * FROM khach where k_email = '$email_kh'");
                     $ttkh = mysqli_fetch_assoc($rs_ttkh);
                     ?>
-
                     <p class="p-3" style="color: #ee4d2d; font-size: 24px;"><i class="fas fa-map-marker-alt"></i> Địa chỉ nhận hàng</p>
                     <b class="col-2 ms-3"><?php echo $ttkh['k_ten'] ?></b>
                     <p class="col-2"><?php echo $ttkh['k_sdt'] ?></p>
@@ -90,7 +89,7 @@ include('./function.php');
                                     if (mysqli_num_rows($rs) > 0) {
                                         while ($row = mysqli_fetch_array($rs)) {
                             ?>
-                                            <tr class="soDong" s_id = "<?php echo $sach_ids[$i]?>">
+                                            <tr class="soDong" s_id="<?php echo $sach_ids[$i] ?>" soLuong="<?php echo $row['gh_soluong'] ?>">
                                                 <td>
                                                     <img height="50" src="../Image/VanHoc/<?php echo $row['anh'] ?>" alt="">
                                                     <?php
@@ -141,13 +140,13 @@ include('./function.php');
                                 </div>
                                 <div class="modal-body">
                                     <div class="row mb-3 ms-2">
-                                        <input class="col-9 me-2 p-1" type="text" placeholder="Nhập voucher...">
-                                        <button style="background-color: #ee4d2d;" class="btn col-2 text-white">Áp dụng</button>
+                                        <input class="col-9 me-2 p-1 nhapVoucher" type="text" placeholder="Nhập voucher...">
+                                        <button style="background-color: #ee4d2d;" class="btn col-2 text-white btnUseVoucher">Áp dụng</button>
                                     </div>
-                                    <div class="card mb-3" style="max-width: 540px;">
+                                    <div class="card mb-3 outputVoucher" style="max-width: 540px;">
                                         <div class="row g-0">
                                             <div class="col-md-1 d-flex align-items-center">
-                                                <input class="ms-2 voucherCheck" type="checkbox">
+                                                <input class="ms-2 voucherCheck" type="radio" value="GIAMGIA10" name="voucherCheck">
                                             </div>
                                             <div class="col-md-4">
                                                 <img src="../img/avatar.jpg" class="img-fluid rounded-start" alt="...">
@@ -156,8 +155,34 @@ include('./function.php');
                                                 <div class="card-body">
                                                     <h5 class="card-title">Giảm giá 10%</h5>
                                                     <p class="card-text">Giảm giá đơn hàng này 10%</p>
-                                                    <!-- <button style="background-color: #ee4d2d;" class="btn text-white btnGiamGia">Sử dụng</button> -->
-                                                    <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-0 mt-2">
+                                            <div class="col-md-1 d-flex align-items-center">
+                                                <input class="ms-2 voucherCheck" type="radio" value="GIAMGIA15" name="voucherCheck">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <img src="../img/avatar.jpg" class="img-fluid rounded-start" alt="...">
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Giảm giá 15%</h5>
+                                                    <p class="card-text">Giảm giá đơn hàng này 10%</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-0 mt-2">
+                                            <div class="col-md-1 d-flex align-items-center">
+                                                <input class="ms-2 voucherCheck" type="radio" value="GIAMGIA20" name="voucherCheck">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <img src="../img/avatar.jpg" class="img-fluid rounded-start" alt="...">
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Giảm giá 20%</h5>
+                                                    <p class="card-text">Giảm giá đơn hàng này 10%</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -190,7 +215,7 @@ include('./function.php');
                 </div>
                 <!-- End chọn cách thanh toán -->
                 <div class="row mt-3 d-flex justify-content-end">
-                    Ghi chú: 
+                    Ghi chú:
                     <input type="text" name="" class="ms-1 ghiChu col-4">
                 </div>
                 <!-- Start đặt hàng -->
@@ -201,11 +226,14 @@ include('./function.php');
                         <p>Tổng thanh toán:
                         <h3 class="tongThanhToan"></h3>
                         </p>
-                        <button s_id="<?php
-                            for ($i = 0; $i < sizeof($sach_ids); $i++) {
-                                echo $sach_ids[$i];
-                            }
-                       ?>" k_id="<?php echo $email_kh; ?>" style="width: 10rem; background-color: #ee4d2d;" class="btn text-white btnDatHang">Đặt hàng</button>
+                            <a href="./purchase.php">
+                            <button s_id="<?php
+                                        for ($i = 0; $i < sizeof($sach_ids); $i++) {
+                                            echo $sach_ids[$i];
+                                        }
+                                        ?>" k_id="<?php echo $ttkh['k_id']; ?>" style="width: 10rem; background-color: #ee4d2d;" class="btn text-white btnDatHang">
+                                        Đặt hàng</button>
+                            </a>
                     </div>
                 </div>
                 <!-- End đặt hàng -->
@@ -228,7 +256,8 @@ include('../Parital/foot.php')
     let cDay = currentDate.getDate();
     let cMonth = currentDate.getMonth() + 1;
     let cYear = currentDate.getFullYear();
-   
+    let now = new Date().toLocaleDateString();
+
     $(document).ready(function() {
         tongTienAll = 0;
         $('.tongTienA').each(function() {
@@ -239,14 +268,52 @@ include('../Parital/foot.php')
         })
         $('.tongTienHang').html('Tổng tiền hàng: ' + tongTienAll + "đ");
         $('.tongThanhToan').html(tongTienAll + "đ");
+
+        $('.btnUseVoucher').click(function() {
+            var maVoucher = $('.nhapVoucher').val();
+            $('.outputVoucher').html(
+                `
+                <div class="row g-0">
+                                            <div class="col-md-1 d-flex align-items-center">
+                                                <input class="ms-2 voucherCheck" type="radio" value="${maVoucher}" name="voucherCheck">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <img src="../img/avatar.jpg" class="img-fluid rounded-start" alt="...">
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Giảm giá 10%</h5>
+                                                    <p class="card-text">Giảm giá đơn hàng này 10%</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                `
+            );
+        })
+
+
         $('.btnGiamGia').click(function() {
-            if ($('.voucherCheck').is(':checked')) {
-                $('.tongGiamGia').html('Giảm giá: ' + tongTienAll * 0.1 + "đ");
-                $('.tongThanhToan').html(tongTienAll - tongTienAll * 0.1 + "đ");
-            } else {
-                $('.tongGiamGia').html('Giảm giá: 0đ');
-                $('.tongThanhToan').html(tongTienAll + "đ");
-            }
+            $('.voucherCheck').each(function() {
+                if ($(this).is(':checked')) {
+                    voucherCheck = $(this).val();
+                    if (voucherCheck == "GIAMGIA10") {
+                        giamGia = 0.1;
+                    }
+                    if (voucherCheck == "GIAMGIA15") {
+                        giamGia = 0.15;
+                    }
+                    if (voucherCheck == "GIAMGIA20") {
+                        giamGia = 0.2;
+                    }
+                    console.log(voucherCheck);
+                } else {
+                    $('.tongGiamGia').html('Giảm giá: 0đ');
+                    $('.tongThanhToan').html(tongTienAll + "đ");
+                }
+            })
+            
+            $('.tongGiamGia').html('Giảm giá: ' + tongTienAll * giamGia + "đ");
+            $('.tongThanhToan').html(tongTienAll - tongTienAll * giamGia + "đ");
         })
         $('.btn-pay').each(function() {
             $('.btn-pay').click(function() {
@@ -254,34 +321,96 @@ include('../Parital/foot.php')
                 $(this).addClass('border-orange');
             })
         })
-
         $(document).on('click', '.btnDatHang', function() {
             k_id = $(this).attr('k_id');
-            let i;
-            $('.soDong').each(function(){
-                s_id = $(this).attr('s_id');
-                // console.log(s_id);
-                ghiChu = $('.ghiChu').val();
-                soLuong = parseInt($('.soLuong').html());
-                tongThanhToan = parseFloat($('.tongThanhToan').html());
-                console.log(soLuong);
+            ghiChu = $('.ghiChu').val();
+            tongThanhToan = parseFloat($('.tongThanhToan').html());
+            action = "insert_dh";
+            $.ajax({
+                url: "checkout_action.php",
+                method: "POST",
+                data: {
+                    // s_id: s_id,
+                    k_id: k_id,
+                    cDay: cDay,
+                    cMonth: cMonth,
+                    cYear: cYear,
+                    ghiChu: ghiChu,
+                    tongThanhToan: tongThanhToan,
+                    action: action
+                },
+                success: function(dt) {
+                    // console.log(dt);
+                }
             })
-            // $.ajax({
-            //     url: "checkout_action.php",
-            //     method: "POST",
-            //     data: {
-            //         s_id: s_id,
-            //         k_id: k_id,
-            //         cDay: cDay,
-            //         cMonth: cMonth,
-            //         cYear: cYear,
-            //         ghiChu: ghiChu,
-            //         tongThanhToan: tongThanhToan,
-            //     },
-            //     success: function(dt){
-            //         console.log(dt);
-            //     }
-            // })
+
+            // function listSach(s_id, soLuong){
+            //     $.ajax({
+            //         url: "checkout_action.php",
+            //         method: "POST",
+            //         data: {
+            //             s_id: s_id,
+            //             soLuong: soLuong,
+            //             action: action
+            //         },
+            //         success: function(dt) {
+            //             console.log(dt);
+            //         }
+            //     })
+            //    }
+            action = "insert_ctdh";
+            $('.soDong').each(function() {
+                s_id = $(this).attr('s_id');
+                soLuong = $(this).attr('soLuong');
+                // soLuong = ($('.soLuong').html());
+                $.ajax({
+                    url: "checkout_action.php",
+                    method: "POST",
+                    data: {
+                        s_id: s_id,
+                        soLuong: soLuong,
+                        action: action
+                    },
+                    success: function(dt) {
+                        console.log(dt);
+                    }
+                })
+            })
+
+            // function listSachdel(k_id, s_id, soLuong){
+            //     $.ajax({
+            //         url: "checkout_action.php",
+            //         method: "POST",
+            //         data: {
+            //             k_id: k_id,
+            //             s_id: s_id,
+            //             soLuong: soLuong,
+            //             action: action
+            //         },
+            //         success: function(dt) {
+            //             console.log(dt);
+            //         }
+            //     })
+            //    }
+            action = "del_gh";
+            $('.soDong').each(function() {
+                s_id = $(this).attr('s_id');
+                soLuong = $(this).attr('soLuong');
+                $.ajax({
+                    url: "checkout_action.php",
+                    method: "POST",
+                    data: {
+                        k_ida: k_id,
+                        s_id: s_id,
+                        soLuong: soLuong,
+                        action: action
+                    },
+                    success: function(dt) {
+                        console.log(dt);
+                    }
+                })
+            })
+          
         })
     })
 </script>
