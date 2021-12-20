@@ -124,7 +124,7 @@ include('../config/db.php')
 
                         ?>
                     
-                    <p class="mt-3">Bạn chưa có tài khoản? <a href="">Đăng ký</a></p>
+                    <p class="mt-3">Bạn chưa có tài khoản? <a href="./registration.php">Đăng ký</a></p>
 
                     </form>
 
