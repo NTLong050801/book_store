@@ -32,6 +32,16 @@ include('../config/db.php')
                     <img src="../Image/logo.png" class="img-fluid" alt="">
                 </div>
                 <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                    <?php
+                    if(isset($_SESSION['kichHoatSuccess'])){
+                        echo $_SESSION['kichHoatSuccess'];
+                        unset($_SESSION['kichHoatSuccess']);
+                    }
+                     if(isset($_SESSION['check-email'])){
+                        echo $_SESSION['check-email'];
+                        unset($_SESSION['check-email']);
+                    }
+                    ?>
                     <h2>Đăng nhập</h2>
                     <br>
                     <?php
@@ -88,11 +98,11 @@ include('../config/db.php')
                         if (isset($_POST['submit'])) {
                             $email = $_POST['email'];
                             $pass = $_POST['pass'];
-                            $slt_email = mysqli_query($conn, "Select * from users where u_email = '$email'");
+                            $slt_email = mysqli_query($conn, "Select * from users where u_email = '$email' and kichHoat = 1");
                             if (mysqli_num_rows($slt_email) > 0) {
                                 $row = mysqli_fetch_assoc($slt_email);
                                 $pass_sql = $row['u_pass'];
-                                if ($pass == $pass_sql) {
+                                if (password_verify($pass, $pass_sql)) {
                                     $_SESSION['check_login'] = $email;
                                     // echo $_SESSION['check_login'];
                                     //sinh vien :195
