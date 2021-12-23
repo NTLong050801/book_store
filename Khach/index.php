@@ -43,41 +43,6 @@ require('./function.php')
         cursor: pointer;
         color: red;
     }
-
-    .modal-content {
-        background-color: #cccccc;
-        height: 500px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        position: relative;
-        background-image: url('https://salt.tikicdn.com/cache/w1240/ts/brickv2og/d5/34/de/4f6b20a049d84eb4d0f8df27849f1615.jpg.webp');
-        border: 5px red dashed;
-        overflow: hidden;
-        filter: drop-shadow(0 0 10px white);
-    }
-
-    .hero-text {
-        text-align: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-    }
-
-    .fa-snowflake {
-        animation: fall 10s linear forwards;
-        color: #fff;
-        position: absolute;
-        top: -20px;
-    }
-    @keyframes fall {
-        to{
-            transform: translate(100vh);
-        }
-    }
-
 </style>
 <div id="wrapper" style="overflow: scroll;height:100%">
 
@@ -179,67 +144,9 @@ require('./function.php')
         </div>
 
     </div>
-    <div class="modal fade" id="exampleModal10" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <i class="fas fa-snowflake"></i>
-
-                    <div class="hero-text">
-                        <!-- <h5>Hello ! Now all book sale !</h5> -->
-
-                    </div>
-                    <!-- <img src="https://salt.tikicdn.com/cache/w1240/ts/brickv2og/d5/34/de/4f6b20a049d84eb4d0f8df27849f1615.jpg.webp" alt="" class="img-fluid"> -->
-                </div>
-                <!-- <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div> -->
-            </div>
-        </div>
-    </div>
 
     <?php
     include('../Parital/foot.php')
     ?>
-    <script src="../JS/Khach_JS/index.js">
-
-    </script>
-    <script>
-        $(document).ready(function() {
-            setTimeout(function() {
-                $('#exampleModal10').modal('show');
-            }, 2000)
-
-            setInterval(function() {
-                color = '#' + Math.floor(Math.random() * 16777215).toString(16);
-                $('.hero-text').css("color", color)
-            }, 500)
-
-
-            setInterval(function() {
-                color = '#' + Math.floor(Math.random() * 16777215).toString(16);
-                $('.modal-content').css("border-color", color)
-            }, 500)
-            setInterval(createSnowFlake,100)
-            function createSnowFlake(){
-                const snow = document.createElement('i');
-                snow.classList.add('fas');
-                snow.classList.add('fa-snowflake');
-                snow.style.left = Math.random()* window.innerWidth + 'px';
-                snow.style.animationDuration = Math.random()*3+2+'s';
-                snow.style.opacity = Math.random();
-                snow.style.fontSize = Math.random()*10+10+'px';
-                document.modal-body.appendChild(snow)
-                // setTimeout(() => {
-                //     snow.remove()
-                // }, 5000);
-            }
-        })
-    </script>
+    <script src="../JS/Khach_JS/index.js"></script>
 </div>
