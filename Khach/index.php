@@ -35,8 +35,12 @@ require('./function.php')
 
     .list-group-item:hover {
         cursor: pointer;
-        background-color: #6c757d;
+        /* background-color: #6c757d; */
+        background-color: rgba(27, 168, 255, 0.1);
+    }
 
+    .mauNen {
+        background-color: rgba(27, 168, 255, 0.1);
     }
 
     #page h6:hover {
@@ -44,6 +48,7 @@ require('./function.php')
         color: red;
     }
 </style>
+
 <div id="wrapper" style="overflow: scroll;height:100%">
 
     <!-- Sidebar -->
@@ -75,20 +80,23 @@ require('./function.php')
 
                     <nav class="navbar navbar-light">
                         <div class="container-fluid">
-                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fas fa-bars"></i></a>
-                            <form class="d-flex" style="margin-left: 50%;">
-                                <input require id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
-                                <button id="btn_search" class="btn btn-outline-success" type="button">Tìm</button>
-                                <div id="list_sach">
+                            <div class="row">
+                                <div class="d-flex">
+                                    <a href="#menu-toggle" class="btn btn-default col-1" id="menu-toggle"><i class="fas fa-bars"></i></a>
+                                    <form class="d-flex col-4">
+                                        <a id="profile_tch" href="#" class="navbar-brand">Tài khoản</a>
+                                        <a id="profile_tch" href="cart.php" class="navbar-brand">Giỏ hàng</a>
+                                        <a href="../Login/logout.php" class="navbar-brand">Đăng xuất</a>
+                                    </form>
+                                    <form class="d-flex col-7 upDownSach" style="margin-left: 50%;">
+                                        <input require id="search_ip" class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search">
+                                        <button id="btn_search" class="btn btn-outline-success" type="button">Tìm</button>
+                                        <div id="list_sach" style = "z-index: 9999;">
 
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
-                            <form class="d-flex">
-
-                                <a id="profile_tch" href="#" class="navbar-brand">Tài khoản</a>
-                                <a id="profile_tch" href="cart.php" class="navbar-brand">Giỏ hàng</a>
-                                <a href="../Login/logout.php" class="navbar-brand">Đăng xuất</a>
-                            </form>
+                            </div>
                         </div>
                     </nav>
                     <div class="container main-content">
@@ -263,29 +271,32 @@ require('./function.php')
                 }
             })
 
-            $('#search_ip').keyup(function() {
-                value = $(this).val();
-                if (value == '') {
-
-                    $('#list_sach').html('');
-                } else {
-                    $('#list_sach').html('');
-                    $.ajax({
-                        url: "search.php",
-                        method: "POST",
-                        data: {
-                            value: value
-                        },
-                        success: function(dt) {
-                            $('#list_sach').css({
-                                "display": "block"
-                            })
-                            // $('#wrapper').css({"background":"rgb(0 0 0 / 53%)"})                      
-                            $('#list_sach').html(dt);
-                        }
-                    })
+            $('#search_ip').keyup(function(e) {
+                if (e.keyCode != '37' && e.keyCode != '38' && e.keyCode != '39' && e.keyCode != '40') {
+                    status = 0;
+                    value = $(this).val();
+                    var idSach = $('.list-group-item').attr('id');
+                    if (value == '') {
+                        $('#list_sach').html('');
+                    } else {
+                        $('#list_sach').html('');
+                        $.ajax({
+                            url: "search.php",
+                            method: "POST",
+                            data: {
+                                value: value,
+                                idSach: idSach
+                            },
+                            success: function(dt) {
+                                $('#list_sach').css({
+                                    "display": "block"
+                                })
+                                // $('#wrapper').css({"background":"rgb(0 0 0 / 53%)"})                      
+                                $('#list_sach').html(dt);
+                            }
+                        })
+                    }
                 }
-
             })
 
             $('#btn_search').click(function() {
@@ -304,34 +315,43 @@ require('./function.php')
                             $('#page h6').css('display', 'none')
                         }
                     })
-                }else{
+                } else {
                     alert('Không tìm thấy sách của bạn!')
                 }
-
-
-
-                // alert(get_search);
-
-
             })
-            // $('.page-item').live('click', function() {
-            //     a = $(this).attr('id')
-            //     alert(a)
-            //     $.ajax({
-            //         url: "view_book.php",
-            //         method: "GET",
-            //         data: {
-            //             tranghientai: a
-            //         },
-            //         success: function(dt) {
-            //             $('#view_book').html(dt);
-            //         }
-            //     })
-            // });
+            // var slSach = parseInt($('.list-group-item').attr('slSach'));
+            // var status = parseInt($('.list-group-item').attr('status'));
+            var status = 0;
+            $('.book-row1').addClass('mauNen');
+            // console.log(status);
+            $('.upDownSach').keydown(function(e) {
+                var slSach = $('.list-group-item').length;
+                // console.log(slSach);
+                if (e.keyCode == 38) {
+                    $('.book-row' + status).removeClass('mauNen');
+                    status = parseInt(status) - 1;
+                    $('.book-row' + status).addClass('mauNen');
+                    if (status <= 0) {
+                        $('.book-row' + status).removeClass('mauNen');
+                        $('.book-row' + slSach).addClass('mauNen');
+                        status = slSach;
+                    }
+                    console.log(status);
+                } else if (e.keyCode == 40) {
+                    $('.book-row' + status).removeClass('mauNen');
+                    status = parseInt(status) + 1;
+                    $('.book-row' + status).addClass('mauNen');
 
+                    if (status >= slSach + 1) {
+                        $('.book-row' + status).removeClass('mauNen');
+                        $('.book-row1').addClass('mauNen');
+                        status = 1;
+                    }
+                    console.log(status);
+                }
 
-
-
+                
+            });
         })
     </script>
 </div>
